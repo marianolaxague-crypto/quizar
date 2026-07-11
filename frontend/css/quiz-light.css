@@ -1,0 +1,480 @@
+/* ═══════════════════════════════════════
+   Brújula Política AR — Quiz Light Theme
+   ═══════════════════════════════════════ */
+
+:root {
+  --coral: #E8651A;
+  --coral-light: #F5E6DA;
+  --coral-dark: #C4520E;
+}
+
+body.quiz-page {
+  background: #F4F1EB;
+  color: #1C1916;
+  min-height: 100vh;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* ── Shell ── */
+.qp-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 48px 24px 80px;
+  justify-content: center;
+  gap: 40px;
+}
+
+/* ── Counter (oculto) ── */
+.qp-counter { display: none; }
+
+/* ── Progress ring ── */
+.qp-ring-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qp-ring-svg {
+  width: 88px;
+  height: 88px;
+}
+
+/* ── Question area ── */
+.qp-question-area {
+  width: 100%;
+  max-width: 760px;
+  display: flex;
+  align-items: center;
+  opacity: 1;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+.qp-question-area.fading {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+/* ── EFG — contenedor ── */
+.qp-efg {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.qp-instruction {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #B0AAA2;
+  margin-bottom: 24px;
+}
+
+/* ── 4-Button Layout (EFG 4-point sin neutro) ── */
+.qp-4btn-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.qp-4btn-divider {
+  height: 1px;
+  background: #E2DDD5;
+  margin: 8px 0;
+}
+
+.qp-4btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  outline: none;
+  font-family: inherit;
+  width: 100%;
+  border: none;
+}
+
+.qp-4btn-chip {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+  min-width: 60px;
+  padding-top: 4px;
+  flex-shrink: 0;
+}
+
+.qp-4btn-text {
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.qp-4btn-strong {
+  background: #FFFFFF;
+  border: 1.5px solid #E2DDD5 !important;
+  color: #1C1916;
+}
+.qp-4btn-strong .qp-4btn-chip { color: #B0AAA2; }
+
+.qp-4btn-soft {
+  background: #FAF8F4;
+  border: 1.5px solid #EDEAE4 !important;
+  color: #4A4540;
+}
+.qp-4btn-soft .qp-4btn-chip { color: #C0BAB2; }
+
+.qp-4btn-strong:hover {
+  border-color: var(--coral) !important;
+  background: var(--coral-light);
+}
+.qp-4btn-soft:hover {
+  border-color: #C8C3BA !important;
+  background: #F0EDE7;
+  color: #1C1916;
+}
+
+.qp-4btn.selected.qp-4btn-strong {
+  border-color: var(--coral) !important;
+  background: var(--coral);
+  color: #FFFFFF;
+}
+.qp-4btn.selected.qp-4btn-strong .qp-4btn-chip { color: rgba(255,255,255,0.8); }
+
+.qp-4btn.selected.qp-4btn-soft {
+  border-color: var(--coral-dark) !important;
+  background: rgba(232,101,26,0.10);
+  color: var(--coral-dark);
+}
+.qp-4btn.selected.qp-4btn-soft .qp-4btn-chip { color: var(--coral-dark); }
+
+/* ── Botón de escape ── */
+.qp-escape {
+  width: 100%;
+  background: none;
+  border: none;
+  color: #C0BAB2;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 20px 0 0;
+  text-align: center;
+  font-family: inherit;
+  transition: color 0.15s;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  display: block;
+}
+.qp-escape:hover { color: #4A4540; }
+.qp-escape.selected {
+  color: #7A756E;
+  text-decoration: none;
+  font-style: italic;
+}
+
+
+/* ── Semantic Differential Layout (deprecated) ── */
+.qp-sd-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+/* Row de dos cards — alineadas con los dots extremos */
+.qp-cards-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+.qp-cards-row > :first-child { grid-column: 1 / 3; }  /* cubre cols 1-2 → dot 1 */
+.qp-cards-row > :last-child  { grid-column: 4 / 6; }  /* cubre cols 4-5 → dot 5 */
+/* columna 3 vacía → bajo el dot central (Ninguna) */
+
+.qp-card-stmt {
+  background: #FFFFFF;
+  border: 1.5px solid #E2DDD5;
+  border-radius: 14px;
+  padding: 20px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #1C1916;
+  transition: border-color 0.2s, background 0.2s;
+  min-height: 100px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qp-card-stmt.stmt-active {
+  border-color: #2D2A26;
+  background: #F7F4EE;
+}
+
+/* Etiquetas de la escala */
+.qp-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7rem;
+  color: #9A9187;
+  font-weight: 500;
+}
+.qp-scale-labels span {
+  white-space: nowrap;
+}
+.qp-scale-labels span:nth-child(2) {
+  color: #C0BAB2;
+  font-size: 0.65rem;
+}
+
+/* Track de puntos */
+.qp-scale-track {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 6px 0;
+}
+.qp-scale-track::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  right: 12px;
+  height: 1.5px;
+  background: #D6D1C9;
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+/* Puntos */
+.qp-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #C8C3BA;
+  background: #F4F1EB;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  flex-shrink: 0;
+}
+
+/* Stem compartido */
+.qp-stem {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #4A4540;
+  text-align: center;
+  margin-bottom: 4px;
+  line-height: 1.5;
+}
+
+/* Extremos más destacados (escala 5) */
+.qp-scale-5 .qp-dot:first-child,
+.qp-scale-5 .qp-dot:last-child {
+  width: 34px;
+  height: 34px;
+  border-width: 2.5px;
+}
+.qp-scale-5 .qp-dot:nth-child(3) {
+  width: 18px;
+  height: 18px;
+  border-color: #D6D1C9;
+}
+
+/* Escala de 3 puntos */
+.qp-scale-3 .qp-dot:first-child,
+.qp-scale-3 .qp-dot:last-child {
+  width: 38px;
+  height: 38px;
+  border-width: 2.5px;
+}
+.qp-scale-3 .qp-dot:nth-child(2) {
+  width: 20px;
+  height: 20px;
+  border-color: #D6D1C9;
+}
+.qp-dot:hover {
+  border-color: #2D2A26;
+  background: #EDEBE5;
+  transform: scale(1.25);
+}
+.qp-dot.selected {
+  background: #2D2A26;
+  border-color: #2D2A26;
+  transform: scale(1.4);
+  box-shadow: 0 0 0 5px rgba(45,42,38,0.1);
+}
+.qp-dot.selected.animate { animation: dot-pop 0.22s ease; }
+@keyframes dot-pop {
+  0%   { transform: scale(1.4); }
+  50%  { transform: scale(1.75); }
+  100% { transform: scale(1.4); }
+}
+
+/* Mobile */
+@media (max-width: 560px) {
+  .qp-cards-row { grid-template-columns: 1fr; }
+  .qp-scale-labels span { font-size: 0.65rem; }
+}
+
+/* ── Likert legacy (options) ── */
+.qp-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+.qp-option-btn {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: 1.5px solid #E2DDD5;
+  background: #FFFFFF;
+  color: #1C1916;
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.qp-option-btn:hover { border-color: #2D2A26; background: #FAFAF7; }
+.qp-option-btn.selected { border-color: #2D2A26; background: #2D2A26; color: #F4F1EB; }
+
+
+/* ── Voting intention screen (mismo tema) ── */
+.qp-vote-screen {
+  width: 100%;
+  max-width: 680px;
+  padding-top: 32px;
+}
+.qp-vote-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #1C1916;
+  margin-bottom: 6px;
+}
+.qp-vote-sub {
+  font-size: 0.85rem;
+  color: #9A9187;
+  margin-bottom: 28px;
+}
+.qp-vote-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.qp-vote-btn {
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1.5px solid #E2DDD5;
+  background: #FFFFFF;
+  color: #1C1916;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.qp-vote-btn:hover { border-color: #2D2A26; background: #FAFAF7; }
+.qp-skip-btn {
+  background: none;
+  border: none;
+  color: #9A9187;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 10px 0;
+  display: block;
+  width: 100%;
+  text-align: center;
+  transition: color 0.15s;
+}
+.qp-skip-btn:hover { color: #1C1916; }
+
+/* ── Intermediate engagement screens ── */
+.qp-intermediate {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 24px 16px;
+  gap: 0;
+}
+
+.qp-intermediate-icon {
+  font-size: 84px;
+  line-height: 1;
+  margin-bottom: 28px;
+}
+
+.qp-intermediate-heading {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #1C1916;
+  margin: 0 0 16px;
+  line-height: 1.25;
+  max-width: 340px;
+}
+
+.qp-intermediate-accent {
+  color: var(--coral);
+}
+
+.qp-intermediate-body {
+  font-size: 1rem;
+  color: #5C5750;
+  line-height: 1.65;
+  max-width: 320px;
+  margin: 0 0 40px;
+}
+
+.qp-intermediate-btn {
+  width: 100%;
+  max-width: 360px;
+  padding: 18px 24px;
+  background: #1C1916;
+  color: #F4F1EB;
+  border: none;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.qp-intermediate-btn:hover { background: #2D2A26; }
+
+/* ── Loading / error states ── */
+.qp-loading {
+  padding-top: 80px;
+  text-align: center;
+  color: #9A9187;
+  font-size: 0.9rem;
+}
+.qp-error {
+  padding: 16px;
+  background: #FFF1F0;
+  border: 1px solid #FFCDD2;
+  border-radius: 10px;
+  color: #B71C1C;
+  font-size: 0.85rem;
+  margin-top: 16px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 520px) {
+  .qp-stmt { font-size: 0.95rem; padding: 16px 18px; }
+  .qp-dot { width: 22px; height: 22px; }
+  .qp-vote-grid { grid-template-columns: 1fr; }
+  .qp-shell { padding: 28px 16px 70px; gap: 24px; }
+}

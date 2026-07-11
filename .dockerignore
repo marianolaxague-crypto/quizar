@@ -1,0 +1,15 @@
+.git
+.agents
+.codex
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.db
+*.db-wal
+*.db-shm
+CORPUS TEORICO
+REFERENCIA
+archive
+data.db

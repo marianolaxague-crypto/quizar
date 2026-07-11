@@ -1,0 +1,204 @@
+{
+  "quiz_type": "ideological",
+  "title": "Brújula Ideológica",
+  "description": "Descubrí tu posición en el espectro político argentino",
+  "instructions": "Indicá qué tan de acuerdo estás con cada frase. No hay respuestas correctas ni incorrectas.",
+  "scale": {
+    "1": "Muy en desacuerdo",
+    "2": "En desacuerdo",
+    "3": "Neutral / No sé",
+    "4": "De acuerdo",
+    "5": "Muy de acuerdo"
+  },
+  "axes": {
+    "econ": {
+      "label": "Económico",
+      "negative_label": "Estatista",
+      "positive_label": "Privatista",
+      "description": "Rol del Estado en la economía y la sociedad"
+    },
+    "social": {
+      "label": "Social",
+      "negative_label": "Progresista",
+      "positive_label": "Conservador",
+      "description": "Visión sobre el cambio social, los derechos y el orden"
+    }
+  },
+  "profiles": {
+    "EP": {
+      "name": "Estatista Progresista",
+      "short": "Izquierda progresista",
+      "description": "Valorás la intervención del Estado en la economía y apoyás la ampliación de derechos civiles. Tendés a ver las desigualdades como resultado del sistema antes que de decisiones individuales.",
+      "color": "#E53935",
+      "icon": "🔴",
+      "party_hint": "Más cercano/a al kirchnerismo y la izquierda"
+    },
+    "EC": {
+      "name": "Estatista Conservador",
+      "short": "Peronismo tradicional",
+      "description": "Creés en el rol activo del Estado para proteger el trabajo y la economía, pero tenés valores más tradicionales en lo social. Priorizás el orden, la familia y la identidad nacional.",
+      "color": "#1565C0",
+      "icon": "🔵",
+      "party_hint": "Más cercano/a al peronismo clásico y el sindicalismo"
+    },
+    "PC": {
+      "name": "Privatista Conservador",
+      "short": "Derecha conservadora",
+      "description": "Preferís que el mercado y el sector privado lideren la economía, y sostenés valores tradicionales en lo social y cultural. Valorás el orden, la seguridad y la disciplina fiscal.",
+      "color": "#FDD835",
+      "icon": "🟡",
+      "party_hint": "Más cercano/a al PRO y sectores de Juntos"
+    },
+    "PP": {
+      "name": "Privatista Progresista",
+      "short": "Liberalismo social",
+      "description": "Apostás por la libertad individual tanto en lo económico como en lo personal. Rechazás la intervención del Estado en ambas esferas y valorás la diversidad y la apertura.",
+      "color": "#7B1FA2",
+      "icon": "🟣",
+      "party_hint": "Más cercano/a a sectores liberales y libertarios"
+    }
+  },
+  "questions": [
+    {
+      "id": "a1",
+      "text": "Prefiero resolver mis problemas por mis propios medios antes que depender de la ayuda del Estado.",
+      "dimension": "autonomia",
+      "weights": {"econ": 2, "social": 0}
+    },
+    {
+      "id": "a2",
+      "text": "Si pudiera pagar menos impuestos aunque eso signifique menos servicios públicos, lo haría.",
+      "dimension": "autonomia",
+      "weights": {"econ": 2, "social": 0}
+    },
+    {
+      "id": "a3",
+      "text": "Me incomoda depender de otros —incluyendo al Estado— para resolver mis problemas.",
+      "dimension": "autonomia",
+      "weights": {"econ": 1, "social": 0}
+    },
+    {
+      "id": "a4",
+      "text": "Cuando pienso en un problema social, lo primero que se me ocurre es cómo el Estado podría resolverlo.",
+      "dimension": "autonomia",
+      "weights": {"econ": -2, "social": 0},
+      "reverse": true
+    },
+    {
+      "id": "a5",
+      "text": "Las empresas privadas suelen ser más eficientes que las estatales.",
+      "dimension": "autonomia",
+      "weights": {"econ": 2, "social": 0}
+    },
+    {
+      "id": "m1",
+      "text": "Si alguien no progresa en la vida, generalmente es porque no se esforzó lo suficiente.",
+      "dimension": "meritocracia",
+      "weights": {"econ": 2, "social": 1}
+    },
+    {
+      "id": "m2",
+      "text": "Me molesta cuando alguien recibe beneficios del Estado sin haber trabajado para merecerlos.",
+      "dimension": "meritocracia",
+      "weights": {"econ": 2, "social": 1}
+    },
+    {
+      "id": "m3",
+      "text": "Las desigualdades sociales son en gran parte resultado de un sistema injusto, no de decisiones individuales.",
+      "dimension": "meritocracia",
+      "weights": {"econ": -2, "social": -1},
+      "reverse": true
+    },
+    {
+      "id": "m4",
+      "text": "Que alguien rico exista no explica que otro sea pobre: la riqueza no se roba.",
+      "dimension": "meritocracia",
+      "weights": {"econ": 2, "social": 1}
+    },
+    {
+      "id": "m5",
+      "text": "El Estado debería garantizar condiciones mínimas de vida para todos, sin importar su trayectoria laboral.",
+      "dimension": "meritocracia",
+      "weights": {"econ": -2, "social": -1},
+      "reverse": true
+    },
+    {
+      "id": "o1",
+      "text": "Prefiero que las cosas sean predecibles antes que arriesgarme a cambios profundos.",
+      "dimension": "orden",
+      "weights": {"econ": 0, "social": 2}
+    },
+    {
+      "id": "o2",
+      "text": "Cuando hay desorden en la sociedad, prefiero que se apliquen reglas más estrictas, aunque eso limite algunas libertades.",
+      "dimension": "orden",
+      "weights": {"econ": 0, "social": 2}
+    },
+    {
+      "id": "o3",
+      "text": "Los cambios sociales muy rápidos generan más problemas que soluciones.",
+      "dimension": "orden",
+      "weights": {"econ": 0, "social": 2}
+    },
+    {
+      "id": "o4",
+      "text": "Para combatir la inseguridad hay que endurecer las penas y darle más poder a la policía.",
+      "dimension": "orden",
+      "weights": {"econ": 0, "social": 2}
+    },
+    {
+      "id": "o5",
+      "text": "Las instituciones que funcionan bien no deberían cambiarse apresuradamente.",
+      "dimension": "orden",
+      "weights": {"econ": 0, "social": 1}
+    },
+    {
+      "id": "d1",
+      "text": "Apoyo la ley del aborto (IVE) tal como está.",
+      "dimension": "derechos",
+      "weights": {"econ": 0, "social": -2}
+    },
+    {
+      "id": "d2",
+      "text": "La familia tradicional —papá, mamá e hijos— sigue siendo el modelo más válido para la sociedad.",
+      "dimension": "derechos",
+      "weights": {"econ": 0, "social": 2}
+    },
+    {
+      "id": "d3",
+      "text": "Las políticas de diversidad e inclusión me parecen necesarias, aunque incomoden a algunos.",
+      "dimension": "derechos",
+      "weights": {"econ": 0, "social": -2}
+    },
+    {
+      "id": "d4",
+      "text": "La religión y los valores espirituales deberían tener más influencia en la política argentina.",
+      "dimension": "derechos",
+      "weights": {"econ": 0, "social": 2}
+    },
+    {
+      "id": "c1",
+      "text": "Las ideas que funcionaron en Europa o Estados Unidos deberían adoptarse más en Argentina.",
+      "dimension": "cosmopolitismo",
+      "weights": {"econ": 1, "social": -1}
+    },
+    {
+      "id": "c2",
+      "text": "La identidad cultural argentina es algo que hay que proteger ante la globalización.",
+      "dimension": "cosmopolitismo",
+      "weights": {"econ": -1, "social": 2}
+    },
+    {
+      "id": "c3",
+      "text": "Me genera más confianza lo local y conocido que lo que viene de afuera.",
+      "dimension": "cosmopolitismo",
+      "weights": {"econ": -1, "social": 2}
+    },
+    {
+      "id": "c4",
+      "text": "Argentina debería integrarse más a la economía global, aunque eso implique ceder cierta autonomía.",
+      "dimension": "cosmopolitismo",
+      "weights": {"econ": 2, "social": -1}
+    }
+  ]
+}

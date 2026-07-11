@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Base de datos local (no subir datos de prueba)
+*.db
+*.db-wal
+*.db-shm
+
+# Claude internal
+.agents/
+.codex/
+
+# Archivos grandes / no necesarios para el deploy
+CORPUS TEORICO/
+REFERENCIA/
+archive/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

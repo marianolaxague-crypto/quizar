@@ -1,0 +1,29 @@
+{
+  "quiz_type": "maxdiff",
+  "title": "¿A quién preferís?",
+  "description": "Elegí el mejor y el peor de cada grupo. No hay respuestas correctas.",
+  "instructions": "En cada pantalla vas a ver 4 figuras políticas. Elegí la que MÁS preferís y la que MENOS preferís.",
+  "maxdiff_design": {
+    "n_candidates": 14,
+    "set_size": 4,
+    "n_tasks": 10,
+    "appearances_per_candidate": 3,
+    "note": "14 figuras × 3 apariciones ≈ 10 sets de 4. Figuras de segunda línea removidas para reducir fatiga."
+  },
+  "candidates": [
+    {"id": "milei",     "name": "Javier Milei",             "party": "LLA",   "role": "Presidente"},
+    {"id": "bullrich",  "name": "Patricia Bullrich",         "party": "PRO",   "role": "Ministra de Seguridad"},
+    {"id": "macri",     "name": "Mauricio Macri",            "party": "PRO",   "role": "Ex Presidente"},
+    {"id": "larreta",   "name": "Horacio Rodríguez Larreta", "party": "PRO",   "role": "Ex Jefe de Gobierno CABA"},
+    {"id": "vidal",     "name": "María Eugenia Vidal",       "party": "PRO",   "role": "Diputada"},
+    {"id": "morales",   "name": "Gerardo Morales",           "party": "UCR",   "role": "Ex Gobernador Jujuy"},
+    {"id": "lousteau",  "name": "Martín Lousteau",           "party": "UCR",   "role": "Senador"},
+    {"id": "massa",     "name": "Sergio Massa",              "party": "UxP",   "role": "Ex Ministro de Economía"},
+    {"id": "cfk",       "name": "Cristina Fernández",        "party": "PJ",    "role": "Ex Presidenta"},
+    {"id": "kicillof",  "name": "Axel Kicillof",             "party": "PJ",    "role": "Gobernador Buenos Aires"},
+    {"id": "grabois",   "name": "Juan Grabois",              "party": "FdT",   "role": "Dirigente social"},
+    {"id": "bregman",   "name": "Myriam Bregman",            "party": "FIT-U", "role": "Diputada"},
+    {"id": "del_cano",  "name": "Nicolás del Caño",          "party": "FIT-U", "role": "Diputado"},
+    {"id": "villarruel","name": "Victoria Villarruel",        "party": "LLA",   "role": "Vicepresidenta"}
+  ]
+}

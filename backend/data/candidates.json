@@ -1,0 +1,215 @@
+{
+  "quiz_type": "candidate",
+  "title": "¿Con qué candidato coincidís?",
+  "description": "Descubrí con qué figura política argentina tenés más afinidad",
+  "instructions": "Para cada tema, elegí la posición que más se acerca a la tuya.",
+  "candidates": {
+    "milei": {
+      "name": "Javier Milei",
+      "party": "LLA",
+      "color": "#7B1FA2",
+      "icon": "🟣",
+      "description": "Libertario radical, dolarización, motosierra al Estado, anti-casta."
+    },
+    "bullrich": {
+      "name": "Patricia Bullrich",
+      "party": "PRO/LLA",
+      "color": "#FF8F00",
+      "icon": "🟠",
+      "description": "Seguridad, orden, derecha liberal, dura con el crimen y el populismo."
+    },
+    "macri": {
+      "name": "Mauricio Macri",
+      "party": "PRO",
+      "color": "#FDD835",
+      "icon": "🟡",
+      "description": "Centro-derecha gerencial, apertura económica, inversión privada."
+    },
+    "morales": {
+      "name": "Gerardo Morales / UCR centro",
+      "party": "UCR",
+      "color": "#E53935",
+      "icon": "🔴",
+      "description": "Radicalismo centro, instituciones, reforma gradual, federalismo."
+    },
+    "massa": {
+      "name": "Sergio Massa",
+      "party": "PJ/UxP",
+      "color": "#1565C0",
+      "icon": "🔵",
+      "description": "Peronismo pragmático, mercado interno, negociación, equilibrio."
+    },
+    "kirchner": {
+      "name": "Cristina Kirchner",
+      "party": "UxP/PJ",
+      "color": "#0D47A1",
+      "icon": "🔷",
+      "description": "Kirchnerismo, expansión del Estado, soberanía, derechos sociales."
+    },
+    "bregman": {
+      "name": "Myriam Bregman",
+      "party": "FIT-U",
+      "color": "#B71C1C",
+      "icon": "🟥",
+      "description": "Izquierda socialista, anticapitalismo, feminismo, estatización."
+    }
+  },
+  "questions": [
+    {
+      "id": "c1",
+      "text": "¿Qué política económica necesita Argentina urgentemente?",
+      "options": [
+        {
+          "id": "c1a",
+          "text": "Dolarización o tipo de cambio libre: terminar con la inflación de raíz",
+          "scores": {"milei": 3, "bullrich": 1, "macri": 1, "morales": 0, "massa": -2, "kirchner": -3, "bregman": -3}
+        },
+        {
+          "id": "c1b",
+          "text": "Apertura económica, baja de impuestos y equilibrio fiscal estricto",
+          "scores": {"milei": 1, "bullrich": 2, "macri": 3, "morales": 1, "massa": -1, "kirchner": -2, "bregman": -2}
+        },
+        {
+          "id": "c1c",
+          "text": "Estabilización gradual con crecimiento del mercado interno",
+          "scores": {"milei": -2, "bullrich": -1, "macri": 0, "morales": 3, "massa": 2, "kirchner": 0, "bregman": -1}
+        },
+        {
+          "id": "c1d",
+          "text": "Expansión del gasto público para reactivar la economía y el empleo",
+          "scores": {"milei": -3, "bullrich": -2, "macri": -2, "morales": -1, "massa": 2, "kirchner": 3, "bregman": 2}
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text": "¿Cómo enfrentar la corrupción?",
+      "options": [
+        {
+          "id": "c2a",
+          "text": "Achicando el Estado: menos Estado significa menos corrupción",
+          "scores": {"milei": 3, "bullrich": 1, "macri": 1, "morales": 0, "massa": -1, "kirchner": -2, "bregman": -1}
+        },
+        {
+          "id": "c2b",
+          "text": "Fortaleciendo la Justicia independiente y los organismos de control",
+          "scores": {"milei": 0, "bullrich": 2, "macri": 2, "morales": 3, "massa": 1, "kirchner": -2, "bregman": 0}
+        },
+        {
+          "id": "c2c",
+          "text": "Con mayor transparencia y participación ciudadana",
+          "scores": {"milei": -1, "bullrich": 1, "macri": 1, "morales": 2, "massa": 1, "kirchner": 0, "bregman": 2}
+        },
+        {
+          "id": "c2d",
+          "text": "Yendo contra el poder económico concentrado que captura al Estado",
+          "scores": {"milei": -2, "bullrich": -2, "macri": -2, "morales": 0, "massa": 0, "kirchner": 2, "bregman": 3}
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text": "¿Qué significa para vos la libertad?",
+      "options": [
+        {
+          "id": "c3a",
+          "text": "Hacer lo que quiero con mi vida sin que el Estado me diga qué hacer",
+          "scores": {"milei": 3, "bullrich": 1, "macri": 2, "morales": 1, "massa": -1, "kirchner": -2, "bregman": 0}
+        },
+        {
+          "id": "c3b",
+          "text": "Vivir con seguridad y orden: sin eso no hay libertad real",
+          "scores": {"milei": 1, "bullrich": 3, "macri": 2, "morales": 1, "massa": 1, "kirchner": -1, "bregman": -2}
+        },
+        {
+          "id": "c3c",
+          "text": "Tener acceso a educación, salud y trabajo digno",
+          "scores": {"milei": -3, "bullrich": -1, "macri": -1, "morales": 2, "massa": 2, "kirchner": 2, "bregman": 1}
+        },
+        {
+          "id": "c3d",
+          "text": "Emanciparse del sistema capitalista que oprime a los trabajadores",
+          "scores": {"milei": -3, "bullrich": -3, "macri": -3, "morales": -1, "massa": -1, "kirchner": 1, "bregman": 3}
+        }
+      ]
+    },
+    {
+      "id": "c4",
+      "text": "¿Cuál es el mayor problema de Argentina hoy?",
+      "options": [
+        {
+          "id": "c4a",
+          "text": "El Estado gigante, la casta política y el gasto descontrolado",
+          "scores": {"milei": 3, "bullrich": 2, "macri": 1, "morales": 0, "massa": -2, "kirchner": -3, "bregman": -1}
+        },
+        {
+          "id": "c4b",
+          "text": "La inseguridad y la falta de orden y respeto a la ley",
+          "scores": {"milei": 0, "bullrich": 3, "macri": 2, "morales": 1, "massa": 0, "kirchner": -1, "bregman": -2}
+        },
+        {
+          "id": "c4c",
+          "text": "La falta de trabajo digno y el deterioro de los ingresos",
+          "scores": {"milei": -2, "bullrich": -1, "macri": 0, "morales": 2, "massa": 3, "kirchner": 2, "bregman": 1}
+        },
+        {
+          "id": "c4d",
+          "text": "La pobreza estructural y la concentración de riqueza",
+          "scores": {"milei": -3, "bullrich": -2, "macri": -1, "morales": 1, "massa": 1, "kirchner": 2, "bregman": 3}
+        }
+      ]
+    },
+    {
+      "id": "c5",
+      "text": "¿Cómo debe tratarse la protesta social y el conflicto sindical?",
+      "options": [
+        {
+          "id": "c5a",
+          "text": "Con mano dura: los piquetes y huelgas deben tener límites claros",
+          "scores": {"milei": 3, "bullrich": 3, "macri": 2, "morales": 0, "massa": -1, "kirchner": -2, "bregman": -3}
+        },
+        {
+          "id": "c5b",
+          "text": "Con diálogo, pero sin que bloqueen la vida cotidiana de la gente",
+          "scores": {"milei": 0, "bullrich": 1, "macri": 2, "morales": 3, "massa": 2, "kirchner": 0, "bregman": -1}
+        },
+        {
+          "id": "c5c",
+          "text": "Son formas legítimas de reclamo que el Estado debe escuchar",
+          "scores": {"milei": -2, "bullrich": -2, "macri": -1, "morales": 1, "massa": 2, "kirchner": 3, "bregman": 2}
+        },
+        {
+          "id": "c5d",
+          "text": "La lucha de clases es inevitable: los trabajadores tienen derecho a luchar",
+          "scores": {"milei": -3, "bullrich": -3, "macri": -2, "morales": -1, "massa": 0, "kirchner": 1, "bregman": 3}
+        }
+      ]
+    },
+    {
+      "id": "c6",
+      "text": "¿Cómo debe ser la relación de Argentina con el FMI?",
+      "options": [
+        {
+          "id": "c6a",
+          "text": "Cumplir los acuerdos y usar esa credibilidad para atraer inversión",
+          "scores": {"milei": 3, "bullrich": 2, "macri": 3, "morales": 1, "massa": 0, "kirchner": -2, "bregman": -3}
+        },
+        {
+          "id": "c6b",
+          "text": "Negociar condiciones más favorables sin romper el acuerdo",
+          "scores": {"milei": -1, "bullrich": 0, "macri": 1, "morales": 3, "massa": 3, "kirchner": 0, "bregman": -1}
+        },
+        {
+          "id": "c6c",
+          "text": "Renegociar radicalmente y priorizar el desarrollo interno",
+          "scores": {"milei": -2, "bullrich": -1, "macri": -1, "morales": 0, "massa": 1, "kirchner": 3, "bregman": 1}
+        },
+        {
+          "id": "c6d",
+          "text": "Romper con el FMI: sus recetas sólo benefician a los acreedores",
+          "scores": {"milei": -3, "bullrich": -3, "macri": -2, "morales": -2, "massa": -1, "kirchner": 1, "bregman": 3}
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brújula Política Argentina</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="inner">
+      <div class="logo">Brújula <span>Política AR</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <section class="hero">
+      <h1>¿Dónde estás en el<br><em>mapa político argentino?</em></h1>
+      <p>Respondé uno de los tres juegos y descubrí tu perfil ideológico, tu partido afín o tu candidato más cercano — y cómo te comparás con el resto de los jugadores.</p>
+    </section>
+
+    <div class="quiz-grid" id="quiz-grid">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</main>
+
+<script>
+const QUIZZES = [
+  {
+    id:       "j1",
+    title:    "Brújula Ideológica",
+    subtitle: "Descubrí dónde estás en el espectro político",
+    icon:     "🧭",
+    questions: 25,
+    minutes:  4,
+    reward:   "Tu posición en el mapa + comparación con otros jugadores",
+    ready:    true
+  },
+  {
+    id:       "j2",
+    title:    "Visión AR",
+    subtitle: "¿Con qué visión de Argentina coincidís?",
+    icon:     "🗳️",
+    questions: null,
+    minutes:  null,
+    reward:   "Afinidad con las grandes tradiciones políticas argentinas",
+    ready:    false
+  },
+  {
+    id:       "j3",
+    title:    "¿Mi candidato?",
+    subtitle: "Ranking de figuras políticas por preferencia",
+    icon:     "🎯",
+    questions: 20,
+    minutes:  4,
+    reward:   "Tu ranking personal de 20 figuras políticas",
+    ready:    false
+  }
+];
+
+const grid = document.getElementById("quiz-grid");
+
+QUIZZES.forEach(q => {
+  const meta = q.ready
+    ? `<span>${q.minutes} min</span><span class="meta-questions">${q.questions} preguntas</span>`
+    : `<span>Próximamente</span>`;
+
+  const reward = `🎁 ${q.reward}`;
+
+  if (q.ready) {
+    grid.innerHTML += `
+      <a class="quiz-card" href="/quiz?type=${q.id}">
+        <div class="icon">${q.icon}</div>
+        <h2>${q.title}</h2>
+        <p>${q.subtitle}<br><br>${reward}</p>
+        <div class="meta">${meta}</div>
+      </a>`;
+  } else {
+    grid.innerHTML += `
+      <div class="quiz-card disabled">
+        <div class="icon">${q.icon}</div>
+        <h2>${q.title}</h2>
+        <p>${q.subtitle}<br><br>${reward}</p>
+        <div class="meta">${meta}</div>
+      </div>`;
+  }
+});
+</script>
+
+</body>
+</html>

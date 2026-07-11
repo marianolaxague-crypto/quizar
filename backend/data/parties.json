@@ -1,0 +1,253 @@
+{
+  "quiz_type": "party",
+  "title": "¿A qué partido me parezco?",
+  "description": "Descubrí con qué fuerza política coincidís más",
+  "instructions": "Para cada tema, elegí la posición que más se acerca a la tuya.",
+  "parties": {
+    "LLA": {
+      "name": "La Libertad Avanza",
+      "short": "LLA",
+      "color": "#7B1FA2",
+      "icon": "🟣",
+      "description": "Libertarismo radical, ajuste fiscal, dolarización, desregulación total."
+    },
+    "PRO": {
+      "name": "PRO / Juntos",
+      "short": "PRO",
+      "color": "#FDD835",
+      "icon": "🟡",
+      "description": "Centro-derecha liberal, gestión privada, apertura económica, orden institucional."
+    },
+    "UCR": {
+      "name": "UCR / Unión por la Patria centrorad.",
+      "short": "UCR",
+      "color": "#E53935",
+      "icon": "🔴",
+      "description": "Centro, reformismo gradual, Estado regulador, instituciones fuertes."
+    },
+    "PJ": {
+      "name": "Peronismo / UxP",
+      "short": "PJ/UxP",
+      "color": "#1565C0",
+      "icon": "🔵",
+      "description": "Peronismo amplio, mercado interno, empleo, soberanía económica."
+    },
+    "FIT": {
+      "name": "FIT-U / Izquierda",
+      "short": "FIT",
+      "color": "#B71C1C",
+      "icon": "🟥",
+      "description": "Izquierda anticapitalista, estatización, derechos laborales y sociales plenos."
+    }
+  },
+  "questions": [
+    {
+      "id": "p1",
+      "text": "¿Qué debería hacer el Estado con el tipo de cambio?",
+      "options": [
+        {
+          "id": "p1a",
+          "text": "Dolarizar la economía o tipo de cambio completamente libre",
+          "scores": {"LLA": 3, "PRO": 1, "UCR": -1, "PJ": -2, "FIT": -3}
+        },
+        {
+          "id": "p1b",
+          "text": "Unificar el tipo de cambio con libre flotación controlada",
+          "scores": {"LLA": 1, "PRO": 3, "UCR": 1, "PJ": -1, "FIT": -2}
+        },
+        {
+          "id": "p1c",
+          "text": "Mantener un tipo de cambio regulado con gradual unificación",
+          "scores": {"LLA": -2, "PRO": 0, "UCR": 2, "PJ": 1, "FIT": -1}
+        },
+        {
+          "id": "p1d",
+          "text": "Controlar el tipo de cambio para proteger la industria y el empleo",
+          "scores": {"LLA": -3, "PRO": -2, "UCR": -1, "PJ": 3, "FIT": 2}
+        }
+      ]
+    },
+    {
+      "id": "p2",
+      "text": "¿Qué hacer con las empresas públicas (YPF, Aerolíneas, etc.)?",
+      "options": [
+        {
+          "id": "p2a",
+          "text": "Privatizarlas todas: el Estado no debería gestionar empresas",
+          "scores": {"LLA": 3, "PRO": 2, "UCR": 0, "PJ": -2, "FIT": -3}
+        },
+        {
+          "id": "p2b",
+          "text": "Privatizar las deficitarias, mantener las estratégicas",
+          "scores": {"LLA": 1, "PRO": 3, "UCR": 2, "PJ": -1, "FIT": -2}
+        },
+        {
+          "id": "p2c",
+          "text": "Mantenerlas con control estatal y gestión eficiente",
+          "scores": {"LLA": -2, "PRO": -1, "UCR": 2, "PJ": 3, "FIT": 1}
+        },
+        {
+          "id": "p2d",
+          "text": "Expandir las empresas públicas y renacionalizar las privatizadas",
+          "scores": {"LLA": -3, "PRO": -3, "UCR": -1, "PJ": 1, "FIT": 3}
+        }
+      ]
+    },
+    {
+      "id": "p3",
+      "text": "¿Cómo manejar la deuda externa?",
+      "options": [
+        {
+          "id": "p3a",
+          "text": "Pagar estrictamente para recuperar el acceso a mercados internacionales",
+          "scores": {"LLA": 3, "PRO": 2, "UCR": 1, "PJ": -1, "FIT": -3}
+        },
+        {
+          "id": "p3b",
+          "text": "Renegociar en términos favorables, priorizando el crecimiento",
+          "scores": {"LLA": -1, "PRO": 1, "UCR": 3, "PJ": 2, "FIT": 0}
+        },
+        {
+          "id": "p3c",
+          "text": "Postergar pagos mientras se recupera la economía interna",
+          "scores": {"LLA": -2, "PRO": -1, "UCR": 0, "PJ": 3, "FIT": 1}
+        },
+        {
+          "id": "p3d",
+          "text": "Auditar la deuda y desconocer la parte que sea ilegítima",
+          "scores": {"LLA": -2, "PRO": -3, "UCR": -1, "PJ": 0, "FIT": 3}
+        }
+      ]
+    },
+    {
+      "id": "p4",
+      "text": "¿Cómo tratar la inseguridad?",
+      "options": [
+        {
+          "id": "p4a",
+          "text": "Más policía, penas más duras, tolerancia cero",
+          "scores": {"LLA": 3, "PRO": 3, "UCR": 0, "PJ": 0, "FIT": -2}
+        },
+        {
+          "id": "p4b",
+          "text": "Reforma policial y judicial con mayor poder para las fuerzas",
+          "scores": {"LLA": 1, "PRO": 2, "UCR": 2, "PJ": 1, "FIT": -1}
+        },
+        {
+          "id": "p4c",
+          "text": "Combinar seguridad con políticas sociales para atacar las causas",
+          "scores": {"LLA": -2, "PRO": -1, "UCR": 2, "PJ": 3, "FIT": 1}
+        },
+        {
+          "id": "p4d",
+          "text": "Foco en causas estructurales: pobreza, educación, desigualdad",
+          "scores": {"LLA": -3, "PRO": -2, "UCR": 0, "PJ": 1, "FIT": 3}
+        }
+      ]
+    },
+    {
+      "id": "p5",
+      "text": "¿Qué hacer con los planes sociales?",
+      "options": [
+        {
+          "id": "p5a",
+          "text": "Eliminarlos: generan dependencia y frenan el trabajo real",
+          "scores": {"LLA": 3, "PRO": 1, "UCR": -1, "PJ": -3, "FIT": -3}
+        },
+        {
+          "id": "p5b",
+          "text": "Reducirlos gradualmente y reemplazarlos por empleo privado",
+          "scores": {"LLA": 2, "PRO": 3, "UCR": 1, "PJ": -2, "FIT": -2}
+        },
+        {
+          "id": "p5c",
+          "text": "Reformarlos para que sean más eficientes y promuevan el trabajo",
+          "scores": {"LLA": -1, "PRO": 0, "UCR": 2, "PJ": 2, "FIT": 0}
+        },
+        {
+          "id": "p5d",
+          "text": "Ampliarlos: son un derecho para quienes más los necesitan",
+          "scores": {"LLA": -3, "PRO": -2, "UCR": 0, "PJ": 3, "FIT": 3}
+        }
+      ]
+    },
+    {
+      "id": "p6",
+      "text": "¿Cómo debe ser la política exterior de Argentina?",
+      "options": [
+        {
+          "id": "p6a",
+          "text": "Alinearse con EEUU y Occidente, integrarse a la OTAN-plus",
+          "scores": {"LLA": 3, "PRO": 2, "UCR": 1, "PJ": -2, "FIT": -3}
+        },
+        {
+          "id": "p6b",
+          "text": "Relaciones pragmáticas con todos según conveniencia económica",
+          "scores": {"LLA": 1, "PRO": 2, "UCR": 3, "PJ": 0, "FIT": -1}
+        },
+        {
+          "id": "p6c",
+          "text": "Fortalecer el MERCOSUR y los bloques latinoamericanos",
+          "scores": {"LLA": -2, "PRO": -1, "UCR": 1, "PJ": 3, "FIT": 1}
+        },
+        {
+          "id": "p6d",
+          "text": "Priorizar la soberanía y autonomía frente a potencias extranjeras",
+          "scores": {"LLA": -1, "PRO": -1, "UCR": 0, "PJ": 1, "FIT": 3}
+        }
+      ]
+    },
+    {
+      "id": "p7",
+      "text": "¿Cómo debe ser la relación entre Estado y educación/salud?",
+      "options": [
+        {
+          "id": "p7a",
+          "text": "El sector privado debería competir en igualdad con el público",
+          "scores": {"LLA": 3, "PRO": 2, "UCR": 0, "PJ": -2, "FIT": -3}
+        },
+        {
+          "id": "p7b",
+          "text": "Estado como subsidiario: financia a quienes no pueden pagar privado",
+          "scores": {"LLA": 1, "PRO": 3, "UCR": 1, "PJ": -1, "FIT": -2}
+        },
+        {
+          "id": "p7c",
+          "text": "Estado garantiza acceso universal, pero permite privados",
+          "scores": {"LLA": -1, "PRO": 0, "UCR": 3, "PJ": 2, "FIT": 0}
+        },
+        {
+          "id": "p7d",
+          "text": "Educación y salud deben ser exclusivamente públicas y gratuitas",
+          "scores": {"LLA": -3, "PRO": -2, "UCR": -1, "PJ": 1, "FIT": 3}
+        }
+      ]
+    },
+    {
+      "id": "p8",
+      "text": "¿Qué hacer con el déficit fiscal?",
+      "options": [
+        {
+          "id": "p8a",
+          "text": "Eliminarlo de forma inmediata, es la prioridad absoluta",
+          "scores": {"LLA": 3, "PRO": 2, "UCR": 1, "PJ": -1, "FIT": -2}
+        },
+        {
+          "id": "p8b",
+          "text": "Reducirlo gradualmente sin afectar servicios esenciales",
+          "scores": {"LLA": 1, "PRO": 2, "UCR": 3, "PJ": 1, "FIT": -1}
+        },
+        {
+          "id": "p8c",
+          "text": "Priorizar el crecimiento y el empleo; el déficit se resuelve después",
+          "scores": {"LLA": -2, "PRO": -1, "UCR": 0, "PJ": 3, "FIT": 1}
+        },
+        {
+          "id": "p8d",
+          "text": "El déficit no es un problema si se usa para financiar inversión social",
+          "scores": {"LLA": -3, "PRO": -2, "UCR": -1, "PJ": 1, "FIT": 3}
+        }
+      ]
+    }
+  ]
+}
