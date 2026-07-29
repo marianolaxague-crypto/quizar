@@ -1,6 +1,8 @@
 import uuid
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
+from ..scoring import load_quiz_data
+from ..scoring.j1_validation import build_question_specs, validate_j1_responses
 from ..database import create_session, session_exists, save_completion, save_voting_intention, get_nearby_vote_stats
 from ..scoring import SCORERS
 
@@ -15,6 +17,14 @@ class SubmitRequest(BaseModel):
 class VoteRequest(BaseModel):
     session_id: str
     voting_intention: str
+
+
+def _valid_question_specs(quiz_type: str) -> dict:
+    try:
+        data = load_quiz_data(quiz_type)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail=f"Quiz '{quiz_type}' no encontrado")
+    return build_question_specs(data)
 
 
 @router.post("/sessions")
@@ -37,11 +47,14 @@ def submit_quiz(quiz_type: str, body: SubmitRequest):
         raise HTTPException(status_code=400, detail="No se recibieron respuestas")
 
     MIN_ANSWERS = 10
-    answered = sum(
-        1 for r in body.responses.values()
-        if (isinstance(r, dict) and r.get("value") not in {0, None})
-        or (not isinstance(r, dict) and r not in {0, None})
-    )
+    if quiz_type == "j1":
+        try:
+            answered = validate_j1_responses(body.responses, _valid_question_specs(quiz_type))
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc))
+    else:
+        answered = sum(1 for r in body.responses.values() if r not in {0, None})
+
     if answered < MIN_ANSWERS:
         raise HTTPException(
             status_code=400,

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Brújula Política Argentina</title>
+  <title>Br&uacute;jula Pol&iacute;tica Argentina</title>
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
@@ -11,7 +11,7 @@
 <header>
   <div class="container">
     <div class="inner">
-      <div class="logo">Brújula <span>Política AR</span></div>
+      <div class="logo">Br&uacute;jula <span>Pol&iacute;tica AR</span></div>
     </div>
   </div>
 </header>
@@ -19,8 +19,8 @@
 <main>
   <div class="container">
     <section class="hero">
-      <h1>¿Dónde estás en el<br><em>mapa político argentino?</em></h1>
-      <p>Respondé uno de los tres juegos y descubrí tu perfil ideológico, tu partido afín o tu candidato más cercano — y cómo te comparás con el resto de los jugadores.</p>
+      <h1>&iquest;D&oacute;nde est&aacute;s en el<br><em>mapa pol&iacute;tico argentino?</em></h1>
+      <p>Respond&eacute; la Br&uacute;jula Ideol&oacute;gica y descubr&iacute; tu perfil en 19 dilemas. Los otros juegos quedan como pr&oacute;ximas etapas del proyecto.</p>
     </section>
 
     <div class="quiz-grid" id="quiz-grid">
@@ -33,32 +33,32 @@
 const QUIZZES = [
   {
     id:       "j1",
-    title:    "Brújula Ideológica",
-    subtitle: "Descubrí dónde estás en el espectro político",
-    icon:     "🧭",
-    questions: 25,
+    title:    "Br\u00fajula Ideol\u00f3gica",
+    subtitle: "Descubr\u00ed d\u00f3nde est\u00e1s en el espectro pol\u00edtico",
+    icon:     "\uD83E\uDDED",
+    questions: 19,
     minutes:  4,
-    reward:   "Tu posición en el mapa + comparación con otros jugadores",
+    reward:   "Tu posici\u00f3n en el mapa + comparaci\u00f3n con otros jugadores",
     ready:    true
   },
   {
     id:       "j2",
-    title:    "Visión AR",
-    subtitle: "¿Con qué visión de Argentina coincidís?",
-    icon:     "🗳️",
+    title:    "Visi\u00f3n AR",
+    subtitle: "\u00bfCon qu\u00e9 visi\u00f3n de Argentina coincid\u00eds?",
+    icon:     "\uD83D\uDDF3\uFE0F",
     questions: null,
     minutes:  null,
-    reward:   "Afinidad con las grandes tradiciones políticas argentinas",
+    reward:   "Afinidad con las grandes tradiciones pol\u00edticas argentinas",
     ready:    false
   },
   {
     id:       "j3",
-    title:    "¿Mi candidato?",
-    subtitle: "Ranking de figuras políticas por preferencia",
-    icon:     "🎯",
+    title:    "\u00bfMi candidato?",
+    subtitle: "Ranking de figuras pol\u00edticas por preferencia",
+    icon:     "\uD83C\uDFAF",
     questions: 20,
     minutes:  4,
-    reward:   "Tu ranking personal de 20 figuras políticas",
+    reward:   "Tu ranking personal de 20 figuras pol\u00edticas",
     ready:    false
   }
 ];
@@ -68,9 +68,9 @@ const grid = document.getElementById("quiz-grid");
 QUIZZES.forEach(q => {
   const meta = q.ready
     ? `<span>${q.minutes} min</span><span class="meta-questions">${q.questions} preguntas</span>`
-    : `<span>Próximamente</span>`;
+    : `<span>Pr\u00f3ximamente</span>`;
 
-  const reward = `🎁 ${q.reward}`;
+  const reward = `\uD83C\uDF81 ${q.reward}`;
 
   if (q.ready) {
     grid.innerHTML += `

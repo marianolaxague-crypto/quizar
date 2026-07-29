@@ -197,6 +197,13 @@ def score_brujula(responses: dict) -> dict:
     }
 
     inst_moderate = abs(normalized["inst"]) < INST_THRESHOLD  # I3: true cuando inst no alcanza umbral
+    inst_label = "Institucional moderado" if inst_moderate else (
+        "Anti-establishment" if normalized["inst"] >= INST_THRESHOLD else "Institucionalista"
+    )
+    if inst_moderate and archetype_data:
+        archetype_data = dict(archetype_data)
+        profile_name = data["profiles"].get(profile, {}).get("name", profile)
+        archetype_data["subtitle"] = f"{profile_name} - Institucional moderado"
 
     return {
         "undetermined":     False,
@@ -205,6 +212,7 @@ def score_brujula(responses: dict) -> dict:
         "social": normalized["social"],
         "inst":   normalized["inst"],
         "inst_moderate": inst_moderate,
+        "inst_label": inst_label,
         "profile":       profile,
         "profile_data":  data["profiles"].get(profile, {}),
         "archetype":     archetype_id,

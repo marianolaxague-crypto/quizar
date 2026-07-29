@@ -155,9 +155,9 @@ function renderJ1(wrapper, result, stats, nearbyStats) {
     : "";
 
   const dimHTML        = buildDimensionGroups(result.dimensions || {}, result.top_dimension);
-  const compareHTML    = stats && stats.total > 1 ? buildComparison(profile, econ, social, stats, archName) : "";
+  const compareHTML    = stats && stats.total > 1 ? buildComparison(profile, archId, stats, archName) : "";
   const voteHTML       = buildNearbyVote(nearbyStats);
-  const socialProofHTML = buildSocialProofLine(stats, profile);
+  const socialProofHTML = buildSocialProofLine(stats, profile, archId);
   const otherQuizzes = buildOtherQuizzes(QUIZ_TYPE);
 
 
@@ -295,25 +295,31 @@ function buildDimensionGroups(dimensions, topDim) {
   return html;
 }
 
-function buildSocialProofLine(stats, profile) {
+function buildSocialProofLine(stats, profile, archId) {
   if (!stats || stats.total < 10) return "";
   const total  = stats.total.toLocaleString("es-AR");
-  const archPct = stats.profiles_pct?.[profile] ?? null;
+  const archPct = stats.archetypes_pct?.[archId] ?? null;
+  const profilePct = stats.profiles_pct?.[profile] ?? null;
   const pctPart = archPct !== null
     ? ` · El <strong>${archPct}%</strong> tiene tu mismo arquetipo`
+    : profilePct !== null
+      ? ` · El <strong>${profilePct}%</strong> comparte tu perfil base`
     : "";
   return `<p class="result-social-proof"><span class="rsp-count">${total} jugadores</span>${pctPart}</p>`;
 }
 
-function buildComparison(profile, econ, social, stats, archName) {
-  const profilePct = stats.profiles_pct?.[profile] ?? 0;
+function buildComparison(profile, archId, stats, archName) {
+  const archetypePct = stats.archetypes_pct?.[archId] ?? null;
+  const profilePct = stats.profiles_pct?.[profile] ?? null;
+  const statLabel = archetypePct !== null ? "Jugadores con tu arquetipo" : "Jugadores con tu perfil base";
+  const statValue = archetypePct !== null ? archetypePct : (profilePct ?? 0);
   const total = stats.total;
   return `
     <div class="comparison-section">
       <p class="sample-note">Muestra autoseleccionada · no representa al electorado general · ${total.toLocaleString()} jugadores</p>
       <div class="stat-row">
-        <div><div class="stat-label">Jugadores con tu arquetipo</div><div style="font-size:0.8rem;color:var(--text-muted)">${archName}</div></div>
-        <div class="stat-value">${profilePct}%</div>
+        <div><div class="stat-label">${statLabel}</div><div style="font-size:0.8rem;color:var(--text-muted)">${archName}</div></div>
+        <div class="stat-value">${statValue}%</div>
       </div>
     </div>`;
 }

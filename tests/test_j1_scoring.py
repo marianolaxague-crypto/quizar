@@ -1,6 +1,7 @@
 import unittest
 
 from backend.scoring import load_quiz_data, score_brujula
+from backend.scoring.j1_validation import build_question_specs, validate_j1_responses
 
 
 def responses_for_axis_sign(sign_by_axis):
@@ -66,6 +67,48 @@ class J1ScoringExtremeTests(unittest.TestCase):
             with self.subTest(poles=poles):
                 result = score_brujula(responses_for_axis_sign(poles))
                 self.assertEqual(result["profile"], expected_profile)
+
+    def test_invalid_j1_values_fail_api_validation(self):
+        data = load_quiz_data("j1")
+        responses = {
+            q["id"]: {"value": 9, "a_is_left": True}
+            for q in data["questions"][:10]
+        }
+
+        with self.assertRaises(ValueError) as ctx:
+            validate_j1_responses(responses, build_question_specs(data))
+
+        self.assertIn("fuera de rango", str(ctx.exception))
+
+    def test_j1_validation_requires_axis_coverage(self):
+        data = load_quiz_data("j1")
+        responses = {
+            q["id"]: {"value": 1, "a_is_left": True}
+            for q in data["questions"]
+            if q["weights"].get("inst", 0) == 0
+        }
+
+        with self.assertRaises(ValueError) as ctx:
+            validate_j1_responses(responses, build_question_specs(data))
+
+        self.assertIn("inst", str(ctx.exception))
+
+    def test_moderate_institutional_signal_is_not_labeled_as_institutionalist(self):
+        data = load_quiz_data("j1")
+        responses = {
+            q["id"]: {"value": 1, "a_is_left": True}
+            for q in data["questions"]
+            if q["weights"].get("inst", 0) == 0
+        }
+        # Add one answer on each institutional side to keep the axis valid but moderate.
+        responses["ANT_01"] = {"value": 1, "a_is_left": True}
+        responses["ANT_02"] = {"value": 4, "a_is_left": True}
+
+        result = score_brujula(responses)
+
+        self.assertTrue(result["inst_moderate"])
+        self.assertEqual(result["inst_label"], "Institucional moderado")
+        self.assertIn("Institucional moderado", result["archetype_data"]["subtitle"])
 
 
 if __name__ == "__main__":

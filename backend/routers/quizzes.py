@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from ..scoring import load_quiz_data
 
 router = APIRouter(prefix="/api/quizzes", tags=["quizzes"])
@@ -53,5 +53,10 @@ def list_quizzes():
 
 @router.get("/{quiz_type}/questions")
 def get_questions(quiz_type: str):
-    data = load_quiz_data(quiz_type)
+    if quiz_type not in QUIZ_META:
+        raise HTTPException(status_code=404, detail=f"Quiz '{quiz_type}' no encontrado")
+    try:
+        data = load_quiz_data(quiz_type)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail=f"Quiz '{quiz_type}' no encontrado")
     return data
