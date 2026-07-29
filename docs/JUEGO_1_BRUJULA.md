@@ -1,5 +1,7 @@
 # Juego 1 — Brújula Ideológica
 
+> Nota 2026-07-28: documento historico. Para el estado actual de J1 usar `backend/data/j1/brujula.json`, `docs/VALIDACION_ITEMS_V6.md` y `docs/PLAN_DESARROLLO.md`.
+
 **Última actualización:** 2026-07-02
 **Estado:** E4 completa · E4.5 pendiente (ver PLAN_DESARROLLO.md)
 

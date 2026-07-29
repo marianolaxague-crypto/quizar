@@ -33,10 +33,10 @@ const DIM_POLES = {
   autoridad:               { neg: "Horizontal",        pos: "Jerárquico" },
   localismo:               { neg: "Cosmopolita",       pos: "Localista" },
   derechos_autonomia:      { pos: "Autonomía",         neg: "Marco comunitario" },
-  laicismo:                { neg: "Laico",             pos: "Religioso" },
-  migracion:               { neg: "Apertura",          pos: "Prioridad nacional" },
-  antiestablishment:       { neg: "Institucionalista", pos: "Anti-establishment" },
-  confianza_institucional: { neg: "Institucionalista", pos: "Anti-establishment" }
+  laicismo:                { pos: "Laico",             neg: "Religioso" },
+  migracion:               { pos: "Apertura",          neg: "Prioridad nacional" },
+  antiestablishment:       { pos: "Institucionalista", neg: "Anti-establishment" },
+  confianza_institucional: { pos: "Institucionalista", neg: "Anti-establishment" }
 };
 
 const PARTY_LABELS = {

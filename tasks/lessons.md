@@ -10,6 +10,26 @@
 
 ---
 
+## PROTOCOLO DE GENERACIÓN DE ÍTEMS (validado 28/07/2026)
+
+Antes de escribir cualquier ítem nuevo o rediseñar uno existente, seguir estos 4 pasos en orden. Saltear el paso 1 o 2 produce opciones que fallan R1 o no tienen tensión genuina.
+
+**Paso 1 — Mapear las posiciones opuestas**
+Describir en prosa qué cree genuinamente cada polo sobre el tema que mide la dimensión. No las opciones de respuesta — la visión del mundo de cada persona.
+
+**Paso 2 — Identificar las afirmaciones de orgullo**
+Para cada polo: ¿qué diría esta persona de sí misma que la haría sentir orgullosa? Buscar frases en primera persona que expresen convicción, no resignación ni ataque al otro polo.
+
+**Paso 3 — Encontrar la situación que los enfrenta**
+¿Qué situación concreta y cotidiana genera naturalmente las dos posturas del paso 2? La situación no debe favorecer a ningún polo ni crear víctimas/victimarios. Ambos deben poder reaccionar desde su propia lógica.
+
+**Paso 4 — Escribir las opciones desde el orgullo**
+Las opciones son la versión condensada de las afirmaciones del paso 2, ancladas en la situación del paso 3. Verificar R1: ¿una persona que genuinamente sostiene esta postura la firmaría con convicción?
+
+**Por qué funciona:** Las opciones que se escriben sin este mapeo previo tienden a ser observaciones o diagnósticos, no posturas filosóficas. El respondente no se identifica con una observación — se identifica con una convicción.
+
+---
+
 ## REGLA DE ORO — Autopercepción positiva en cada afirmación
 
 **REGLA:** Cada afirmación (A y B) debe expresar la autopercepción positiva de quien sostiene esa postura. Nadie se identifica con "soy egoísta" — se identifica con "creo en la responsabilidad individual".
@@ -410,6 +430,172 @@ Estado al 03/07/2026:
 
 ---
 
+## Estado del proyecto al 24/07/2026 — Rediseño instrumento v5.1 → v6.0
+
+### Decisiones del rediseño
+
+**DECISIÓN:** El instrumento fue rediseñado de v5.1 (31 ítems, 9 dimensiones) a v6.0 (19 ítems, 11 dimensiones).
+
+Cambios estructurales:
+- Se agregó la dimensión `modelo_economico` al eje econ (ECO_01, ECO_02)
+- Se agregó la dimensión `confianza_institucional` al eje inst (CON_01, CON_02, CON_03) — separada de `antiestablishment`
+- Muchas dimensiones del eje social se redujeron a 1 ítem cada una (son 6 dimensiones × 1 ítem = 6 ítems para el eje social completo)
+- Los ítems N2 (privatismo informal) y N8 (orden vs. criterio) del banco v5.0 quedaron fuera del v6.0
+- Se actualizaron las etiquetas de escala: "Claramente/Más bien" → "Totalmente/Bastante"
+- Nuevo format: "scenario_cards"
+
+**PORQUÉ:** El foco del rediseño fue privilegiar scenarios situacionales concretos (R4) sobre preguntas de actitud directas.
+
+---
+
+## 2026-07-24 — Checklist de 16 reglas consolidado en 10 reglas de diseño (R1-R10)
+
+**DECISIÓN:** Las 16 reglas del checklist anterior fueron reemplazadas por 10 reglas de diseño en `docs/VALIDACION_ITEMS_V6.md`. Son más precisas, más accionables y tienen nombres canónicos.
+
+**Reglas R1-R10 (ver doc completo en VALIDACION_ITEMS_V6.md):**
+- **R1** Autopercepción positiva — cada opción se firmaría con orgullo genuino
+- **R2** Independencia total — cada opción funciona sola, sin presuponer que se leyó la otra
+- **R3** Sin negaciones primarias — la idea central es una afirmación, no la negación del otro polo
+- **R4** Scenario concreto — situación vivible, no pregunta filosófica abstracta
+- **R5** Neutralidad del scenario — no inclina hacia ninguna opción
+- **R6** Equivalencia gramatical — misma persona y registro en A y B
+- **R7** Tensión genuina — existe población real que elegiría cada polo
+- **R8** Validez dimensional — mide la tensión de la dimensión declarada, no otra
+- **R9** Opacidad ideológica — no revela el constructo con keywords políticas
+- **R10** Relevancia argentina — tensión reconocible en el contexto argentino
+
+**REGLA:** Usar R1-R10 como checklist de validación para cualquier ítem nuevo o revisado. El doc en VALIDACION_ITEMS_V6.md es el documento de referencia.
+
+---
+
+## 2026-07-24 — Validación ítem por ítem del instrumento v6.0
+
+**Estado al 24/07/2026:**
+
+| Ítem | Dimensión | Estado |
+|------|-----------|--------|
+| IND_02 | individualismo | APROBADO |
+| IND_03 | individualismo | APROBADO (scenario levemente abstracto, no crítico) |
+| MER_02 | meritocracia | REQUIERE AJUSTE — B en impersonal vs. A en primera persona (R6) |
+| MER_03 | meritocracia | REQUIERE AJUSTE — scenario abstracto (R4) |
+| ECO_01 | modelo_economico | REQUIERE AJUSTE — scenario abstracto (R4), "El Estado" revela constructo (R9) |
+| ECO_02 | modelo_economico | APROBADO |
+| TRA_02 | tradicion | REQUIERE AJUSTE — scenario abstracto (R4), A/B asimétricos (R6) |
+| AUT_01 | autoridad | APROBADO |
+| LOC_02 | localismo | APROBADO |
+| DER_02 | derechos_autonomia | APROBADO — ítem de referencia, 0 fallas |
+| LAI_02 | laicismo | REQUIERE AJUSTE — "laicos" revela constructo (R9), scenario levemente sesgado (R5) |
+| MIG_02 | migracion | APROBADO |
+| ANT_01 | antiestablishment | APROBADO |
+| ANT_02 | antiestablishment | REDISEÑO COMPLETO — mide ECON (regulación), no INST. Prioridad 1. |
+| ANT_03 | antiestablishment | APROBADO |
+| ANT_04 | antiestablishment | APROBADO — ítem de referencia, 0 fallas |
+| CON_01 | confianza_institucional | REQUIERE AJUSTE — scenario abstracto (R4) |
+| CON_02 | confianza_institucional | REQUIERE AJUSTE — scenario abstracto (R4), keywords reveladoras (R9) |
+| CON_03 | confianza_institucional | REQUIERE AJUSTE — no es scenario, es un statement de actitud (R4) |
+
+**10 ítems aprobados, 9 necesitan trabajo.**
+
+**Orden de fix pendiente:**
+1. ANT_02 (prioridad 1 — error de constructo)
+2. MER_03, ECO_01, TRA_02, CON_01, CON_02, CON_03 (prioridad 2 — scenario abstracto)
+3. MER_02, LAI_02 (prioridad 3 — ajustes de opción)
+
+---
+
+## 2026-07-24 — ANT_02 mide ECON, no INST: error de constructo silencioso
+
+**ERROR:** ANT_02 ("El avance de la IA plantea riesgos serios. ¿Quién debería controlarlo?") enfrenta "control democrático y supervisión pública" vs. "empresas y el mercado". Eso mide la tensión Estado vs. mercado (ECON), no la tensión institucionalista vs. anti-establishment (INST). Un privatista-institucionalista elegiría "empresas y el mercado" por razones económicas, no por desconfianza en el sistema — contaminando el eje inst para todos los respondentes.
+
+**REGLA:** Un ítem del eje INST debe capturar la creencia en la legitimidad del sistema político (instituciones, reglas, representantes) vs. el escepticismo sobre ese sistema. No puede resolverse eligiendo entre "Estado" y "mercado" — eso es ECON.
+
+**PORQUÉ:** El error es silencioso (el quiz funciona, no hay crash), pero el score inst queda contaminado para todos los respondentes que tienen posición económica fuerte.
+
+---
+
+---
+
+## Estado del proyecto al 29/07/2026 — Sesión de hardening pre-deploy
+
+### Bugs encontrados y resueltos
+
+7 problemas identificados en revisión crítica pre-deploy. Todos corregidos en la misma sesión.
+
+#### I8 CRÍTICO — DIM_POLES swapped para dimensiones con peso negativo
+
+**ERROR:** La regla documentada el 03/07/2026 ("DIM_POLES[dim].pos debe corresponder a pole_a del JSON, dim_score > 0 = votó más por A") fue aplicada solo a `derechos_autonomia`. Las otras 4 dimensiones con peso negativo quedaron con pos/neg invertidos:
+
+| Dimensión | pole_a | DIM_POLES incorrecto | DIM_POLES correcto |
+|---|---|---|---|
+| laicismo | laicismo | neg="Laico" | pos="Laico" |
+| migracion | apertura | neg="Apertura" | pos="Apertura" |
+| antiestablishment | institucionalista | neg="Institucionalista" | pos="Institucionalista" |
+| confianza_institucional | institucionalista | neg="Institucionalista" | pos="Institucionalista" |
+
+**REGLA:** Siempre que se agregue o modifique una dimensión, trazar explícitamente: "si alguien elige siempre pole_a, ¿qué dim_score produce? ¿Qué etiqueta muestra DIM_POLES?" Para dimensiones con peso negativo, el dim_score es positivo cuando se elige pole_a (a pesar de que el score de eje sea negativo). DIM_POLES.pos debe alinearse con dim_score > 0, no con el polo positivo del eje.
+
+**PORQUÉ:** Un institucionalista puro (inst=-100) veía "Anti-establishment" como su rasgo dominante en la reward screen. El bug era invisible en tests de scoring (el engine era correcto) pero visible para cualquier usuario con posición clara en el eje institucional.
+
+---
+
+#### I9 ALTO — Submit sin deduplicación contaminaba stats
+
+**ERROR:** Un mismo session_id podía llamar a `/api/quiz/{type}/submit` múltiples veces. Cada llamada insertaba una nueva fila en `quiz_completions`. Los stats agregados (profiles_pct, archetypes_pct) contaban todas las filas, inflando la N y distorsionando las distribuciones.
+
+**REGLA:** `save_completion` ahora hace UPDATE si ya existe un completion para ese session_id + quiz_type, INSERT si no existe. Un usuario que retoma el quiz actualiza su registro en lugar de duplicarlo. El campo `voting_intention` se resetea a NULL al resubmitir (consistencia con el nuevo resultado).
+
+**PORQUÉ:** Si el link del piloto se comparte ampliamente, algunos usuarios volverán a tomar el quiz. Sin deduplicación, esos resubmits contarían múltiple veces en la muestra del piloto.
+
+---
+
+#### I10 ALTO — XSS estructural en share page
+
+**ERROR:** `result_json` se insertaba directamente en un tag `<script>` sin escapar la secuencia `</script>`. Un valor con esa cadena en los datos haría que el navegador cerrase el tag prematuramente, potencialmente ejecutando código arbitrario.
+
+**REGLA:** Siempre reemplazar `</` → `<\/` (y `<!--` → `<\!--`) en cualquier JSON embebido dentro de un tag `<script>` en HTML generado por el servidor.
+
+**PORQUÉ:** Los datos actualmente vienen del JSON del servidor, por lo que el riesgo real es bajo. Pero si en el futuro se permiten campos user-generated (comentarios, apodos), la vulnerabilidad escalaría a XSS almacenado sin cambiar nada del template.
+
+---
+
+#### I11 ALTO — Sin mínimo de respuestas no-escape
+
+**ERROR:** El endpoint de submit aceptaba cualquier número de respuestas ≥ 1. Con 1-9 respuestas, el scoring producía perfiles basados en datos insuficientes (los ejes con 0 respuestas daban 0.0, que con CENTER_THRESHOLD=10 aparecía como "centro" silenciosamente).
+
+**REGLA:** Antes de llamar al scorer, verificar que hay al menos `MIN_ANSWERS = 10` respuestas con value ≠ 0 (no-escape). Si no, retornar HTTP 400.
+
+**PORQUÉ:** Un usuario que abandona a mitad del quiz (o un bot que manda 1 respuesta) generaría un perfil en la base de datos que contaminaría los stats y las distribuciones del piloto.
+
+---
+
+#### I12 MEDIO — dim_weights silencioso si hay inconsistencia
+
+**ERROR:** El engine leía los pesos del primer ítem de cada dimensión y los aplicaba a todos los ítems de esa dimensión. Si algún ítem futuro tuviera pesos distintos, el cálculo sería incorrecto sin ningún aviso.
+
+**REGLA:** Al cargar el JSON (`_load`), llamar a `_validate_weights` que verifica que todos los ítems de cada dimensión tienen los mismos pesos. Si hay discrepancia, lanza ValueError en startup (falla ruidosamente, no en producción silenciosamente).
+
+**PORQUÉ:** Los errores de configuración del instrumento deben detectarse en startup, no en producción. Si se agregan ítems experimentales con pesos distintos, el error aparece inmediatamente al levantar el servidor.
+
+---
+
+#### I13 MEDIO — Rate limiting ausente
+
+**ERROR:** El endpoint `/api/quiz/{type}/submit` no tenía límite de llamadas por IP. Cualquier actor podía inflar los stats del piloto con respuestas sintéticas en masa.
+
+**REGLA:** Middleware en `main.py` que limita a 5 submits por IP por ventana de 10 minutos, aplicado a los paths que terminan en `/submit`, `/vote` y `/sessions`. Implementado en memoria (sin dependencias externas). Suficiente para el piloto; reemplazar por Redis si se escala.
+
+**PORQUÉ:** El piloto necesita datos genuinos. Sin rate limiting, cualquier persona técnica puede generar cientos de completions en segundos.
+
+---
+
+#### I14 BAJO — Dead code `.qp-choice` en selectAndAdvance
+
+**ERROR:** `selectAndAdvance` llamaba a `container.querySelectorAll(".qp-choice")` para destacar visualmente la opción seleccionada. La clase `.qp-choice` es del EFG de botones anterior (eliminado); el drag slider actual no genera esos elementos. El selector siempre devolvía NodeList vacío — código sin efecto.
+
+**REGLA:** Remover el bloque de highlight. El drag slider ya tiene feedback visual propio (puck animado, cards activas/dim).
+
+---
+
 ## Pendientes — J2 Visión AR y J3 MaxDiff Candidatos
 - J2 y J3: sin desarrollo iniciado
-- Deploy: diferido (Fly.io + Litestream + Cloudflare R2)
+- Deploy: Railway (Fly.io abandonado — eliminó free tier en 2026). README ya tiene instrucciones Railway.

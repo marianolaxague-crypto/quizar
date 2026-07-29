@@ -30,7 +30,26 @@ def _load():
     if _data is None:
         with open(DATA_FILE, encoding="utf-8") as f:
             _data = json.load(f)
+        _validate_weights(_data)
     return _data
+
+
+def _validate_weights(data: dict) -> None:
+    """Falla en startup si ítems de la misma dimensión tienen pesos distintos."""
+    seen: dict[str, dict] = {}
+    for q in data.get("questions", []):
+        dim = q.get("dimension", "")
+        w   = q.get("weights", {})
+        if not dim:
+            continue
+        if dim in seen:
+            if seen[dim] != w:
+                raise ValueError(
+                    f"Dimensión '{dim}': ítems con pesos inconsistentes "
+                    f"{seen[dim]} vs {w} (id={q['id']})"
+                )
+        else:
+            seen[dim] = w
 
 
 def _compute_centered(value: int, a_is_left: bool, scale: int) -> float:

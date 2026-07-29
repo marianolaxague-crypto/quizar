@@ -36,6 +36,18 @@ def submit_quiz(quiz_type: str, body: SubmitRequest):
     if not body.responses:
         raise HTTPException(status_code=400, detail="No se recibieron respuestas")
 
+    MIN_ANSWERS = 10
+    answered = sum(
+        1 for r in body.responses.values()
+        if (isinstance(r, dict) and r.get("value") not in {0, None})
+        or (not isinstance(r, dict) and r not in {0, None})
+    )
+    if answered < MIN_ANSWERS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Se necesitan al menos {MIN_ANSWERS} respuestas para calcular un perfil"
+        )
+
     result = SCORERS[quiz_type](body.responses)
     save_completion(body.session_id, quiz_type, body.responses, result)
     return result

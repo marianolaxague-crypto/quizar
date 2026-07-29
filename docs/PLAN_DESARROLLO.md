@@ -7,7 +7,7 @@
 
 ## Norte del producto
 
-Un argentino cualquiera responde 26 preguntas en 5-7 minutos y descubre dónde está parado ideológicamente — sin que el quiz le diga qué está "bien" o "mal" pensar. El resultado es visualmente claro, compartible, y contextualizado con cómo respondieron los demás.
+Un argentino cualquiera responde 19 preguntas en 4-5 minutos y descubre dónde está parado ideológicamente — sin que el quiz le diga qué está "bien" o "mal" pensar. El resultado es visualmente claro, compartible, y contextualizado con cómo respondieron los demás.
 
 El diferencial no es el quiz: es el **dataset** que se acumula. Con 1.000 respuestas reales, Brújula AR es el primer mapa ideológico multidimensional calibrado para Argentina.
 
@@ -92,19 +92,25 @@ Escala: 1=Claramente A, 2=Más bien A, 3=Más bien B, 4=Claramente B. value=0=es
 
 ### E1 — Instrumento J1 `✅ COMPLETA`
 
-- v5.0: 26 preguntas · 9 dimensiones · escala 4-point EFG
-- Scoring engine v4 (`backend/scoring/j1_brujula.py`): scoring en 2 niveles, denominador dinámico (excluye escapese y neutros), perfil Centro, clasificación ternaria del eje inst
+- **v6.1 (28/07/2026):** 19 preguntas · 11 dimensiones · escala 4-point EFG · todos aprobados
+- Scoring engine v4 (`backend/scoring/j1_brujula.py`): scoring en 2 niveles, denominador dinámico, perfil Centro, clasificación ternaria del eje inst
 - 5 perfiles base (EP, EC, PC, PP, C) + 10 arquetipos con imágenes
 - Corpus teórico: 40+ documentos, 42 fichas de revalidación conceptual (`CORPUS TEORICO/`)
-- Revalidación conceptual ítem por ítem documentada en `docs/research/REVALIDACION_J1_V1.md`
+- Protocolo de generación de ítems (4 pasos) documentado en `tasks/lessons.md` y `docs/VALIDACION_ITEMS_V6.md`
+
+**Historial de versiones:**
+- v5.0 (11/07): 26 ítems, 9 dimensiones — primera versión completa
+- v6.0 (24/07): rediseño a 19 ítems, 11 dimensiones, formato scenario_cards
+- v6.1 (28/07): 9 ítems corregidos (scenarios abstractos, error de constructo ANT_02, ajustes de opción)
 
 **Constantes por calibrar con datos reales (post-piloto):**
-- `CENTER_THRESHOLD = 10.0` → calibrar con ±0.5σ del piloto
-- `INST_THRESHOLD = 15.0` → evaluar con datos empíricos
+- `CENTER_THRESHOLD = 10.0` — validado por simulación: 8% de aleatorios cae en Centro
+- `INST_THRESHOLD = 15.0` — validado por simulación: 37% de aleatorios en inst_moderate
+- Score máximo alcanzable con bias puro: ~±40 (no ±100) — consecuencia del balance de ítems en cada eje
 
 **Decisiones abiertas post-piloto:**
-- A: ¿Subdividir `antiestablishment` en dos subdimensiones? (Opción 1 = mantener como una con subpuntajes auditables para piloto)
-- B: ¿Expandir banco a 31-32 ítems? (Fase 2 del rediseño: 1-2 ítems econ adicionales + 1 social)
+- A: ¿Subdividir `antiestablishment` en dos subdimensiones? (datos del piloto deciden)
+- B: Dimensiones sociales con 1 ítem cada una — ¿agregar ítems si Cronbach < 0.70?
 
 ---
 
@@ -144,22 +150,45 @@ Issues A-D resueltos (sesión 03/07/2026):
 
 ### E4 — Integración end-to-end `✅ COMPLETA (24/06/2026)`
 
-Flujo completo: usuario abre quiz → completa 26 preguntas → ve resultado con arquetipo, compass, dimensiones, share → datos guardados en SQLite.
+Flujo completo: usuario abre quiz → completa 19 preguntas → ve resultado con arquetipo, dimensiones, share → datos guardados en SQLite.
 
 ---
 
 ### E4.5 — Refinamiento pre-piloto `✅ COMPLETA (11/07/2026)`
 
-**Todo resuelto:**
 - ✅ Escala: 4-point forced choice + válvula de escape externa (smartvote model)
 - ✅ Instrumento Fase 1: 7 nuevos ítems (N1-N6, N8), brujula.json v5.0
 - ✅ Revalidación conceptual completa (corpus teórico + fichas)
-- ✅ Bugs I1-I7 cerrados
-- ✅ Issues A-D cerrados
-- ✅ fuentes_info eliminada del instrumento y del frontend (results.js, scoring/j1_brujula.py)
+- ✅ Bugs I1-I7 cerrados · Issues A-D cerrados
 
-**Pendiente diferido a deploy:**
-- OG meta tags dinámicos (imagen por arquetipo para preview WhatsApp/X) — requiere server-side rendering
+---
+
+### E4.6 — Rediseño instrumento v6.0 → v6.1 `✅ COMPLETA (28/07/2026)`
+
+- ✅ Instrumento rediseñado a 19 ítems, 11 dimensiones, formato scenario_cards
+- ✅ 9 ítems corregidos: ANT_02 (error de constructo), 6 scenarios abstractos, 2 ajustes de opción
+- ✅ Protocolo de generación de ítems (4 pasos) formalizado
+- ✅ Simulación masiva: 6.500 respondentes sintéticos, 8/8 arquetipos correctamente asignados (100%)
+- ✅ Validación de thresholds via simulación: CENTER=10 (8% aleatorios en Centro) y INST=15 (37% inst_moderate)
+- ✅ Smoke test local iniciado (validación manual del flujo completo en browser)
+
+---
+
+### E4.7 — Hardening pre-deploy `✅ COMPLETA (29/07/2026)`
+
+Revisión crítica de código antes del deploy. 7 bugs identificados y corregidos:
+
+| ID | Severidad | Problema | Fix |
+|----|-----------|----------|-----|
+| I8 | Crítico | DIM_POLES pos/neg swapped para 4 dimensiones con peso negativo — usuarios veían el polo opuesto al que eligieron | Intercambiados pos/neg en `results.js` para `laicismo`, `migracion`, `antiestablishment`, `confianza_institucional` |
+| I9 | Alto | Submit sin deduplicación — mismo session_id podía acumular múltiples filas en quiz_completions | `save_completion` hace UPDATE si ya existe, INSERT si no |
+| I10 | Alto | XSS estructural en share page — `result_json` embebido en `<script>` sin escapar `</script>` | `.replace("</", "<\\/")` antes de insertar en template |
+| I11 | Alto | Sin mínimo de respuestas — perfiles calculados con 1-9 respuestas contaminaban la muestra | Validación `MIN_ANSWERS = 10` no-escape en submit endpoint |
+| I12 | Medio | `dim_weights` leía solo el primer ítem por dimensión sin validar uniformidad | `_validate_weights()` en startup — falla ruidosamente si hay inconsistencia |
+| I13 | Medio | Sin rate limiting — stats podían inflarse con submits masivos | Middleware en `main.py`: 5 submits / IP / 10 min (en memoria, sin dependencias) |
+| I14 | Bajo | Dead code: `.qp-choice` en `selectAndAdvance` nunca matcheaba elementos del drag slider | Bloque removido |
+
+Ver detalle completo en `tasks/lessons.md` (I8–I14).
 
 ---
 
@@ -167,38 +196,42 @@ Flujo completo: usuario abre quiz → completa 26 preguntas → ve resultado con
 
 #### E5.1 — Pre-deploy (hacer antes de subir)
 
-1. **Smoke test local**
-   - Levantar: `uvicorn main:app --reload`
-   - Verificar que arranca con brujula.json v5.0 (26 preguntas, sin fuentes_info)
-   - Completar el quiz en browser, verificar resultado end-to-end
-   - Confirmar que `total_questions=26` se propaga correctamente
+1. **Smoke test local** ✅ EN VALIDACIÓN (28/07/2026)
+   - `python -m uvicorn main:app --reload` → http://localhost:8000
+   - Validar flujo completo en browser: quiz → reward → share
+   - Confirmar que `total_questions=19` se propaga correctamente
 
 2. **OG meta tags dinámicos**
    - Endpoint server-side que genera imagen de preview por arquetipo
    - Meta tags `og:image` dinámicos en `result.html`
    - Objetivo: preview visual en WhatsApp y X al compartir el link del resultado
+   - **Nota:** único item restante de pre-deploy — rate limiting ya implementado en E4.7
 
-3. **Rate limiting**
-   - 3 intentos completos / IP / 10 min
-   - Previene datos artificialmente duplicados en el piloto
+#### E5.2 — Deploy (stack definido)
 
-#### E5.2 — Deploy (stack recomendado)
+⚠️ **Fly.io eliminó el free tier en 2026** — plataforma migrada a Railway.
 
-- **Fly.io** — persistencia real de SQLite en disco (3GB volumes gratuitos). Render descartado: pierde SQLite en restart.
+- **Railway** — $1/mes de crédito gratuito (512MB RAM ≈ $0.17/mes). Dockerfile existente funciona sin cambios.
 - **Litestream** — backup continuo WAL → Cloudflare R2 (sidecar del contenedor)
-- **Cloudflare R2** — imágenes de arquetipos (~5MB c/u) por CDN, no desde FastAPI
+- **Cloudflare R2** — bucket para backup SQLite (gratuito hasta 10GB)
 - **SQLite modo WAL** — `PRAGMA journal_mode=WAL` + `busy_timeout=5000`
-- **URL:** `brujula.fly.dev` suficiente para piloto
 
-```yaml
-# litestream.yml
-dbs:
-  - path: /data/brujula.db
-    replicas:
-      - type: s3
-        endpoint: https://<ACCOUNT_ID>.r2.cloudflarestorage.com
-        bucket: brujula-backups
-        region: auto
+**Pasos (ver README para detalle completo):**
+```bash
+npm install -g @railway/cli
+railway login
+railway init          # desde la carpeta del proyecto
+railway up
+```
+
+**Variables de entorno en Railway Dashboard:**
+```
+APP_ENV = production
+DB_PATH = /data/brujula.db
+PORT = 8080
+LITESTREAM_REPLICA_URL = s3://brujula-backups?endpoint=...
+LITESTREAM_ACCESS_KEY_ID = ...
+LITESTREAM_SECRET_ACCESS_KEY = ...
 ```
 
 #### E5.3 — Piloto de calibración
@@ -268,18 +301,18 @@ Para cuando J1 esté validado en producción:
 
 ## Próximos pasos — orden de trabajo
 
-| # | Tarea | Bloquea |
-|---|-------|---------|
-| 1 | Smoke test local (26 preguntas end-to-end en browser) | Deploy |
-| 2 | OG meta tags dinámicos (server-side) | Calidad del share |
-| 3 | Rate limiting (3 intentos / IP / 10 min) | Piloto limpio |
-| 4 | Deploy Fly.io + Litestream + R2 | Piloto |
-| 5 | Piloto cerrado 150-200 respondentes | Calibración |
-| 6 | Análisis de piloto (Cronbach, PCA, item-total) | Lanzamiento público |
-| 7 | Calibrar CENTER_THRESHOLD e INST_THRESHOLD | Resultados precisos |
-| 8 | Decisión sobre Fase 2 del banco (31-32 ítems) | Post-piloto |
-| 9 | J2 Visión AR — sesión de diseño | E6 |
-| 10 | Lanzamiento público | E5 completa |
+| # | Tarea | Estado | Bloquea |
+|---|-------|--------|---------|
+| 1 | Smoke test local (19 preguntas end-to-end en browser) | ⏳ En validación | Deploy |
+| 2 | OG meta tags dinámicos (server-side, imagen por arquetipo) | 🔴 Pendiente | Calidad del share |
+| 3 | ~~Rate limiting~~ | ✅ Implementado (E4.7) | — |
+| 4 | Deploy Railway + Litestream + R2 | 🔴 Pendiente | Piloto |
+| 5 | Piloto cerrado 150-200 respondentes | 🔴 Pendiente | Calibración |
+| 6 | Análisis de piloto (Cronbach, PCA, item-total) | 🔴 Pendiente | Lanzamiento público |
+| 7 | Calibrar CENTER_THRESHOLD e INST_THRESHOLD | 🔴 Pendiente | Resultados precisos |
+| 8 | Decisión sobre Fase 2 del banco (31-32 ítems) | 🔴 Post-piloto | — |
+| 9 | J2 Visión AR — sesión de diseño | 🔴 Post-piloto | E6 |
+| 10 | Lanzamiento público | 🔴 Post-piloto | E5 completa |
 
 ---
 
@@ -287,14 +320,14 @@ Para cuando J1 esté validado en producción:
 
 | Archivo | Descripción | Estado |
 |---------|-------------|--------|
-| `backend/data/j1/brujula.json` | 26 preguntas + arquetipos + perfiles + escala v5.0 | ✅ Actualizado 11/07 |
+| `backend/data/j1/brujula.json` | 19 preguntas + arquetipos + perfiles + escala v6.1 | ✅ Actualizado 28/07 |
 | `backend/scoring/j1_brujula.py` | Scoring engine v4 (4-point, denominador dinámico, ternario inst) | ✅ |
-| `backend/database.py` | SQLite schema + CRUD + stats | ✅ |
-| `backend/routers/sessions.py` | Endpoints submit + vote + session | ✅ |
+| `backend/database.py` | SQLite schema + CRUD + stats · upsert en save_completion (29/07) | ✅ |
+| `backend/routers/sessions.py` | Endpoints submit + vote + session · MIN_ANSWERS=10 (29/07) | ✅ |
 | `backend/routers/stats.py` | Estadísticas agregadas | ✅ |
 | `backend/routers/quizzes.py` | Endpoints de metadata del quiz | ✅ |
 | `frontend/js/quiz.js` | Motor del quiz (EFG 4-point, progress ring, escape, localStorage) | ✅ |
-| `frontend/js/results.js` | Resultado (arquetipos, folds, share, loading screen) | ✅ Actualizado 11/07 |
+| `frontend/js/results.js` | Resultado (arquetipos, folds, share, loading screen) · DIM_POLES corregidos (29/07) | ✅ |
 | `frontend/css/quiz-light.css` | Estilos quiz (tema crema, mobile-first) | ✅ |
 | `frontend/css/style.css` | Estilos resultado (tema oscuro) | ✅ |
 | `tasks/lessons.md` | Lecciones aprendidas + checklist de 16 reglas + estado de ítems | ✅ |
@@ -320,12 +353,14 @@ Para cuando J1 esté validado en producción:
 
 ```
 E0   ✅  Arquitectura definida
-E1   ✅  26 preguntas · scoring v4 · 10 arquetipos · imágenes · compartir · comparación social
+E1   ✅  19 preguntas · scoring v4 · 10 arquetipos · imágenes · compartir · comparación social
 E2   ✅  Backend FastAPI funcionando · bugs I1-I7 cerrados
 E3   ✅  Frontend conectado · escala 4-point · issues A-D cerrados
 E4   ✅  Flujo end-to-end en browser
 E4.5 ✅  brujula.json v5.0 · instrumento Fase 1 completo · revalidación conceptual
-E5   ⏳  OG tags · rate limiting · deploy Fly.io + Litestream · piloto 150-200 · Cronbach + PCA
+E4.6 ✅  brujula.json v6.1 · 9 ítems corregidos · simulación 6.500 respondentes
+E4.7 ✅  Hardening pre-deploy · 7 bugs cerrados (I8-I14) · rate limiting implementado
+E5   ⏳  OG tags (único restante) · deploy Railway + Litestream · piloto 150-200 · Cronbach + PCA
 E6   🔴  J2 Visión AR diseñado e implementado
 E7   🔴  J3 MaxDiff conectado e implementado
 E8   🔴  Features de crecimiento + dataset público Kaggle/HuggingFace

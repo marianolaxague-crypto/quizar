@@ -63,10 +63,22 @@ def session_exists(session_id: str) -> bool:
 
 def save_completion(session_id: str, quiz_type: str, responses: dict, result: dict):
     with get_conn() as conn:
-        conn.execute(
-            "INSERT INTO quiz_completions (session_id, quiz_type, responses, result) VALUES (?, ?, ?, ?)",
-            (session_id, quiz_type, json.dumps(responses), json.dumps(result))
-        )
+        existing = conn.execute(
+            "SELECT id FROM quiz_completions WHERE session_id = ? AND quiz_type = ? LIMIT 1",
+            (session_id, quiz_type)
+        ).fetchone()
+        if existing:
+            conn.execute(
+                """UPDATE quiz_completions
+                   SET responses = ?, result = ?, completed_at = CURRENT_TIMESTAMP, voting_intention = NULL
+                   WHERE id = ?""",
+                (json.dumps(responses), json.dumps(result), existing["id"])
+            )
+        else:
+            conn.execute(
+                "INSERT INTO quiz_completions (session_id, quiz_type, responses, result) VALUES (?, ?, ?, ?)",
+                (session_id, quiz_type, json.dumps(responses), json.dumps(result))
+            )
 
 
 def save_voting_intention(session_id: str, quiz_type: str, party: str):

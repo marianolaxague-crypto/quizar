@@ -1,7 +1,9 @@
 import json
+import time
+from collections import defaultdict
 from fastapi import FastAPI, Request
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from pathlib import Path
 
 from backend.database import init_db, get_completion_by_session
@@ -11,7 +13,36 @@ from backend.routers.stats import router as stats_router
 
 app = FastAPI(title="Quiz Político AR")
 
+# ── Rate limiting (in-memory, pilot-grade) ────────────────────────────
+# Máx. 5 submits por IP en una ventana de 10 minutos.
+_RATE_LIMIT_MAX     = 5
+_RATE_LIMIT_WINDOW  = 600  # segundos
+_rate_hits: dict[str, list[float]] = defaultdict(list)
+
+def _check_rate_limit(ip: str) -> bool:
+    """Retorna True si la IP está dentro del límite, False si lo supera."""
+    now = time.monotonic()
+    hits = _rate_hits[ip]
+    hits[:] = [t for t in hits if now - t < _RATE_LIMIT_WINDOW]
+    if len(hits) >= _RATE_LIMIT_MAX:
+        return False
+    hits.append(now)
+    return True
+
 init_db()
+
+
+@app.middleware("http")
+async def rate_limit_middleware(request: Request, call_next):
+    if request.url.path.endswith(("/submit", "/vote", "/sessions")):
+        ip = request.client.host if request.client else "unknown"
+        if not _check_rate_limit(ip):
+            return JSONResponse(
+                status_code=429,
+                content={"detail": "Demasiados intentos. Esperá unos minutos antes de volver a intentarlo."}
+            )
+    return await call_next(request)
+
 
 app.include_router(quizzes_router)
 app.include_router(sessions_router)
@@ -51,7 +82,7 @@ def share_page(session_id: str, request: Request):
     base_url   = str(request.base_url).rstrip("/")
     og_image   = f"{base_url}{image_path}"
     canonical  = f"{base_url}/share/{session_id}"
-    result_json = json.dumps(result, ensure_ascii=False)
+    result_json = json.dumps(result, ensure_ascii=False).replace("</", "<\\/").replace("<!--", "<\\!--")
 
     def esc(s): return s.replace('"', "&quot;").replace("'", "&#39;")
 

@@ -1,8 +1,8 @@
 # Brújula Política AR
 
-Quiz ideológico multidimensional para Argentina. El usuario responde 26 preguntas en ~5 minutos y recibe un perfil psicográfico situado en un espacio de 3 ejes: económico, sociocultural e institucional.
+Quiz ideológico multidimensional para Argentina. El usuario responde 19 preguntas en ~4 minutos y recibe un perfil psicográfico situado en un espacio de 3 ejes: económico, sociocultural e institucional.
 
-**Estado:** listo para deploy y piloto (E4.5 completa — ver `docs/PLAN_DESARROLLO.md`)
+**Estado:** instrumento v6.1 cerrado · listo para deploy y piloto (ver `docs/PLAN_DESARROLLO.md`)
 
 ---
 
@@ -24,57 +24,69 @@ pip install -r requirements.txt
 ### Correr en local
 
 ```bash
+# En Mac/Linux:
 uvicorn main:app --reload
+
+# En Windows (Python en AppData):
+python -m uvicorn main:app --reload
+
 # → http://localhost:8000
 ```
 
 El servidor sirve el frontend en `/`, el quiz en `/quiz` y el resultado en `/result`.
 
-Para probar el flujo completo sin browser, levantar en puerto 8765 y usar curl:
+### Simular resultados masivos (validación del scoring engine)
 
 ```bash
-# Crear sesión
-curl -X POST http://localhost:8765/api/sessions
-
-# Ver preguntas
-curl http://localhost:8765/api/quizzes/j1/questions | python -m json.tool | head -30
+python scripts/simulate.py              # 500 respondentes por perfil, noise=0.3
+python scripts/simulate.py --n 2000     # muestra más grande
+python scripts/simulate.py --noise 0.1  # sesgo más pronunciado
 ```
 
 ---
 
-## Deploy a Fly.io
+## Deploy a Railway ⚠️ Fly.io eliminó el free tier en 2026
+
+Fly.io ya no tiene tier gratuito (requiere tarjeta, mínimo $2–5/mes). La nueva plataforma de deploy es **Railway**, que tiene $1/mes de crédito gratuito — suficiente para el piloto (512MB RAM ≈ $0.17/mes).
+
+El Dockerfile existente funciona sin modificaciones.
 
 ### Prerrequisitos
 
-1. Instalar flyctl: https://fly.io/docs/flyctl/install/
-2. Tener cuenta en Fly.io
-3. (Opcional pero recomendado) Bucket R2 en Cloudflare para backup de SQLite
+1. Crear cuenta en https://railway.app
+2. Tener un bucket R2 en Cloudflare (para backup SQLite via Litestream)
+3. Instalar Railway CLI: `npm install -g @railway/cli`
 
-### Pasos
+### Pasos de deploy
 
 ```bash
 # 1. Login
-fly auth login
+railway login
 
-# 2. Crear app y volumen
-fly apps create brujula-ar --org personal
-fly volumes create brujula_data --region gru --size 1
+# 2. Crear proyecto (desde la carpeta del proyecto)
+railway init
 
-# 3. Configurar backup R2 (reemplazar con tus credenciales)
-fly secrets set \
-  LITESTREAM_REPLICA_URL="s3://brujula-backups?endpoint=https://TU_ACCOUNT_ID.r2.cloudflarestorage.com&region=auto" \
-  LITESTREAM_ACCESS_KEY_ID="TU_ACCESS_KEY" \
-  LITESTREAM_SECRET_ACCESS_KEY="TU_SECRET_KEY"
+# 3. Configurar variables de entorno en Railway Dashboard > Variables:
+#    APP_ENV = production
+#    DB_PATH = /data/brujula.db
+#    PORT = 8080
+#    LITESTREAM_REPLICA_URL = s3://brujula-backups?endpoint=...
+#    LITESTREAM_ACCESS_KEY_ID = TU_ACCESS_KEY
+#    LITESTREAM_SECRET_ACCESS_KEY = TU_SECRET_KEY
 
-# 4. Deploy
-fly deploy
+# 4. Deploy (usa el Dockerfile existente)
+railway up
 ```
 
-Si no tenés R2 aún, podés deployar igual — el script detecta que `LITESTREAM_REPLICA_URL` no está y levanta el servidor directamente. Los datos quedan en el volumen de Fly.io.
+### Persistencia de datos
+
+Railway no tiene volúmenes gratuitos — la DB es efímera por defecto.
+Litestream resuelve esto: restaura desde R2 al arrancar y replica cada cambio.
+Sin R2, los datos se pierden si el container se reinicia.
 
 ### URL resultante
 
-`https://brujula-ar.fly.dev`
+Railway asigna una URL pública del tipo `https://brujula-ar.up.railway.app`
 
 ---
 
@@ -105,7 +117,7 @@ quiz-ar/
 │
 ├── frontend/
 │   ├── index.html                   # Landing
-│   ├── quiz.html                    # Quiz (26 preguntas estratificadas)
+│   ├── quiz.html                    # Quiz (19 preguntas estratificadas)
 │   ├── result.html                  # Reward screen
 │   ├── css/
 │   │   ├── style.css                # Estilos globales + reward
@@ -130,20 +142,20 @@ quiz-ar/
 
 ---
 
-## Estado del instrumento J1 (v5.1)
+## Estado del instrumento J1 (v6.1)
 
-**31 ítems · 11 dimensiones · escala 4-point EFG · sin neutro**
+**19 ítems · 11 dimensiones · escala 4-point EFG · sin neutro · todos aprobados**
 
 | Eje | Dimensiones | Ítems |
 |-----|-------------|-------|
-| Económico | individualismo + meritocracia + modelo_economico | 9 |
-| Sociocultural | tradicion + autoridad + localismo + derechos_autonomia + laicismo + migracion | 13 |
-| Institucional | antiestablishment + confianza_institucional | 9 |
-
-Cada sesión muestra 26 ítems seleccionados estratificadamente (al menos 1 por dimensión).
+| Económico | individualismo (2) + meritocracia (2) + modelo_economico (2) | 6 |
+| Sociocultural | tradicion (1) + autoridad (1) + localismo (1) + derechos_autonomia (1) + laicismo (1) + migracion (1) | 6 |
+| Institucional | antiestablishment (4) + confianza_institucional (3) | 7 |
 
 **5 perfiles base:** EP · EC · PC · PP · C  
 **10 arquetipos:** cada perfil × institucionalista/anti-establishment
+
+Ver `docs/VALIDACION_ITEMS_V6.md` para el estado completo y el protocolo de generación de ítems.
 
 ---
 
@@ -177,7 +189,7 @@ Cada sesión muestra 26 ítems seleccionados estratificadamente (al menos 1 por 
 
 ## Próximos pasos (al retomar)
 
-1. **Deploy Fly.io** — instalar flyctl en PC personal, ejecutar pasos de deploy arriba
+1. **Deploy Railway** — crear cuenta en railway.app, configurar variables de entorno, ejecutar `railway up`
 2. **Piloto** — 150-200 respondentes, círculo cerrado con diversidad ideológica
 3. **Análisis post-piloto** — Cronbach ≥ 0.70 por eje · item-total ≥ 0.20 · PCA
 4. **Calibrar** — CENTER_THRESHOLD (ahora 10) e INST_THRESHOLD (ahora 15)
@@ -191,7 +203,8 @@ Ver `docs/PLAN_DESARROLLO.md` para el roadmap completo.
 | Documento | Para qué sirve |
 |-----------|----------------|
 | `docs/PLAN_DESARROLLO.md` | Estado de cada etapa, próximos pasos, criterios del piloto |
-| `docs/AJUSTES_UX_V1.md` | Cambios de UX/UI aplicados en julio 2026 |
-| `tasks/lessons.md` | Checklist de 16 reglas para validar ítems nuevos |
-| `backend/data/j1/brujula.json` | Fuente de verdad del instrumento |
-| `backend/scoring/j1_brujula.py` | Scoring engine v4 |
+| `docs/VALIDACION_ITEMS_V6.md` | Estado v6.1: todos los ítems aprobados + protocolo de generación |
+| `tasks/lessons.md` | Protocolo de generación de ítems + lecciones aprendidas |
+| `backend/data/j1/brujula.json` | Fuente de verdad del instrumento (v6.1, 19 ítems) |
+| `backend/scoring/j1_brujula.py` | Scoring engine v4 (4-point EFG) |
+| `scripts/simulate.py` | Simulación masiva para validar el scoring engine |

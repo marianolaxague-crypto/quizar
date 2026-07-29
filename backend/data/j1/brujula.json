@@ -2,15 +2,15 @@
   "quiz_type": "ideological",
   "title": "Brújula Ideológica",
   "description": "Descubrí tu posición en el espectro político argentino",
-  "instructions": "¿Con cuál de estas afirmaciones te sentís más identificado?",
-  "version": "5.1",
-  "format": "paired_statements",
-  "format_note": "Escala 4-point sin neutro: 1=Claramente A, 2=Más bien A, 3=Más bien B, 4=Claramente B. value=0=escape externo. El frontend randomiza posición y envía {value, a_is_left}.",
+  "instructions": "Elegí la opción que más se acerque a tu forma de ver las cosas.",
+  "version": "6.1",
+  "format": "scenario_cards",
+  "format_note": "Escala 4-point sin neutro: 1=Totalmente A, 2=Bastante A, 3=Bastante B, 4=Totalmente B. value=0=escape externo. El frontend randomiza posición y envía {value, a_is_left}.",
   "scale": {
-    "1": "Claramente A",
-    "2": "Más bien A",
-    "3": "Más bien B",
-    "4": "Claramente B",
+    "1": "Totalmente",
+    "2": "Bastante",
+    "3": "Bastante",
+    "4": "Totalmente",
     "0": "No tengo postura"
   },
   "axes": {
@@ -19,73 +19,36 @@
       "negative_label": "Estatista",
       "positive_label": "Privatista",
       "description": "Rol del Estado en la economía y distribución de la riqueza",
-      "components": [
-        "individualismo",
-        "meritocracia",
-        "modelo_economico"
-      ]
+      "components": ["individualismo", "meritocracia", "modelo_economico"]
     },
     "social": {
       "label": "Sociocultural",
       "negative_label": "Progresista",
       "positive_label": "Conservador",
       "description": "Visión del cambio social, la autoridad y la identidad",
-      "components": [
-        "tradicion",
-        "autoridad",
-        "localismo",
-        "derechos_autonomia",
-        "laicismo",
-        "migracion"
-      ]
+      "components": ["tradicion", "autoridad", "localismo", "derechos_autonomia", "laicismo", "migracion"]
     },
     "inst": {
       "label": "Institucional",
       "negative_label": "Institucionalista",
       "positive_label": "Anti-establishment",
       "description": "Confianza en las instituciones y élites del sistema",
-      "components": [
-        "antiestablishment",
-        "confianza_institucional"
-      ],
+      "components": ["antiestablishment", "confianza_institucional"],
       "orthogonal": true,
       "note": "Este eje es independiente del plano económico/sociocultural. Se muestra como indicador separado."
     }
   },
   "profiles": {
-    "EP": {
-      "name": "Estatista Progresista",
-      "short": "Izquierda progresista",
-      "color": "#E53935"
-    },
-    "EC": {
-      "name": "Estatista Conservador",
-      "short": "Peronismo tradicional",
-      "color": "#1565C0"
-    },
-    "PC": {
-      "name": "Privatista Conservador",
-      "short": "Derecha conservadora",
-      "color": "#F9A825"
-    },
-    "PP": {
-      "name": "Privatista Progresista",
-      "short": "Liberalismo social",
-      "color": "#7B1FA2"
-    },
-    "C": {
-      "name": "Centro Pragmático",
-      "short": "Sin definición polar clara",
-      "color": "#78909C"
-    }
+    "EP": { "name": "Estatista Progresista", "short": "Izquierda progresista", "color": "#E53935" },
+    "EC": { "name": "Estatista Conservador", "short": "Peronismo tradicional", "color": "#1565C0" },
+    "PC": { "name": "Privatista Conservador", "short": "Derecha conservadora", "color": "#F9A825" },
+    "PP": { "name": "Privatista Progresista", "short": "Liberalismo social", "color": "#7B1FA2" },
+    "C":  { "name": "Centro Pragmático", "short": "Sin definición polar clara", "color": "#78909C" }
   },
   "archetypes": {
     "colectivista_transformador": {
-      "id": "colectivista_transformador",
-      "profile": "EP",
-      "anti_establishment": false,
-      "name": "Colectivista Transformador",
-      "subtitle": "Estatista Progresista · Institucionalista",
+      "id": "colectivista_transformador", "profile": "EP", "anti_establishment": false,
+      "name": "Colectivista Transformador", "subtitle": "Estatista Progresista · Institucionalista",
       "color": "#0F5257",
       "description": "Priorizás la equidad y los cambios estructurales, y confiás en que las instituciones pueden ser el canal para lograrlos. No te reconocés en el solucionismo individual: los problemas más importantes son colectivos y necesitan respuestas colectivas. Tu confianza en el sistema convive, a veces, con la frustración de sus tiempos y sus resistencias.",
       "tension": "Querés transformar la sociedad y creés que el camino son las instituciones — aunque muchas veces decepcionen.",
@@ -95,13 +58,10 @@
       "image_url": "/static/images/archetypes/colectivista_transformador.png"
     },
     "colectivista_rebelde": {
-      "id": "colectivista_rebelde",
-      "profile": "EP",
-      "anti_establishment": true,
-      "name": "Colectivista Rebelde",
-      "subtitle": "Estatista Progresista · Anti-establishment",
+      "id": "colectivista_rebelde", "profile": "EP", "anti_establishment": true,
+      "name": "Colectivista Rebelde", "subtitle": "Estatista Progresista · Anti-establishment",
       "color": "#A83232",
-      "description": "Valorás la acción colectiva y la construcción comunitaria, pero desconfiás profundamente de las instituciones actuales para materializarlas. Creés que los cambios reales vienen desde abajo, no desde arriba. Esa combinación —querer transformar la sociedad y no fiarte del sistema para hacerlo— define tu postura más que cualquier etiqueta.",
+      "description": "Valorás la acción colectiva y la construcción comunitaria, pero desconfiás profundamente de las instituciones actuales para materializarlas. Creés que los cambios reales vienen desde abajo, no desde arriba.",
       "tension": "Querés cambios colectivos profundos pero no confiás en las estructuras que teóricamente deberían hacerlos posibles.",
       "tagline_short": "El que sabe que el cambio viene de abajo",
       "tagline_long": "El que organiza la solidaridad colectiva desde abajo, desconfiando del Estado que debería garantizar sus derechos.",
@@ -109,13 +69,10 @@
       "image_url": "/static/images/archetypes/colectivista_rebelde.png"
     },
     "comunitarista_tradicional": {
-      "id": "comunitarista_tradicional",
-      "profile": "EC",
-      "anti_establishment": false,
-      "name": "Comunitarista Tradicional",
-      "subtitle": "Estatista Conservador · Institucionalista",
+      "id": "comunitarista_tradicional", "profile": "EC", "anti_establishment": false,
+      "name": "Comunitarista Tradicional", "subtitle": "Estatista Conservador · Institucionalista",
       "color": "#5E6F56",
-      "description": "Valorás el orden, las tradiciones y el rol del Estado como garante de la cohesión social. Creés que la estabilidad no es un freno al progreso sino su condición. Las instituciones te merecen respeto no por inercia, sino porque entendés que sin marcos colectivos estables el tejido social se deshace.",
+      "description": "Valorás el orden, las tradiciones y el rol del Estado como garante de la cohesión social. Creés que la estabilidad no es un freno al progreso sino su condición.",
       "tension": "Querés un Estado que proteja y ordene, pero también sabés que ese mismo Estado puede volverse burocrático o clientelar.",
       "tagline_short": "El que sabe que sin raíces no hay futuro",
       "tagline_long": "El que defiende el orden común y el arraigo social, protegiendo al Estado de su propia burocracia.",
@@ -123,27 +80,21 @@
       "image_url": "/static/images/archetypes/comunitarista_tradicional.png"
     },
     "soberanista_nacionalista": {
-      "id": "soberanista_nacionalista",
-      "profile": "EC",
-      "anti_establishment": true,
-      "name": "Soberanista Nacionalista",
-      "subtitle": "Estatista Conservador · Anti-establishment",
+      "id": "soberanista_nacionalista", "profile": "EC", "anti_establishment": true,
+      "name": "Soberanista Nacionalista", "subtitle": "Estatista Conservador · Anti-establishment",
       "color": "#B28A25",
-      "description": "Tenés una fuerte identidad local y desconfiás de los modelos y las recetas que vienen de afuera. Querés un Estado que proteja a los suyos, pero no confiás en la clase política actual para manejarlo. Esa combinación —Estado protector + rechazo al establishment— es menos contradictoria de lo que parece: querés la función, no a quienes la ejercen.",
+      "description": "Tenés una fuerte identidad local y desconfiás de los modelos y las recetas que vienen de afuera. Querés un Estado que proteja a los suyos, pero no confiás en la clase política actual para manejarlo.",
       "tension": "Confiás en el Estado como institución pero no en quienes lo conducen hoy.",
       "tagline_short": "El que defiende lo nuestro sin pedir permiso",
       "tagline_long": "El que resguarda la soberanía y lo nacional, harto de los intermediarios políticos que administran la patria.",
-      "symbol": "Un paisaje pampeano al atardecer — girasoles maduros, un hornero posado en su nido de barro sobre un poste de alambrado, y el mango de un facón asomando del cinturón de un gaucho de espaldas.",
+      "symbol": "Un paisaje pampeano al atardecer — girasoles maduros, un hornero posado en su nido de barro sobre un poste de alambrado.",
       "image_url": "/static/images/archetypes/soberanista_nacionalista.png"
     },
     "republicano_de_orden": {
-      "id": "republicano_de_orden",
-      "profile": "PC",
-      "anti_establishment": false,
-      "name": "Republicano de Orden",
-      "subtitle": "Privatista Conservador · Institucionalista",
+      "id": "republicano_de_orden", "profile": "PC", "anti_establishment": false,
+      "name": "Republicano de Orden", "subtitle": "Privatista Conservador · Institucionalista",
       "color": "#1D3557",
-      "description": "Creés que los mercados libres y las instituciones republicanas son complementarios, no opuestos. Para vos, la estabilidad de las reglas y el cumplimiento de los contratos son la base de cualquier progreso duradero. No confiás en los atajos ni en los liderazgos que prometen saltarse los procedimientos para llegar antes.",
+      "description": "Creés que los mercados libres y las instituciones republicanas son complementarios, no opuestos. Para vos, la estabilidad de las reglas y el cumplimiento de los contratos son la base de cualquier progreso duradero.",
       "tension": "Querés libertad económica con instituciones fuertes, una combinación que Argentina históricamente no logró sostener.",
       "tagline_short": "El que cree que sin reglas no hay libertad",
       "tagline_long": "El que promueve el desarrollo económico privado bajo el imperio estricto y transparente de la ley.",
@@ -151,27 +102,21 @@
       "image_url": "/static/images/archetypes/republicano_de_orden.png"
     },
     "conservador_rebelde": {
-      "id": "conservador_rebelde",
-      "profile": "PC",
-      "anti_establishment": true,
-      "name": "Conservador Rebelde",
-      "subtitle": "Privatista Conservador · Anti-establishment",
+      "id": "conservador_rebelde", "profile": "PC", "anti_establishment": true,
+      "name": "Conservador Rebelde", "subtitle": "Privatista Conservador · Anti-establishment",
       "color": "#C85A17",
-      "description": "Querés menos Estado en la economía y más libertad individual, pero el sistema político actual no te representa. Lo percibís capturado por intereses que no son los de la gente común. Tu rechazo al establishment no viene del resentimiento sino de la convicción de que las reglas actuales protegen a quienes ya tienen todo.",
+      "description": "Querés menos Estado en la economía y más libertad individual, pero el sistema político actual no te representa. Lo percibís capturado por intereses que no son los de la gente común.",
       "tension": "Combinás la fe en el mercado libre con la desconfianza en quienes lo regulan — y esa tensión define mucho de tu política.",
       "tagline_short": "El que labura y no entiende para qué paga tanto",
       "tagline_long": "El que exige menos impuestos y más libertad comercial, harto de un Estado que ahoga al trabajador.",
-      "symbol": "Una billetera de cuero con un billete de cien dólares y la víbora del Gadsden flag grabada en relieve — Don't Tread On Me.",
+      "symbol": "Una billetera de cuero con un billete de cien dólares y la víbora del Gadsden flag grabada en relieve.",
       "image_url": "/static/images/archetypes/conservador_rebelde.png"
     },
     "liberal_cosmopolita": {
-      "id": "liberal_cosmopolita",
-      "profile": "PP",
-      "anti_establishment": false,
-      "name": "Liberal Cosmopolita",
-      "subtitle": "Privatista Progresista · Institucionalista",
+      "id": "liberal_cosmopolita", "profile": "PP", "anti_establishment": false,
+      "name": "Liberal Cosmopolita", "subtitle": "Privatista Progresista · Institucionalista",
       "color": "#118AB2",
-      "description": "Defendés la libertad individual tanto en lo económico como en lo personal, y confiás en que las instituciones y los acuerdos internacionales son el mejor marco para garantizarla. Tenés una visión del mundo abierta y conectada: no creés que lo local tenga que defenderse del afuera, sino integrarse con criterio.",
+      "description": "Defendés la libertad individual tanto en lo económico como en lo personal, y confiás en que las instituciones son el mejor marco para garantizarla. Tenés una visión del mundo abierta y conectada.",
       "tension": "Querés libertad sin fronteras y confiás en el sistema para sostenerla — aunque el sistema muchas veces defraude esa confianza.",
       "tagline_short": "El que quiere vivir libre en un mundo sin fronteras",
       "tagline_long": "El que defiende las libertades civiles y económicas, apostando a una inserción moderna en el plano global.",
@@ -179,483 +124,249 @@
       "image_url": "/static/images/archetypes/liberal_cosmopolita.png"
     },
     "libertario_de_autonomia": {
-      "id": "libertario_de_autonomia",
-      "profile": "PP",
-      "anti_establishment": true,
-      "name": "Libertario de Autonomía",
-      "subtitle": "Privatista Progresista · Anti-establishment",
+      "id": "libertario_de_autonomia", "profile": "PP", "anti_establishment": true,
+      "name": "Libertario de Autonomía", "subtitle": "Privatista Progresista · Anti-establishment",
       "color": "#D4A373",
-      "description": "Priorizás la autonomía individual por encima de casi cualquier colectivo, y desconfiás de toda forma de autoridad que no sea elegida libremente. Para vos, el mayor riesgo no es el caos sino la coerción — sea estatal, corporativa o social. Esa postura tiene una coherencia interna que pocos arquetipos tienen: la libertad como principio ordenador, sin excepciones.",
+      "description": "Priorizás la autonomía individual por encima de casi cualquier colectivo, y desconfiás de toda forma de autoridad que no sea elegida libremente. La libertad como principio ordenador, sin excepciones.",
       "tension": "Llevás la coherencia libertaria hasta el final, lo que muchas veces te deja solo frente a un mundo que pide compromisos.",
       "tagline_short": "El que no le debe explicaciones a nadie",
       "tagline_long": "El que prioriza la autonomía individual como regla absoluta, rechazando toda coacción estatal o colectiva injustificada.",
-      "symbol": "Una billetera de hardware crypto, una moneda de oro física y un libro de economía austríaca sobre una mesa — la trifecta de la soberanía individual.",
+      "symbol": "Una billetera de hardware crypto, una moneda de oro física y un libro de economía austríaca sobre una mesa.",
       "image_url": "/static/images/archetypes/libertario_de_autonomia.png"
     },
     "centro_institucional": {
-      "id": "centro_institucional",
-      "profile": "C",
-      "anti_establishment": false,
-      "name": "Pragmático Institucional",
-      "subtitle": "Centro · Institucionalista",
+      "id": "centro_institucional", "profile": "C", "anti_establishment": false,
+      "name": "Pragmático Institucional", "subtitle": "Centro · Institucionalista",
       "color": "#839788",
-      "description": "No te ubicás claramente en ningún cuadrante. Puede que genuinamente estés en el centro —sin extremos marcados en lo económico ni en lo social— o que tus valores tiren en direcciones opuestas y se compensen. Lo que los dos casos tienen en común: confiás en que las instituciones son el marco más razonable para resolver los conflictos, sean los propios o los del país.",
+      "description": "No te ubicás claramente en ningún cuadrante. Puede que genuinamente estés en el centro o que tus valores tiren en direcciones opuestas y se compensen. Lo que los dos casos tienen en común: confiás en que las instituciones son el marco más razonable para resolver los conflictos.",
       "tension": "El centro puede ser moderación o contradicción. Vos sabés cuál de los dos te describe mejor.",
       "tagline_short": "El que prefiere resolver antes que tener razón",
       "tagline_long": "El que busca consensos sensatos y soluciones concretas dentro del único marco duradero: el respeto institucional.",
-      "symbol": "Dos figuras de espaldas sentadas en un jardín, negociando en privado — evoca el Pacto de Olivos como símbolo del pragmatismo institucional argentino.",
+      "symbol": "Dos figuras de espaldas sentadas en un jardín, negociando en privado.",
       "image_url": "/static/images/archetypes/centro_institucional.png"
     },
     "centro_critico": {
-      "id": "centro_critico",
-      "profile": "C",
-      "anti_establishment": true,
-      "name": "Pragmático Crítico",
-      "subtitle": "Centro · Anti-establishment",
+      "id": "centro_critico", "profile": "C", "anti_establishment": true,
+      "name": "Pragmático Crítico", "subtitle": "Centro · Anti-establishment",
       "color": "#3D3434",
-      "description": "No te ubicás claramente en ningún cuadrante. Puede que genuinamente estés en el centro —sin definición polar clara en lo económico ni en lo social— o que tus posiciones en distintos temas se cancelen entre sí sin que eso las haga menos firmes. Lo que sí es claro: tenés una mirada escéptica sobre el sistema político y quienes lo conducen. Esa parte del perfil sí tiene dirección.",
+      "description": "No te ubicás claramente en ningún cuadrante. Lo que sí es claro: tenés una mirada escéptica sobre el sistema político y quienes lo conducen.",
       "tension": "El centro puede ser moderación o contradicción interna. En tu caso, la única certeza es la desconfianza en el sistema.",
       "tagline_short": "El que no tiene partido pero tiene criterio",
       "tagline_long": "El que evalúa la realidad con sentido común e independencia, descreído de las promesas de la dirigencia.",
-      "symbol": "Una cacerola de aluminio con una boleta de voto en blanco adentro — la bronca ciudadana que no encontró partido pero tampoco se fue del juego democrático.",
+      "symbol": "Una cacerola de aluminio con una boleta de voto en blanco adentro.",
       "image_url": "/static/images/archetypes/centro_critico.png"
     }
   },
   "questions": [
     {
-      "id": "i1_1",
+      "id": "IND_02",
       "dimension": "individualismo",
       "scale": 4,
-      "text_a": "Prefiero ocuparme de mi propia salud.",
-      "text_b": "Prefiero un sistema de salud para todos.",
-      "weights": {
-        "econ": 2,
-        "social": 0,
-        "inst": 0
-      },
+      "scenario": "Mirás para atrás y ves algo importante que lograste.",
+      "text_a": "Fui yo quien lo hizo posible.",
+      "text_b": "Llegué hasta acá porque mucha gente me abrió el camino.",
+      "weights": { "econ": 2, "social": 0, "inst": 0 },
       "pole_a": "privatista",
       "pole_b": "estatista"
     },
     {
-      "id": "i1_2",
+      "id": "IND_03",
       "dimension": "individualismo",
       "scale": 4,
-      "text_a": "Lo que tengo lo construí yo.",
-      "text_b": "Lo que tengo, muchos me lo posibilitaron.",
-      "weights": {
-        "econ": 2,
-        "social": 0,
-        "inst": 0
-      },
+      "scenario": "Pensás en cómo podría mejorar tu ciudad.",
+      "text_a": "Si cada uno se hace cargo de lo suyo, el conjunto mejora solo.",
+      "text_b": "Hay cosas que solo mejoran si las encaramos juntos.",
+      "weights": { "econ": 2, "social": 0, "inst": 0 },
       "pole_a": "privatista",
       "pole_b": "estatista"
     },
     {
-      "id": "i1_3",
-      "dimension": "individualismo",
-      "scale": 4,
-      "text_a": "La sociedad avanza cuando cada persona se hace cargo de lo suyo.",
-      "text_b": "Una sociedad es más que la suma de individuos haciendo lo suyo.",
-      "weights": {
-        "econ": 2,
-        "social": 0,
-        "inst": 0
-      },
-      "pole_a": "privatista",
-      "pole_b": "estatista"
-    },
-    {
-      "id": "N2",
-      "dimension": "individualismo",
-      "scale": 4,
-      "text_a": "En la vida cuento con los míos — familia y amigos de confianza — y con eso me alcanza y me sobra.",
-      "text_b": "Cuento con mi barrio, mis compañeros, la gente de mi comunidad: ese respaldo más amplio no lo cambiaría por nada.",
-      "weights": {
-        "econ": 2,
-        "social": 0,
-        "inst": 0
-      },
-      "pole_a": "privatista",
-      "pole_b": "comunitarista"
-    },
-    {
-      "id": "i2_1",
+      "id": "MER_02",
       "dimension": "meritocracia",
       "scale": 4,
-      "text_a": "Mi futuro depende de mis decisiones.",
-      "text_b": "Mi futuro depende mucho de cosas que no controlo.",
-      "weights": {
-        "econ": 2,
-        "social": 1,
-        "inst": 0
-      },
+      "scenario": "Dos compañeros de escuela terminan en situaciones muy distintas.",
+      "text_a": "Cada uno llega donde sus decisiones lo llevan.",
+      "text_b": "Nadie arranca igual de verdad. El origen pesa más de lo que nos gusta reconocer.",
+      "weights": { "econ": 2, "social": 1, "inst": 0 },
       "pole_a": "meritocratico",
       "pole_b": "estructural"
     },
     {
-      "id": "i2_2",
+      "id": "MER_03",
       "dimension": "meritocracia",
       "scale": 4,
-      "text_a": "Progreso por lo que sé y hago.",
-      "text_b": "Para progresar también importa a quién conocés.",
-      "weights": {
-        "econ": 2,
-        "social": 1,
-        "inst": 0
-      },
+      "scenario": "Pensás en alguien de tu entorno que llegó lejos en la vida.",
+      "text_a": "Llegó porque se lo propuso y trabajó para eso. El esfuerzo es lo que hace la diferencia.",
+      "text_b": "Llegó, sí, pero tuvo condiciones que otros no tienen. El esfuerzo solo alcanza cuando el punto de partida lo permite.",
+      "weights": { "econ": 2, "social": 1, "inst": 0 },
       "pole_a": "meritocratico",
       "pole_b": "estructural"
     },
     {
-      "id": "N1",
-      "dimension": "meritocracia",
-      "scale": 4,
-      "text_a": "Con esfuerzo y dedicación, casi siempre se puede salir adelante.",
-      "text_b": "El esfuerzo importa, pero el punto de partida cambia mucho las posibilidades.",
-      "weights": {
-        "econ": 2,
-        "social": 1,
-        "inst": 0
-      },
-      "pole_a": "meritocratico",
-      "pole_b": "estructural"
-    },
-    {
-      "id": "E1",
+      "id": "ECO_01",
       "dimension": "modelo_economico",
       "scale": 4,
-      "text_a": "Para mí, si las reglas del juego son iguales para todos, el sistema cumplió su parte. Lo que cada uno haga con eso ya depende de cada uno.",
-      "text_b": "Para mí, las mismas reglas no alcanzan cuando los puntos de partida son tan distintos. El Estado tiene que compensar esas diferencias para que la igualdad sea real.",
-      "weights": {
-        "econ": 2,
-        "social": 0,
-        "inst": 0
-      },
+      "scenario": "Un gobierno tiene que decidir cómo distribuir un subsidio.",
+      "text_a": "El mismo monto para todos. La igualdad empieza por tratar a todos de la misma manera.",
+      "text_b": "Más para quien menos tiene. El objetivo es reducir las diferencias, no ignorarlas.",
+      "weights": { "econ": 2, "social": 0, "inst": 0 },
       "pole_a": "privatista",
       "pole_b": "estatista"
     },
     {
-      "id": "E2",
+      "id": "ECO_02",
       "dimension": "modelo_economico",
       "scale": 4,
-      "text_a": "Prefiero un modelo que priorice generar más riqueza. Si hay más para todos, la distribución se acomoda sola.",
-      "text_b": "Prefiero un modelo que priorice distribuir mejor lo que ya existe. De nada sirve generar más si siempre termina en las mismas manos.",
-      "weights": {
-        "econ": 2,
-        "social": 0,
-        "inst": 0
-      },
+      "scenario": "Un gobierno tiene que elegir el rumbo económico para los próximos cuatro años.",
+      "text_a": "Que genere más riqueza. Si la torta crece, llega a todos.",
+      "text_b": "Que priorice la distribución. Una sociedad más igualitaria es la base de cualquier desarrollo sostenible.",
+      "weights": { "econ": 2, "social": 0, "inst": 0 },
       "pole_a": "privatista",
       "pole_b": "estatista"
     },
     {
-      "id": "i3_1",
+      "id": "TRA_02",
       "dimension": "tradicion",
       "scale": 4,
-      "text_a": "Cuando algo funciona, prefiero mejorarlo sin romperlo. Los cambios grandes sin ancla en lo que ya existe suelen generar más caos que soluciones.",
-      "text_b": "Cuando algo no funciona de fondo, prefiero el cambio profundo aunque genere incertidumbre. Los ajustes parciales suelen preservar lo que está mal.",
-      "weights": {
-        "econ": 0,
-        "social": 2,
-        "inst": 0
-      },
+      "scenario": "Se propone cambiar algo que funciona de la misma manera desde hace muchos años.",
+      "text_a": "Prefiero ir de a poco. Lo que viene funcionando mucho tiempo tiene una razón de ser.",
+      "text_b": "Si hay motivos para cambiarlo, hay que hacerlo. El tiempo que lleva no lo hace mejor.",
+      "weights": { "econ": 0, "social": 2, "inst": 0 },
       "pole_a": "orden",
       "pole_b": "apertura"
     },
     {
-      "id": "i3_2",
-      "dimension": "tradicion",
-      "scale": 4,
-      "text_a": "Los cambios tienen que ser graduales.",
-      "text_b": "A veces hay que cambiar todo de raíz.",
-      "weights": {
-        "econ": 0,
-        "social": 2,
-        "inst": 0
-      },
-      "pole_a": "orden",
-      "pole_b": "apertura"
-    },
-    {
-      "id": "i4_2",
+      "id": "AUT_01",
       "dimension": "autoridad",
       "scale": 4,
-      "text_a": "Los chicos deben aprender a respetar a los mayores.",
-      "text_b": "Los chicos deben aprender a pensar por sí mismos.",
-      "weights": {
-        "econ": 0,
-        "social": 2,
-        "inst": 0
-      },
+      "scenario": "Estás criando —o pensando en criar— a un chico.",
+      "text_a": "Le enseño a respetar a los mayores y a la autoridad. Eso es la base.",
+      "text_b": "Le enseño a pensar por sí mismo y a cuestionar cuando algo no le parece bien.",
+      "weights": { "econ": 0, "social": 2, "inst": 0 },
       "pole_a": "autoridad",
       "pole_b": "horizontal"
     },
     {
-      "id": "N3",
-      "dimension": "autoridad",
-      "scale": 4,
-      "text_a": "Cuando hay conflicto, lo que hace falta es firmeza: las consecuencias claras son lo que pone orden.",
-      "text_b": "Cuando hay conflicto, prefiero entender qué lo genera: sin eso, cualquier solución es pasajera.",
-      "weights": {
-        "econ": 0,
-        "social": 2,
-        "inst": 0
-      },
-      "pole_a": "autoridad",
-      "pole_b": "horizontal"
-    },
-    {
-      "id": "N8",
-      "dimension": "autoridad",
-      "scale": 4,
-      "text_a": "Me siento más tranquilo cuando hay reglas claras y figuras que las hacen respetar. Eso es lo que hace posible vivir juntos.",
-      "text_b": "Me siento más cómodo cuando puedo actuar según mi propio criterio, sin depender de que alguien externo establezca lo que está bien.",
-      "weights": {
-        "econ": 0,
-        "social": 2,
-        "inst": 0
-      },
-      "pole_a": "autoridad",
-      "pole_b": "horizontal"
-    },
-    {
-      "id": "i5_1",
+      "id": "LOC_02",
       "dimension": "localismo",
       "scale": 4,
-      "text_a": "Quiero construir mi vida donde crecí.",
-      "text_b": "Me mudaría a donde haya mejores oportunidades.",
-      "weights": {
-        "econ": -1,
-        "social": 2,
-        "inst": 0
-      },
+      "scenario": "Argentina aparece en los medios internacionales con una nota muy crítica.",
+      "text_a": "Me concentro en lo que pasa acá. Lo cotidiano es lo que define cómo vivimos.",
+      "text_b": "La imagen de Argentina afuera tiene consecuencias concretas en nuestra vida diaria.",
+      "weights": { "econ": -1, "social": 2, "inst": 0 },
       "pole_a": "localista",
       "pole_b": "cosmopolita"
     },
     {
-      "id": "i5_2",
-      "dimension": "localismo",
+      "id": "DER_02",
+      "dimension": "derechos_autonomia",
       "scale": 4,
-      "text_a": "La imagen de Argentina afuera no me preocupa.",
-      "text_b": "Me importa cómo nos ven en el mundo.",
-      "weights": {
-        "econ": -1,
-        "social": 2,
-        "inst": 0
-      },
-      "pole_a": "localista",
-      "pole_b": "cosmopolita"
+      "scenario": "Un vecino hace algo legal en su casa que a mucha gente del barrio le molesta.",
+      "text_a": "Cada persona tiene derecho a hacer lo que quiera en su vida privada.",
+      "text_b": "Convivir implica que ciertas decisiones personales tienen consecuencias para los demás.",
+      "weights": { "econ": 0, "social": -2, "inst": 0 },
+      "pole_a": "autonomia",
+      "pole_b": "marco_moral"
     },
     {
-      "id": "i6_2",
+      "id": "LAI_02",
+      "dimension": "laicismo",
+      "scale": 4,
+      "scenario": "Una escuela pública organiza un acto y el director propone incluir una oración.",
+      "text_a": "En un espacio para todos, los actos tienen que ser para todos. Una oración excluye a quien no comparte esa fe.",
+      "text_b": "Una oración expresa valores que son profundos para mucha gente. Eso merece tener lugar en un espacio compartido.",
+      "weights": { "econ": 0, "social": -2, "inst": 0 },
+      "pole_a": "laicismo",
+      "pole_b": "espiritualidad"
+    },
+    {
+      "id": "MIG_02",
+      "dimension": "migracion",
+      "scale": 4,
+      "scenario": "Una comunidad de inmigrantes en tu barrio mantiene sus costumbres, idioma y tradiciones.",
+      "text_a": "Me parece bien. Cada uno tiene derecho a mantener su cultura.",
+      "text_b": "Si eligen vivir acá, deberían adaptarse a los valores y costumbres del lugar.",
+      "weights": { "econ": 0, "social": -2, "inst": 0 },
+      "pole_a": "apertura",
+      "pole_b": "prioridad_nacional"
+    },
+    {
+      "id": "ANT_01",
       "dimension": "antiestablishment",
       "scale": 4,
-      "text_a": "Si todos respetamos las reglas, aunque sean imperfectas, la sociedad funciona mejor.",
-      "text_b": "Seguir reglas injustas solo perpetúa un sistema que no nos representa.",
-      "weights": {
-        "econ": 0,
-        "social": 0,
-        "inst": -2
-      },
+      "scenario": "Una regla que te parece injusta sigue vigente.",
+      "text_a": "La respeto igual. Las reglas, aunque imperfectas, son lo que hace funcionar al conjunto.",
+      "text_b": "Las reglas ganan su legitimidad cuando son justas. Una ley injusta merece ser cuestionada.",
+      "weights": { "econ": 0, "social": 0, "inst": -2 },
       "pole_a": "institucionalista",
       "pole_b": "antiestablishment"
     },
     {
-      "id": "i6_3",
+      "id": "ANT_02",
       "dimension": "antiestablishment",
       "scale": 4,
-      "text_a": "Si hacés bien las cosas, el sistema te reconoce.",
-      "text_b": "Las reglas terminan favoreciendo siempre a los mismos.",
-      "weights": {
-        "econ": 0,
-        "social": 0,
-        "inst": -2
-      },
+      "scenario": "Surge un político nuevo que parece genuinamente distinto a los demás.",
+      "text_a": "Lo apoyo. Si nadie le da una chance a alguien diferente, nada va a cambiar.",
+      "text_b": "Ya lo he visto. Con el tiempo, o el sistema los dobla, o descubrís que nunca fueron tan distintos.",
+      "weights": { "econ": 0, "social": 0, "inst": -2 },
       "pole_a": "institucionalista",
       "pole_b": "antiestablishment"
     },
     {
-      "id": "i6_5",
+      "id": "ANT_03",
       "dimension": "antiestablishment",
       "scale": 4,
-      "text_a": "Los partidos no son todos iguales: quién gobierna cambia cosas concretas.",
-      "text_b": "Los políticos, lleguen desde donde lleguen, terminan siendo todos lo mismo.",
-      "weights": {
-        "econ": 0,
-        "social": 0,
-        "inst": -2
-      },
-      "pole_a": "pluralismo_democratico",
-      "pole_b": "anti_casta"
-    },
-    {
-      "id": "N4",
-      "dimension": "antiestablishment",
-      "scale": 4,
-      "text_a": "Para mí, elegir representantes sigue siendo la forma más legítima que tenemos de decidir colectivamente.",
-      "text_b": "Creo que quienes llegan al poder político terminan trabajando para mantenerse en él, no para la gente que los eligió.",
-      "weights": {
-        "econ": 0,
-        "social": 0,
-        "inst": -2
-      },
-      "pole_a": "institucionalista",
-      "pole_b": "antiestablishment"
-    },
-    {
-      "id": "N5",
-      "dimension": "antiestablishment",
-      "scale": 4,
-      "text_a": "Para mí, poder votar y cambiar a quienes gobiernan es lo más importante que tenemos — aunque la democracia sea lenta e imperfecta.",
-      "text_b": "Para mí, lo que importa es que las cosas funcionen y que la gente esté bien. Si eso se logra o no con elecciones es secundario.",
-      "weights": {
-        "econ": 0,
-        "social": 0,
-        "inst": -2
-      },
+      "scenario": "Un gobierno no democrático logra resultados económicos muy buenos.",
+      "text_a": "La democracia tiene un valor en sí misma. Poder votar y cambiar gobernantes es irrenunciable.",
+      "text_b": "Lo que importa es que la gente viva bien. Los resultados son la única vara que vale.",
+      "weights": { "econ": 0, "social": 0, "inst": -2 },
       "pole_a": "democracia_valor",
       "pole_b": "pragmatismo_resultados"
     },
     {
-      "id": "N6",
+      "id": "ANT_04",
       "dimension": "antiestablishment",
       "scale": 4,
-      "text_a": "Creo que cuando la gente se organiza y participa de verdad, termina logrando que las cosas cambien. Vale la pena involucrarse.",
-      "text_b": "Creo que por más que uno participe, las decisiones importantes las siguen tomando los de siempre. La participación cambia poco.",
-      "weights": {
-        "econ": 0,
-        "social": 0,
-        "inst": -2
-      },
-      "pole_a": "eficacia_externa",
-      "pole_b": "cinismo_politico"
+      "scenario": "Un problema del barrio lleva meses sin resolverse.",
+      "text_a": "Persisto por los canales formales — nota al municipio, reunión con el concejal, reclamo oficial.",
+      "text_b": "Movilizo públicamente — redes, medios, presión directa. Eso es lo que genera cambios reales.",
+      "weights": { "econ": 0, "social": 0, "inst": -2 },
+      "pole_a": "eficacia_institucional",
+      "pole_b": "presion_directa"
     },
     {
-      "id": "I1",
+      "id": "CON_01",
       "dimension": "confianza_institucional",
       "scale": 4,
-      "text_a": "Creo que la corrupción es un problema que puede resolverse con mejores controles, más transparencia y voluntad política.",
-      "text_b": "Creo que la corrupción es inherente al ejercicio del poder. Mientras haya funcionarios con acceso a recursos, siempre va a existir.",
-      "weights": {
-        "econ": 0,
-        "social": 0,
-        "inst": -2
-      },
+      "scenario": "Una decisión que te perjudica se aprueba siguiendo todos los procedimientos.",
+      "text_a": "Si los procedimientos se respetaron, es legítima. Aunque no me guste.",
+      "text_b": "Que hayan seguido los pasos no la hace justa. Las reglas las escriben los que ganan.",
+      "weights": { "econ": 0, "social": 0, "inst": -2 },
       "pole_a": "institucionalista",
       "pole_b": "antiestablishment"
     },
     {
-      "id": "I2",
+      "id": "CON_02",
       "dimension": "confianza_institucional",
       "scale": 4,
-      "text_a": "Creo que la independencia de la Justicia es posible con las reformas correctas. Los jueces pueden actuar sin presiones políticas si el sistema está bien diseñado.",
-      "text_b": "Creo que la independencia judicial es una ficción: los jueces siempre terminan respondiendo a quien los nombró o a quien tiene poder sobre su carrera.",
-      "weights": {
-        "econ": 0,
-        "social": 0,
-        "inst": -2
-      },
+      "scenario": "Un juez falla de manera sorpresiva en un caso de alto perfil.",
+      "text_a": "Un fallo que nadie puede predecir de antemano es la mejor prueba de que el sistema funciona.",
+      "text_b": "Los fallos sorpresivos casi siempre tienen una explicación que no figura en la sentencia.",
+      "weights": { "econ": 0, "social": 0, "inst": -2 },
       "pole_a": "institucionalista",
       "pole_b": "antiestablishment"
     },
     {
-      "id": "I3",
+      "id": "CON_03",
       "dimension": "confianza_institucional",
       "scale": 4,
-      "text_a": "Creo que los medios de comunicación, con todos sus sesgos y limitaciones, son uno de los pocos contrapesos reales al poder político. Sin ellos, los gobiernos actuarían con mucha menos transparencia.",
-      "text_b": "Creo que los medios de comunicación, independientemente de su tamaño o propietario, terminan siendo parte del sistema de poder. No existe un medio verdaderamente independiente.",
-      "weights": {
-        "econ": 0,
-        "social": 0,
-        "inst": -2
-      },
+      "scenario": "Un medio de comunicación publica una investigación que compromete a un político importante.",
+      "text_a": "Eso es el periodismo haciendo su trabajo. Sin prensa libre, esta información nunca habría salido a la luz.",
+      "text_b": "La información puede ser real. Lo que nunca es neutral es quién la publica y por qué ahora.",
+      "weights": { "econ": 0, "social": 0, "inst": -2 },
       "pole_a": "institucionalista",
       "pole_b": "antiestablishment"
-    },
-    {
-      "id": "d7_1",
-      "dimension": "derechos_autonomia",
-      "scale": 4,
-      "text_a": "Yo defino mi identidad y mi estilo de vida con libertad.",
-      "text_b": "Elijo guiar mi conducta según lo que mi comunidad considera correcto.",
-      "weights": {
-        "econ": 0,
-        "social": -2,
-        "inst": 0
-      },
-      "pole_a": "autonomia",
-      "pole_b": "marco_moral"
-    },
-    {
-      "id": "d7_2",
-      "dimension": "derechos_autonomia",
-      "scale": 4,
-      "text_a": "Lo que hago en mi vida privada no le incumbe a nadie más que a mí.",
-      "text_b": "Vivir en sociedad implica ajustar ciertas elecciones personales a normas comunes.",
-      "weights": {
-        "econ": 0,
-        "social": -2,
-        "inst": 0
-      },
-      "pole_a": "autonomia",
-      "pole_b": "marco_moral"
-    },
-    {
-      "id": "d8_1",
-      "dimension": "laicismo",
-      "scale": 4,
-      "text_a": "En espacios públicos como escuelas u hospitales no debería haber símbolos religiosos.",
-      "text_b": "Los símbolos religiosos en espacios públicos reflejan la cultura de la comunidad.",
-      "weights": {
-        "econ": 0,
-        "social": -2,
-        "inst": 0
-      },
-      "pole_a": "laicismo",
-      "pole_b": "espiritualidad"
-    },
-    {
-      "id": "d8_2",
-      "dimension": "laicismo",
-      "scale": 4,
-      "text_a": "En temas como el aborto o la eutanasia, la religión no debería pesar en la ley.",
-      "text_b": "En temas de vida y muerte, los valores morales religiosos merecen tener lugar en el debate público.",
-      "weights": {
-        "econ": 0,
-        "social": -2,
-        "inst": 0
-      },
-      "pole_a": "laicismo",
-      "pole_b": "espiritualidad"
-    },
-    {
-      "id": "d9_1",
-      "dimension": "migracion",
-      "scale": 4,
-      "text_a": "La salud y la educación públicas son para todos los que viven acá, sin importar de dónde vienen.",
-      "text_b": "Los servicios del Estado deberían priorizar a quienes nacieron en el país.",
-      "weights": {
-        "econ": 0,
-        "social": -2,
-        "inst": 0
-      },
-      "pole_a": "apertura",
-      "pole_b": "prioridad_nacional"
-    },
-    {
-      "id": "d9_2",
-      "dimension": "migracion",
-      "scale": 4,
-      "text_a": "Quien viene a vivir acá debería poder mantener sus costumbres, tradiciones y formas de vida.",
-      "text_b": "Quien viene a vivir acá debería adaptarse a los valores y costumbres del lugar.",
-      "weights": {
-        "econ": 0,
-        "social": -2,
-        "inst": 0
-      },
-      "pole_a": "apertura",
-      "pole_b": "prioridad_nacional"
     }
   ],
-  "total_questions": 26
+  "total_questions": 19
 }

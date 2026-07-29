@@ -1,5 +1,7 @@
 # Brújula Política AR — Documento de Presentación del Proyecto
 
+> Nota 2026-07-28: documento historico. Para el estado actual de J1 usar `backend/data/j1/brujula.json`, `docs/VALIDACION_ITEMS_V6.md` y `docs/PLAN_DESARROLLO.md`.
+
 **Versión:** 1.0 — Junio 2026
 **Estado:** Diseño de contenido completo · Implementación técnica pendiente
 

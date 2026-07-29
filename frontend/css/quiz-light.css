@@ -327,6 +327,199 @@ body.quiz-page {
   .qp-scale-labels span { font-size: 0.65rem; }
 }
 
+/* ── Drag Slider ── */
+.qp-drag-question {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.qp-scenario {
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+  color: #1C1916;
+  line-height: 1.45;
+  margin-bottom: 24px;
+}
+
+.qp-drag-card {
+  padding: 18px 20px;
+  border-radius: 14px;
+  border: 2px solid #E2DDD5;
+  background: #FFFFFF;
+  font-size: 0.97rem;
+  line-height: 1.5;
+  text-align: center;
+  color: #1C1916;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.18s, background 0.18s, opacity 0.18s;
+}
+
+.qp-drag-card.active {
+  border-color: var(--coral);
+  background: var(--coral-light);
+}
+
+.qp-drag-card.dim { opacity: 0.32; }
+
+/* Puck — compartido desktop/mobile */
+.qp-puck {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 3px solid #C8C3BA;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  box-shadow: 0 3px 14px rgba(0,0,0,0.13);
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+
+.qp-puck-arrow {
+  font-size: 1.15rem;
+  color: #B0AAA2;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.qp-puck-label {
+  font-size: 0.57rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #B0AAA2;
+  text-align: center;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.qp-puck.toward-first,
+.qp-puck.toward-second {
+  border-color: var(--coral);
+  box-shadow: 0 3px 14px rgba(232,101,26,0.22);
+}
+.qp-puck.toward-first .qp-puck-label,
+.qp-puck.toward-second .qp-puck-label { color: var(--coral); }
+
+.qp-puck.strong {
+  background: var(--coral);
+  border-color: var(--coral-dark);
+  box-shadow: 0 4px 18px rgba(232,101,26,0.4);
+}
+.qp-puck.strong .qp-puck-label,
+.qp-puck.strong .qp-puck-arrow { color: #FFFFFF; }
+
+/* ── Snap dots (compartidos) ── */
+.qp-snap-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: #D6D1C9;
+  transition: background 0.15s, transform 0.15s;
+}
+.qp-snap-dot.active { background: var(--coral); transform: translate(-50%, -50%) scale(1.3); }
+
+/* ── Desktop: cards lado a lado, slider horizontal abajo ── */
+@media (min-width: 640px) {
+  .qp-drag-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+  .qp-cards-area {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: stretch;
+  }
+  .qp-drag-card { flex: 1; min-height: 80px; }
+
+  .qp-track-wrap {
+    position: relative;
+    width: 100%;
+    height: 72px;
+    flex-shrink: 0;
+  }
+  .qp-track-line {
+    position: absolute;
+    top: 50%;
+    left: calc(50% - 160px);
+    width: 320px;
+    height: 4px;
+    background: #D6D1C9;
+    border-radius: 2px;
+    transform: translateY(-50%);
+  }
+
+  /* 5 dots horizontales */
+  .qp-snap-dot { top: 50%; transform: translate(-50%, -50%); }
+  .snap-t1 { left: 0%;   width: 14px; height: 14px; }
+  .snap-b1 { left: 25%;  width: 9px;  height: 9px; }
+  .snap-c  { left: 50%;  width: 6px;  height: 6px; }
+  .snap-b2 { left: 75%;  width: 9px;  height: 9px; }
+  .snap-t2 { left: 100%; width: 14px; height: 14px; }
+}
+
+/* ── Mobile: cards apiladas, slider vertical a la derecha ── */
+@media (max-width: 639px) {
+  .qp-drag-layout {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: stretch;
+    width: 100%;
+  }
+  .qp-cards-area {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    flex: 1;
+    min-width: 0;
+  }
+  .qp-drag-card { min-height: 64px; }
+
+  .qp-track-wrap {
+    position: relative;
+    width: 64px;
+    min-height: 200px;
+    flex-shrink: 0;
+  }
+  .qp-track-line {
+    position: absolute;
+    left: 50%;
+    top: calc(50% - 80px);
+    height: 160px;
+    width: 4px;
+    background: #D6D1C9;
+    border-radius: 2px;
+    transform: translateX(-50%);
+  }
+
+  /* 5 dots verticales */
+  .qp-snap-dot { left: 50%; transform: translate(-50%, -50%); }
+  .snap-t1 { top: 0%;   width: 14px; height: 14px; }
+  .snap-b1 { top: 25%;  width: 9px;  height: 9px; }
+  .snap-c  { top: 50%;  width: 6px;  height: 6px; }
+  .snap-b2 { top: 75%;  width: 9px;  height: 9px; }
+  .snap-t2 { top: 100%; width: 14px; height: 14px; }
+}
+
 /* ── Likert legacy (options) ── */
 .qp-options {
   display: flex;

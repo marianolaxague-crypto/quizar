@@ -103,7 +103,7 @@ async function init() {
 }
 
 // ── Intermediate engagement screens ──────────────────────────────────
-const INTERMEDIATE_AT = [9, 19]; // mostrar cuando current llega a este índice
+const INTERMEDIATE_AT = [6, 13]; // mostrar cuando current llega a este índice (19 preguntas)
 
 const INTERMEDIATE_SCREENS = [
   {
@@ -162,7 +162,7 @@ function renderQuestion() {
   wrap.style.width = "100%";
 
   if (q.text_a !== undefined) {
-    wrap.appendChild(buildEFG(q));
+    wrap.appendChild(buildDragSlider(q));
   } else if (q.options !== undefined) {
     wrap.appendChild(buildOptions(q));
   } else {
@@ -180,57 +180,148 @@ function renderQuestion() {
   }, 220);
 }
 
-// ── EFG — Elección Forzada Graduada (4-point) ────────────────────────
-function buildEFG(q) {
-  const aIsLeft  = q.id in efgPositions
+// ── Drag Slider — snap a 5 posiciones, responsive ────────────────────
+function buildDragSlider(q) {
+  const BREAKPOINT = 640;
+  const HALF_D = 160; // desktop: px desde centro al extremo
+  const HALF_M = 80;  // mobile
+
+  // 5 posiciones de snap (norm: -1 a +1)
+  const SNAPS = [
+    { norm: -1,   value: 1,    label: "Totalmente", dir: "first",  dot: "snap-t1" },
+    { norm: -0.5, value: 2,    label: "Bastante",   dir: "first",  dot: "snap-b1" },
+    { norm:  0,   value: null, label: null,          dir: null,     dot: "snap-c"  },
+    { norm:  0.5, value: 3,    label: "Bastante",   dir: "second", dot: "snap-b2" },
+    { norm:  1,   value: 4,    label: "Totalmente", dir: "second", dot: "snap-t2" },
+  ];
+
+  const aIsFirst = q.id in efgPositions
     ? efgPositions[q.id]
     : (efgPositions[q.id] = Math.random() < 0.5);
 
-  const textA = q.stem ? `${q.stem} ${q.text_a}` : q.text_a;
-  const textB = q.stem ? `${q.stem} ${q.text_b}` : q.text_b;
-  // Texto de cada polo según posición randomizada
-  const topText = aIsLeft ? textA : textB;    // valores 1 y 2
-  const botText = aIsLeft ? textB : textA;    // valores 3 y 4
-  const saved   = responses[q.id]?.value ?? null;
-
-  // value: 1=Claramente A, 2=Más bien A, 3=Más bien B, 4=Claramente B
-  // Si A está a la izquierda: top=A (1,2), bot=B (3,4)
-  // Si A está a la derecha:   top=B (1,2 también mapeados como strong/soft top)
-  // → el backend recibe {value, a_is_left} y normaliza
+  const firstText  = aIsFirst ? q.text_a : q.text_b;
+  const secondText = aIsFirst ? q.text_b : q.text_a;
 
   const el = document.createElement("div");
-  el.className = "qp-efg";
+  el.className = "qp-drag-question";
   el.innerHTML = `
-    <p class="qp-instruction">¿Con cuál de estas afirmaciones te identificás más?</p>
-    <div class="qp-4btn-stack">
-      <button class="qp-4btn qp-4btn-strong${saved === 1 ? ' selected' : ''}" data-v="1">
-        <span class="qp-4btn-chip">Claramente</span>
-        <span class="qp-4btn-text">${topText}</span>
-      </button>
-      <button class="qp-4btn qp-4btn-soft${saved === 2 ? ' selected' : ''}" data-v="2">
-        <span class="qp-4btn-chip">Más bien</span>
-        <span class="qp-4btn-text">${topText}</span>
-      </button>
-      <div class="qp-4btn-divider"></div>
-      <button class="qp-4btn qp-4btn-soft${saved === 3 ? ' selected' : ''}" data-v="3">
-        <span class="qp-4btn-chip">Más bien</span>
-        <span class="qp-4btn-text">${botText}</span>
-      </button>
-      <button class="qp-4btn qp-4btn-strong${saved === 4 ? ' selected' : ''}" data-v="4">
-        <span class="qp-4btn-chip">Claramente</span>
-        <span class="qp-4btn-text">${botText}</span>
-      </button>
+    <p class="qp-scenario">${q.scenario || ""}</p>
+    <div class="qp-drag-layout">
+      <div class="qp-cards-area">
+        <div class="qp-drag-card qp-card-first">${firstText}</div>
+        <div class="qp-drag-card qp-card-second">${secondText}</div>
+      </div>
+      <div class="qp-track-wrap">
+        <div class="qp-track-line">
+          <div class="qp-snap-dot snap-t1"></div>
+          <div class="qp-snap-dot snap-b1"></div>
+          <div class="qp-snap-dot snap-c"></div>
+          <div class="qp-snap-dot snap-b2"></div>
+          <div class="qp-snap-dot snap-t2"></div>
+        </div>
+        <div class="qp-puck">
+          <span class="qp-puck-arrow">↔</span>
+          <span class="qp-puck-label"></span>
+        </div>
+      </div>
     </div>
-    <button class="qp-escape${saved === 0 ? ' selected' : ''}" data-v="0">
-      No tengo postura sobre este dilema
-    </button>
+    <button class="qp-escape">No tengo postura sobre este dilema</button>
   `;
 
-  el.querySelectorAll("[data-v]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      if (advancing) return;
-      selectAndAdvance(q, parseInt(btn.dataset.v), aIsLeft, el);
-    });
+  const puck       = el.querySelector(".qp-puck");
+  const puckArrow  = el.querySelector(".qp-puck-arrow");
+  const puckLabel  = el.querySelector(".qp-puck-label");
+  const cardFirst  = el.querySelector(".qp-card-first");
+  const cardSecond = el.querySelector(".qp-card-second");
+  const dots       = el.querySelectorAll(".qp-snap-dot");
+
+  let isDragging = false;
+  let startX = 0, startY = 0;
+  let currentSnap = SNAPS[2]; // centro
+
+  function isDesktop() { return window.innerWidth >= BREAKPOINT; }
+  function half()      { return isDesktop() ? HALF_D : HALF_M; }
+
+  function nearestSnap(rawOffset) {
+    const norm = Math.max(-1, Math.min(1, rawOffset / half()));
+    return SNAPS.reduce((best, s) =>
+      Math.abs(s.norm - norm) < Math.abs(best.norm - norm) ? s : best
+    );
+  }
+
+  function applySnap(snap, animate) {
+    currentSnap = snap;
+    const px = snap.norm * half();
+    puck.style.transition = animate ? "transform 0.12s ease" : "none";
+    if (isDesktop()) {
+      puck.style.transform = `translate(calc(-50% + ${px}px), -50%)`;
+    } else {
+      puck.style.transform = `translate(-50%, calc(-50% + ${px}px))`;
+    }
+
+    dots.forEach((d, i) => d.classList.toggle("active", SNAPS[i] === snap));
+
+    cardFirst.classList.toggle("active", snap.dir === "first");
+    cardFirst.classList.toggle("dim",    snap.dir === "second");
+    cardSecond.classList.toggle("active", snap.dir === "second");
+    cardSecond.classList.toggle("dim",    snap.dir === "first");
+    puck.classList.toggle("toward-first",  snap.dir === "first");
+    puck.classList.toggle("toward-second", snap.dir === "second");
+    puck.classList.toggle("strong", snap.label === "Totalmente");
+
+    if (snap.label) {
+      puckLabel.textContent = snap.label;
+      puckArrow.style.display = "none";
+    } else {
+      puckLabel.textContent = "";
+      puckArrow.style.display = "";
+      puckArrow.textContent = isDesktop() ? "↔" : "↕";
+    }
+  }
+
+  function onMove(e) {
+    if (!isDragging) return;
+    e.preventDefault();
+    const rawOffset = isDesktop()
+      ? (e.touches ? e.touches[0].clientX : e.clientX) - startX
+      : (e.touches ? e.touches[0].clientY : e.clientY) - startY;
+    const snap = nearestSnap(rawOffset);
+    if (snap !== currentSnap) applySnap(snap, true);
+  }
+
+  function onEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    document.removeEventListener("mousemove", onMove);
+    document.removeEventListener("mouseup",   onEnd);
+    document.removeEventListener("touchmove", onMove);
+    document.removeEventListener("touchend",  onEnd);
+
+    if (!currentSnap.value) {
+      applySnap(SNAPS[2], true); // snap back to center
+      return;
+    }
+    setTimeout(() => selectAndAdvance(q, currentSnap.value, aIsFirst, el), 220);
+  }
+
+  function onStart(e) {
+    if (advancing) return;
+    isDragging = true;
+    startX = e.touches ? e.touches[0].clientX : e.clientX;
+    startY = e.touches ? e.touches[0].clientY : e.clientY;
+    puck.style.transition = "none";
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup",   onEnd);
+    document.addEventListener("touchmove", onMove, { passive: false });
+    document.addEventListener("touchend",  onEnd);
+  }
+
+  puck.addEventListener("mousedown",  onStart);
+  puck.addEventListener("touchstart", onStart, { passive: true });
+
+  el.querySelector(".qp-escape").addEventListener("click", () => {
+    if (advancing) return;
+    selectAndAdvance(q, 0, aIsFirst, el);
   });
 
   return el;
@@ -241,11 +332,6 @@ function selectAndAdvance(q, v, aIsLeft, container) {
   advancing = true;
   responses[q.id] = { value: v, a_is_left: aIsLeft };
   try { localStorage.setItem("quiz_responses", JSON.stringify(responses)); } catch (_) {}
-
-  // Highlight visualmente el botón seleccionado
-  container.querySelectorAll(".qp-choice").forEach(b => {
-    b.classList.toggle("selected", parseInt(b.dataset.v) === v);
-  });
 
   // Avance automático
   const delay = 380;

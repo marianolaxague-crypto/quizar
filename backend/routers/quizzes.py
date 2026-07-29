@@ -3,15 +3,18 @@ from ..scoring import load_quiz_data
 
 router = APIRouter(prefix="/api/quizzes", tags=["quizzes"])
 
+J1_DATA = load_quiz_data("j1")
+
 QUIZ_META = {
     "j1": {
         "title": "Brújula Ideológica",
         "subtitle": "Descubrí dónde estás en el espectro político",
         "icon": "🧭",
         "color": "#1a1a2e",
-        "questions_count": 25,
+        "questions_count": J1_DATA.get("total_questions", len(J1_DATA.get("questions", []))),
         "time_minutes": 4,
-        "format": "efg"
+        "format": J1_DATA.get("format", "efg"),
+        "version": J1_DATA.get("version"),
     },
     "ideological": {
         "title": "Brújula Ideológica (v0)",
