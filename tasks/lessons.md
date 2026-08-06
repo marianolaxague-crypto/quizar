@@ -1,5 +1,51 @@
 # Lecciones aprendidas — quiz-ar
 
+## ESTADO DE PRODUCCIÓN (06/08/2026)
+- URL: https://brujula-politica.up.railway.app
+- Railway project: `brujula-politica` (workspace `marianolaxague-crypto`)
+- Litestream → R2 bucket `quizar-db` activo y verificado
+- Python path en Windows: `C:\Users\Mlaxague\AppData\Local\Programs\Python\Python313\python.exe`
+- Railway CLI: instalado globalmente vía `npm install -g @railway/cli` (v5.30.4)
+- Deploy command: `railway up --service brujula-politica --detach`
+
+---
+
+## 2026-08-06 — Railway healthcheck requiere endpoint /health explícito
+
+**ERROR:** `railway.toml` tenía `healthcheckPath = "/health"` pero el endpoint no existía en `main.py`. El deploy pasaba (el container levantaba) pero Railway no podía verificar salud del servicio.
+
+**REGLA:** Siempre agregar `@app.get("/health") def health(): return {"status": "ok"}` antes del primer deploy a Railway.
+
+**PORQUÉ:** Sin healthcheck, Railway no puede detectar si la app crashea post-startup y no reinicia automáticamente.
+
+---
+
+## 2026-08-06 — Litestream con Cloudflare R2: endpoint va en YAML, no en la URL
+
+**ERROR:** `litestream.yml` usaba `url: s3://bucket?endpoint=https://...r2.cloudflarestorage.com`. Litestream no parsea el endpoint como query param — los logs mostraban `endpoint=""` y `NoCredentialProviders`.
+
+**REGLA:** Para R2, usar config explícita en el YAML:
+```yaml
+replicas:
+  - type: s3
+    bucket: quizar-db
+    path: backups
+    access-key-id: ${LITESTREAM_ACCESS_KEY_ID}
+    secret-access-key: ${LITESTREAM_SECRET_ACCESS_KEY}
+    endpoint: https://<ACCOUNT_ID>.r2.cloudflarestorage.com
+    region: auto
+```
+
+**PORQUÉ:** La URL `s3://bucket?endpoint=...` funciona en algunos clientes S3 pero no en Litestream v0.3.13. Los campos `endpoint` y `region` deben ir como propiedades del replica.
+
+---
+
+## 2026-08-06 — start.sh: detectar Litestream por ACCESS_KEY, no por REPLICA_URL
+
+**REGLA:** El guard en `start.sh` debe ser `[ -n "$LITESTREAM_ACCESS_KEY_ID" ]`, no `[ -n "$LITESTREAM_REPLICA_URL" ]`. La URL puede estar seteada pero sin credenciales Litestream no puede conectar.
+
+---
+
 ## REGLA OBLIGATORIA DE CIERRE DE SESIÓN
 
 **Cada sesión de trabajo en quiz-ar debe terminar con un git push a `marianolaxague-crypto/quizar`.**
