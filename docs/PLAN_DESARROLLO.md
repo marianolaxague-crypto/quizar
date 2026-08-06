@@ -17,9 +17,9 @@ El diferencial no es el quiz: es el **dataset** que se acumula. Con 1.000 respue
 
 | Juego | Pregunta central | Metodología | Estado |
 |-------|-----------------|-------------|--------|
-| **J1 — Brújula Ideológica** | ¿Cómo pensás? | EFG 4-point actitudinal (sin anclas políticas) | ✅ Listo para deploy |
-| **J2 — Visión AR** | ¿Con qué visión de Argentina coincidís? | Elección forzada sobre temas políticos AR | Sin diseñar |
-| **J3 — MaxDiff Candidatos** | ¿A quién preferís? | MaxDiff best-worst (20 figuras) | Sin conectar |
+| **J1 — Brújula Ideológica** | ¿Cómo pensás? | EFG 4-point actitudinal (sin anclas políticas) | ✅ Listo para deploy — blocker: OG meta tags |
+| **J2 — El Legislador** | ¿A qué bloque terminás perteneciendo? | Simulador legislativo · scoring vs. actas reales | Diseño v2.0 cerrado (06/08/2026) — pendiente implementación |
+| **J3 — MaxDiff Candidatos** | ¿A quién preferís? | MaxDiff best-worst (20 figuras) | Sin diseñar |
 
 **Transversal:** ancla de intención de voto post-resultado en todos los juegos (implementada en el backend).
 
@@ -192,6 +192,42 @@ Ver detalle completo en `tasks/lessons.md` (I8–I14).
 
 ---
 
+### E4.8 — Módulo demográfico transversal `✅ COMPLETA (06/08/2026)`
+
+Recolección gamificada de datos declarados para control demuestral de cara a las presidenciales 2027.
+
+**Arquitectura:**
+- Tabla nueva `demographics` (1:1 con `session_id`) — se pregunta **una sola vez** al completar cualquier juego
+- El check `GET /api/demographics/{session_id}/exists` devuelve `true` → overlay no aparece en J2/J3
+- La intención de voto sigue en `quiz_completions` (se re-pregunta por juego, puede cambiar)
+
+**Variables (5):**
+
+| Variable | Opciones |
+|---|---|
+| sexo | Hombre · Mujer · No binario · Prefiero no responder |
+| edad_rango | 16-24 · 25-34 · 35-44 · 45-59 · 60+ · Prefiero no responder |
+| provincia | 24 jurisdicciones (23 prov + CABA) · Prefiero no responder |
+| nivel_educativo | Primaria · Secundaria · Superior · Prefiero no responder |
+| ingreso_familiar | Tramos AtlasIntel julio 2026: <$630K · $630K–$1M · $1M–$1.5M · $1.5M–$2.2M · $2.2M–$3M · >$3M · Prefiero no responder |
+
+**Calibración:** tramos de ingreso referenciados a AtlasIntel/Bloomberg LATAM PULSE julio 2026. Campo `calibration_date = '2026-07'` en la tabla. Actualizar tramos cuando se recalibre.
+
+**UX — semi-obligatorio:**
+- Overlay aparece 1.5s después de renderizar el resultado (solo en `/result`, nunca en `/share/`)
+- Botón "Continuar" deshabilitado hasta que todas las preguntas tienen selección ("Prefiero no responder" cuenta)
+- No tiene botón de cierre
+
+**Archivos modificados:**
+- `backend/database.py` — tabla + `save_demographics()` + `demographics_exist()`
+- `backend/routers/sessions.py` — `POST /api/demographics` + `GET /api/demographics/{id}/exists`
+- `frontend/js/results.js` — `showDemographicsOverlay()` + `maybeShowDemographics()` (llamado en `init()` para todos los quiz types)
+- `frontend/css/style.css` — estilos `.demo-overlay`, `.demo-card`, `.demo-chip`, `.demo-select`, `.demo-btn`
+
+**Para J2 y J3:** el `results.js` ya llama a `maybeShowDemographics()` fuera del condicional de quiz_type. Solo hay que asegurar que el renderer de cada juego use ese mismo `results.js` o llame a la función en su propio archivo de resultados.
+
+---
+
 ### E5 — Deploy y piloto `PRÓXIMA ETAPA`
 
 #### E5.1 — Pre-deploy (hacer antes de subir)
@@ -263,15 +299,36 @@ LITESTREAM_SECRET_ACCESS_KEY = ...
 
 ---
 
-### E6 — J2 Visión AR `FUTURO`
+### E6 — J2 El Legislador `DISEÑO CERRADO — IMPLEMENTACIÓN PENDIENTE`
 
-**Criterio de entrada:** J1 validado con datos piloto.
+**Criterio de entrada:** puede implementarse en paralelo con E5 (no bloquea el deploy de J1).
 
-**Diseño pendiente de sesión dedicada:**
-- Preguntas sobre visiones concretas de Argentina (mezcla de temas políticos y no políticos)
-- Tradiciones a mapear: kirchnerismo, peronismo clásico, radicalismo, liberalismo, izquierda
-- `backend/scoring/j2_vision.py` — archivo creado, contenido pendiente
-- `backend/data/j2/` — carpeta existe, vacía
+**Diseño v2.0 cerrado el 06/08/2026.** Documentación completa en:
+- `docs/JUEGO_2_VISION.md` — diseño canónico (mecánica, scoring, output)
+- `tasks/J2_BANCO_ESCENARIOS.md` — set definitivo + banco de candidatos + trazabilidad
+- `tasks/J2_PLAN.md` — plan de implementación en 4 fases
+- `tasks/J2_CONTENIDO_NARRATIVO.md` — onboarding, contextos, modales, titulares, ofertas
+
+**Concepto:** simulador de rol. El usuario es un legislador independiente ficticio sin bloque.
+12 escenarios (8 base fija + 4 temporada), sus votos se comparan con actas reales del Congreso.
+Output: arquetipo acusatorio + oferta política narrativa + radar de afinidad por 5 bloques.
+
+**Set definitivo — base fija (8):**
+IVE 2020 · FMI 2022 · Ganancias 4ª 2023 · BUP 2024 · Ficha Limpia 2025
++ BCRA autónomo (ficticio) · TLC EE.UU. (ficticio) · Baja imputabilidad (ficticio)
+
+**Scoring:** Manhattan distance + Índice de Rice ponderado. `real×0.7 + ficticio×0.3`.
+
+**Estado de implementación:**
+- `backend/scoring/j2_vision.py` — STUB, reescribir desde cero
+- `backend/data/j2/j2_legislador.json` — NO EXISTE (crear en Fase 2)
+- `frontend/games/j2/` — vacío (crear en Fase 4)
+
+**Fases pendientes:**
+1. Contenido narrativo — 95% completo (`tasks/J2_CONTENIDO_NARRATIVO.md`)
+2. Datos — explorar comovoto.dev.ar, calcular Rice Index, construir JSON instrumento
+3. Backend — reescribir `j2_vision.py` con nuevo engine
+4. Frontend — onboarding, quiz, resultado, compartir
 
 ---
 
@@ -292,7 +349,7 @@ LITESTREAM_SECRET_ACCESS_KEY = ...
 Para cuando J1 esté validado en producción:
 
 - Comparación social en tiempo real: "Sos más privatista que el X% de los jugadores"
-- Datos demográficos opcionales: provincia, edad, género — para análisis cruzados
+- ~~Datos demográficos~~ — ✅ implementado en E4.8
 - Dashboard público de estadísticas (versión reducida)
 - API de datos anonimizados para investigadores
 - Tracking temporal: el mismo usuario puede repetir el quiz y ver si se desplazó
@@ -301,18 +358,23 @@ Para cuando J1 esté validado en producción:
 
 ## Próximos pasos — orden de trabajo
 
+**Actualizado:** 06/08/2026
+
 | # | Tarea | Estado | Bloquea |
 |---|-------|--------|---------|
-| 1 | Smoke test local (19 preguntas end-to-end en browser) | ⏳ En validación | Deploy |
-| 2 | OG meta tags dinámicos (server-side, imagen por arquetipo) | 🔴 Pendiente | Calidad del share |
-| 3 | ~~Rate limiting~~ | ✅ Implementado (E4.7) | — |
-| 4 | Deploy Railway + Litestream + R2 | 🔴 Pendiente | Piloto |
-| 5 | Piloto cerrado 150-200 respondentes | 🔴 Pendiente | Calibración |
-| 6 | Análisis de piloto (Cronbach, PCA, item-total) | 🔴 Pendiente | Lanzamiento público |
-| 7 | Calibrar CENTER_THRESHOLD e INST_THRESHOLD | 🔴 Pendiente | Resultados precisos |
-| 8 | Decisión sobre Fase 2 del banco (31-32 ítems) | 🔴 Post-piloto | — |
-| 9 | J2 Visión AR — sesión de diseño | 🔴 Post-piloto | E6 |
-| 10 | Lanzamiento público | 🔴 Post-piloto | E5 completa |
+| 1 | Smoke test local (19 preguntas end-to-end en browser) | ✅ Iniciado (28/07) | Deploy |
+| 2 | OG meta tags dinámicos (server-side, imagen por arquetipo) | 🔴 **Único blocker pre-deploy** | Calidad del share |
+| 3 | ~~Rate limiting~~ | ✅ E4.7 | — |
+| 4 | ~~Módulo demográfico~~ | ✅ E4.8 | — |
+| 5 | Deploy Railway + Litestream + R2 | 🔴 Pendiente | Piloto |
+| 6 | Piloto cerrado 150-200 respondentes | 🔴 Pendiente | Calibración |
+| 7 | Análisis de piloto (Cronbach, PCA, item-total) | 🔴 Pendiente | Lanzamiento público |
+| 8 | Calibrar CENTER_THRESHOLD e INST_THRESHOLD | 🔴 Post-piloto | Resultados precisos |
+| 9 | Decisión sobre Fase 2 del banco J1 (31-32 ítems) | 🔴 Post-piloto | — |
+| 10 | ~~J2 — sesión de diseño~~ | ✅ Diseño cerrado (06/08) | — |
+| 11 | J2 — Fase 2 datos (comovoto + Rice + JSON instrumento) | 🔴 Pendiente | J2 backend |
+| 12 | J2 — Fase 3 backend + Fase 4 frontend | 🔴 Pendiente | J2 launch |
+| 13 | Lanzamiento público J1 | 🔴 Post-piloto | E5 completa |
 
 ---
 

@@ -113,7 +113,7 @@ quiz-ar/
 │   │   ├── j2_vision.py             # stub
 │   │   └── j3_maxdiff.py            # stub
 │   └── data/
-│       └── j1/brujula.json          # Banco de ítems v5.1 (31 ítems)
+│       └── j1/brujula.json          # Banco de ítems v6.1 (19 ítems, 11 dimensiones)
 │
 ├── frontend/
 │   ├── index.html                   # Landing
@@ -137,7 +137,11 @@ quiz-ar/
 │       └── REVALIDACION_J1_V1.md
 │
 └── tasks/
-    └── lessons.md                   # Lecciones aprendidas + checklist validación
+    ├── lessons.md                   # Lecciones aprendidas + checklist validación
+    ├── J2_PLAN.md                   # Plan de implementación J2 (4 fases)
+    ├── J2_BANCO_ESCENARIOS.md       # Set definitivo + banco de candidatos + trazabilidad
+    ├── J2_CONTENIDO_NARRATIVO.md    # Contextos, modales, titulares, ofertas
+    └── J2_INVESTIGACION_DISENO.md   # Investigación de referentes y metodología
 ```
 
 ---
