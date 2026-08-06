@@ -1,5 +1,22 @@
 # Lecciones aprendidas — quiz-ar
 
+## REGLA OBLIGATORIA DE CIERRE DE SESIÓN
+
+**Cada sesión de trabajo en quiz-ar debe terminar con un git push a `marianolaxague-crypto/quizar`.**
+
+Secuencia estándar:
+```bash
+cd C:/Users/Mlaxague/Projects/quiz-ar
+git add <archivos relevantes>
+git commit -m "mensaje descriptivo"
+git push origin main
+```
+
+Si la sesión generó cambios en múltiples áreas (ej: implementación + documentación),
+hacer commits separados por área lógica, no un solo commit con todo.
+
+---
+
 ## Formato
 ```
 ## [FECHA] — [título corto]
