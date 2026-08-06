@@ -2,7 +2,9 @@
 
 Quiz ideológico multidimensional para Argentina. El usuario responde 19 preguntas en ~4 minutos y recibe un perfil psicográfico situado en un espacio de 3 ejes: económico, sociocultural e institucional.
 
-**Estado:** instrumento v6.1 cerrado · listo para deploy y piloto (ver `docs/PLAN_DESARROLLO.md`)
+**Estado:** deployado en producción · piloto activo
+
+**URL de producción:** https://brujula-politica.up.railway.app
 
 ---
 
