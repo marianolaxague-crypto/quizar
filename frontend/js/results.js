@@ -45,6 +45,150 @@ const PARTY_LABELS = {
   otro: "Otro partido", blanco: "Voto en blanco / No voto"
 };
 
+// ── Módulo demográfico ────────────────────────────────────────────────
+
+const PROVINCES = [
+  "Buenos Aires (provincia)", "CABA", "Catamarca", "Chaco", "Chubut",
+  "Córdoba", "Corrientes", "Entre Ríos", "Formosa", "Jujuy", "La Pampa",
+  "La Rioja", "Mendoza", "Misiones", "Neuquén", "Río Negro", "Salta",
+  "San Juan", "San Luis", "Santa Cruz", "Santa Fe", "Santiago del Estero",
+  "Tierra del Fuego", "Tucumán"
+];
+
+const DEMO_QUESTIONS = [
+  {
+    key: "sexo",
+    label: "¿Con cuál de estas opciones te identificás?",
+    options: ["Hombre", "Mujer", "No binario", "Prefiero no responder"]
+  },
+  {
+    key: "edad_rango",
+    label: "¿Qué rango de edad te corresponde?",
+    options: ["16-24", "25-34", "35-44", "45-59", "60+", "Prefiero no responder"]
+  },
+  {
+    key: "provincia",
+    label: "¿En qué provincia o distrito vivís?",
+    type: "select",
+    options: PROVINCES
+  },
+  {
+    key: "nivel_educativo",
+    label: "¿Cuál es tu nivel educativo?",
+    options: ["Educación primaria", "Educación secundaria", "Educación superior", "Prefiero no responder"]
+  },
+  {
+    key: "ingreso_familiar",
+    label: "¿Cuál es el ingreso mensual de tu hogar?",
+    options: [
+      "Menos de $630.000",
+      "$630.000–$1.000.000",
+      "$1.000.000–$1.500.000",
+      "$1.500.000–$2.200.000",
+      "$2.200.000–$3.000.000",
+      "Más de $3.000.000",
+      "Prefiero no responder"
+    ]
+  }
+];
+
+const _demoAnswers = {};
+
+function _demoAllAnswered() {
+  return DEMO_QUESTIONS.every(q => _demoAnswers[q.key]);
+}
+
+function _demoUpdateBtn() {
+  const btn = document.getElementById("demo-submit-btn");
+  if (btn) btn.disabled = !_demoAllAnswered();
+}
+
+function _buildDemoQuestionHTML(q, idx) {
+  if (q.type === "select") {
+    const opts = q.options.map(p =>
+      `<option value="${p}">${p}</option>`
+    ).join("");
+    return `
+      <div class="demo-q" data-key="${q.key}">
+        <div class="demo-q-label">${idx + 1}. ${q.label}</div>
+        <select class="demo-select" onchange="
+          _demoAnswers['${q.key}'] = this.value || null;
+          _demoUpdateBtn();
+        ">
+          <option value="">Seleccioná una opción</option>
+          ${opts}
+          <option value="Prefiero no responder">Prefiero no responder</option>
+        </select>
+      </div>`;
+  }
+  const chips = q.options.map(opt => `
+    <button class="demo-chip" onclick="
+      _demoAnswers['${q.key}'] = '${opt}';
+      this.closest('.demo-chips').querySelectorAll('.demo-chip').forEach(c => c.classList.remove('selected'));
+      this.classList.add('selected');
+      _demoUpdateBtn();
+    ">${opt}</button>`).join("");
+  return `
+    <div class="demo-q" data-key="${q.key}">
+      <div class="demo-q-label">${idx + 1}. ${q.label}</div>
+      <div class="demo-chips">${chips}</div>
+    </div>`;
+}
+
+async function _submitDemographics() {
+  const sessionId = localStorage.getItem("quiz_session_id");
+  if (!sessionId) { _closeDemoOverlay(); return; }
+  const btn = document.getElementById("demo-submit-btn");
+  if (btn) { btn.disabled = true; btn.textContent = "Guardando..."; }
+  try {
+    await fetch("/api/demographics", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ session_id: sessionId, ..._demoAnswers })
+    });
+  } catch (_) { /* silencioso — no bloquear al usuario */ }
+  _closeDemoOverlay();
+}
+
+function _closeDemoOverlay() {
+  const overlay = document.getElementById("demo-overlay");
+  if (overlay) {
+    overlay.style.opacity = "0";
+    setTimeout(() => overlay.remove(), 300);
+  }
+}
+
+function showDemographicsOverlay() {
+  const questionsHTML = DEMO_QUESTIONS.map((q, i) => _buildDemoQuestionHTML(q, i)).join("");
+  const overlay = document.createElement("div");
+  overlay.id = "demo-overlay";
+  overlay.className = "demo-overlay";
+  overlay.innerHTML = `
+    <div class="demo-card">
+      <div class="demo-header">
+        <div class="demo-title">Un último paso</div>
+        <div class="demo-subtitle">Ayudanos a que los datos representen a todos los argentinos.</div>
+      </div>
+      <div class="demo-questions">${questionsHTML}</div>
+      <button id="demo-submit-btn" class="demo-btn" disabled onclick="_submitDemographics()">
+        Continuar
+      </button>
+    </div>`;
+  document.body.appendChild(overlay);
+  requestAnimationFrame(() => { overlay.style.opacity = "1"; });
+}
+
+async function maybeShowDemographics() {
+  if (!location.pathname.startsWith("/result")) return;
+  const sessionId = localStorage.getItem("quiz_session_id");
+  if (!sessionId) return;
+  try {
+    const r = await fetch(`/api/demographics/${sessionId}/exists`);
+    const { exists } = await r.json();
+    if (!exists) showDemographicsOverlay();
+  } catch (_) { /* silencioso */ }
+}
+
 // ── F4: Loading screen ────────────────────────────────────────────────
 const LOADING_STEPS = [
   "Analizando eje Económico",
@@ -110,6 +254,8 @@ async function init() {
   } else {
     renderCandidate(wrapper, result, stats);
   }
+
+  setTimeout(maybeShowDemographics, 1500);
 }
 
 // ── J1 — Brújula Ideológica ───────────────────────────────────────────

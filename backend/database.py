@@ -32,17 +32,31 @@ def init_db():
                 completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
 
+            CREATE TABLE IF NOT EXISTS demographics (
+                session_id TEXT PRIMARY KEY,
+                sexo TEXT,
+                edad_rango TEXT,
+                provincia TEXT,
+                nivel_educativo TEXT,
+                ingreso_familiar TEXT,
+                calibration_date TEXT DEFAULT '2026-07',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+
             CREATE INDEX IF NOT EXISTS idx_qc_type
                 ON quiz_completions(quiz_type);
 
             CREATE INDEX IF NOT EXISTS idx_qc_session
                 ON quiz_completions(session_id);
         """)
-        # Migración: agregar voting_intention si no existe (SQLite no soporta IF NOT EXISTS en ALTER)
-        try:
-            conn.execute("ALTER TABLE quiz_completions ADD COLUMN voting_intention TEXT")
-        except Exception:
-            pass  # La columna ya existe
+        # Migraciones: agregar columnas si no existen
+        for migration in [
+            "ALTER TABLE quiz_completions ADD COLUMN voting_intention TEXT",
+        ]:
+            try:
+                conn.execute(migration)
+            except Exception:
+                pass
 
 
 def create_session(session_id: str):
@@ -140,6 +154,25 @@ def get_completion_by_session(session_id: str, quiz_type: str = "j1") -> dict | 
             (session_id, quiz_type)
         ).fetchone()
     return json.loads(row["result"]) if row else None
+
+
+def save_demographics(session_id: str, sexo: str, edad_rango: str, provincia: str,
+                      nivel_educativo: str, ingreso_familiar: str):
+    with get_conn() as conn:
+        conn.execute(
+            """INSERT OR REPLACE INTO demographics
+               (session_id, sexo, edad_rango, provincia, nivel_educativo, ingreso_familiar)
+               VALUES (?, ?, ?, ?, ?, ?)""",
+            (session_id, sexo, edad_rango, provincia, nivel_educativo, ingreso_familiar)
+        )
+
+
+def demographics_exist(session_id: str) -> bool:
+    with get_conn() as conn:
+        row = conn.execute(
+            "SELECT 1 FROM demographics WHERE session_id = ?", (session_id,)
+        ).fetchone()
+        return row is not None
 
 
 def get_completions(quiz_type: str) -> list[dict]:

@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from ..scoring import load_quiz_data
 from ..scoring.j1_validation import build_question_specs, validate_j1_responses
-from ..database import create_session, session_exists, save_completion, save_voting_intention, get_nearby_vote_stats
+from ..database import create_session, session_exists, save_completion, save_voting_intention, get_nearby_vote_stats, save_demographics, demographics_exist
 from ..scoring import SCORERS
 
 router = APIRouter(prefix="/api", tags=["sessions"])
@@ -17,6 +17,15 @@ class SubmitRequest(BaseModel):
 class VoteRequest(BaseModel):
     session_id: str
     voting_intention: str
+
+
+class DemographicsRequest(BaseModel):
+    session_id: str
+    sexo: str
+    edad_rango: str
+    provincia: str
+    nivel_educativo: str
+    ingreso_familiar: str
 
 
 def _valid_question_specs(quiz_type: str) -> dict:
@@ -64,6 +73,22 @@ def submit_quiz(quiz_type: str, body: SubmitRequest):
     result = SCORERS[quiz_type](body.responses)
     save_completion(body.session_id, quiz_type, body.responses, result)
     return result
+
+
+@router.post("/demographics")
+def save_demo(body: DemographicsRequest):
+    if not session_exists(body.session_id):
+        raise HTTPException(status_code=400, detail="Sesión inválida")
+    save_demographics(
+        body.session_id, body.sexo, body.edad_rango,
+        body.provincia, body.nivel_educativo, body.ingreso_familiar
+    )
+    return {"saved": True}
+
+
+@router.get("/demographics/{session_id}/exists")
+def demo_exists(session_id: str):
+    return {"exists": demographics_exist(session_id)}
 
 
 @router.post("/quiz/{quiz_type}/vote")
