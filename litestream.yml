@@ -1,6 +1,10 @@
 dbs:
   - path: /data/brujula.db
     replicas:
-      - url: ${LITESTREAM_REPLICA_URL}
+      - type: s3
+        bucket: quizar-db
+        path: backups
         access-key-id: ${LITESTREAM_ACCESS_KEY_ID}
         secret-access-key: ${LITESTREAM_SECRET_ACCESS_KEY}
+        endpoint: https://e38e363e7291bea82915eec6b5267439.r2.cloudflarestorage.com
+        region: auto
