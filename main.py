@@ -67,6 +67,11 @@ def result_page():
     return FileResponse(FRONTEND / "result.html")
 
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
+
 @app.get("/share/{session_id}")
 def share_page(session_id: str, request: Request):
     result = get_completion_by_session(session_id)
