@@ -1,0 +1,245 @@
+{
+  "quiz_type": "legislative",
+  "title": "El Legislador",
+  "description": "Comenzás tu carrera política. ¿A qué bloque terminás perteneciendo?",
+  "version": "1.0",
+  "created": "2026-08-07",
+  "scoring_note": "Afinidad = real×0.7 + ficticio×0.3. Distancia Manhattan normalizada + Rice ponderado. Rice < 55 → coef=0.5. Posición LLA en B1/B2/B3 es reconstruida (no había bloque parlamentario antes de dic-2023).",
+  "bloques": ["LLA", "PRO", "UCR", "UP", "FIT"],
+  "vote_map": {
+    "A favor": 1,
+    "En contra": -1,
+    "Me abstengo": 0,
+    "Me ausento": 0
+  },
+  "scoring_weights": {
+    "real": 0.7,
+    "ficticio": 0.3
+  },
+  "loyalty_zones": {
+    "disciplinado":  { "min": 0.80, "label": "Disciplinado" },
+    "moderado":      { "min": 0.60, "max": 0.799, "label": "Moderado" },
+    "discolo":       { "min": 0.40, "max": 0.599, "label": "Díscolo" },
+    "freerider":     { "threshold": 0.55, "label": "Lobo Solitario", "note": "ningún bloque supera 0.55 de afinidad" },
+    "opositor_sist": { "note": "Afinidad inversa: consistentemente vota contra el bloque más grande del hemiciclo" }
+  },
+  "ejercicio_perfiles": {
+    "pragmatico":    "Pragmático territorial — evalúa impacto en su provincia antes que la doctrina",
+    "negociador":    "Negociador — resuelve vía intermediación y acuerdos",
+    "confrontativo": "Confrontativo — expone en voz alta, pide votación nominal"
+  },
+  "scenarios": [
+    {
+      "id": "B1",
+      "titulo": "La ley del aborto",
+      "tipo": "real",
+      "year": 2020,
+      "camara": "diputados",
+      "fecha": "12/11/2020",
+      "acta_hcdn": 4077,
+      "eje": "social",
+      "resultado_total": { "afirm": 131, "contra": 117, "abs": 6, "aus": 2 },
+      "coalition_note": "Escenario valórico transversal. UCR y PRO divididas internamente (Rice < 55). FIT cohesivo a favor.",
+      "bloc_positions": {
+        "LLA": { "pos": -1, "rice": null, "coef": 0.5, "reconstructed": true, "fuente_lla": "Plataforma y declaraciones — no había bloque parlamentario en 2020" },
+        "PRO": { "pos": -1, "afirm": 9,  "contra": 30, "rice": 54, "coef": 0.5 },
+        "UCR": { "pos":  1, "afirm": 19, "contra": 14, "rice": 15, "coef": 0.5 },
+        "UP":  { "pos":  1, "afirm": 74, "contra": 24, "rice": 51, "coef": 0.5 },
+        "FIT": { "pos":  1, "afirm": 4,  "contra": 0,  "rice": 100, "coef": 1.0 }
+      }
+    },
+    {
+      "id": "B2",
+      "titulo": "El acuerdo con el Fondo",
+      "tipo": "real",
+      "year": 2022,
+      "camara": "diputados",
+      "fecha": "10/03/2022",
+      "acta_hcdn": null,
+      "acta_hcdn_note": "TBD — verificar en votaciones.hcdn.gob.ar, sesión 10/03/2022",
+      "eje": "exterior_economico",
+      "resultado_total": { "afirm": 202, "contra": 37, "abs": 13 },
+      "coalition_note": "Herradura: LLA + FIT votan juntos contra el centro. UP dividida (28 kirchneristas en contra, liderados por Máximo Kirchner).",
+      "bloc_positions": {
+        "LLA": { "pos": -1, "rice": 100, "coef": 0.7, "reconstructed": true, "fuente_lla": "Milei, Villarruel, Espert y Píparo documentados en contra" },
+        "PRO": { "pos":  1, "rice_est": 95, "coef": 0.95 },
+        "UCR": { "pos":  1, "rice_est": 95, "coef": 0.95 },
+        "UP":  { "pos":  1, "afirm_est": 89, "contra_est": 28, "rice": 52, "coef": 0.5 },
+        "FIT": { "pos": -1, "afirm": 0, "contra": 4, "rice": 100, "coef": 1.0 }
+      }
+    },
+    {
+      "id": "B3",
+      "titulo": "Sacar Ganancias a los trabajadores",
+      "tipo": "real",
+      "year": 2023,
+      "camara": "diputados",
+      "fecha": "20/09/2023",
+      "acta_hcdn": null,
+      "acta_hcdn_note": "TBD — sesión 20/09/2023. ID probable en rango 4843-4850.",
+      "eje": "economico",
+      "resultado_total": { "afirm": 135, "contra": 103 },
+      "coalition_note": "Inversión de coalición: LLA + UP + FIT a favor, PRO + UCR en contra. LLA pre-electoral con ~3 diputados.",
+      "bloc_positions": {
+        "LLA": { "pos":  1, "rice": 100, "coef": 0.8, "reconstructed": true, "fuente_lla": "~3 diputados pre-elección 2023, todos documentados a favor" },
+        "PRO": { "pos": -1, "rice_est": 95, "coef": 0.95 },
+        "UCR": { "pos": -1, "rice_est": 95, "coef": 0.95 },
+        "UP":  { "pos":  1, "rice_est": 95, "coef": 0.95 },
+        "FIT": { "pos":  1, "afirm": 4, "contra": 0, "rice": 100, "coef": 1.0 }
+      }
+    },
+    {
+      "id": "B4",
+      "titulo": "La boleta única",
+      "tipo": "real",
+      "year": 2024,
+      "camara": "diputados",
+      "fecha": "01/10/2024",
+      "acta_hcdn": 5383,
+      "eje": "electoral",
+      "resultado_total": { "afirm": 143, "contra": 87, "abs": 5, "aus": 21 },
+      "coalition_note": "FIT se abstuvo (el banco estimaba + — corrección post-datos). Del Caño cuestionó que ocultaría candidatos a los votantes.",
+      "bloc_positions": {
+        "LLA": { "pos":  1, "afirm_est": 30, "contra_est": 0, "rice": 100, "coef": 1.0 },
+        "PRO": { "pos":  1, "afirm_est": 25, "contra_est": 0, "rice": 100, "coef": 1.0 },
+        "UCR": { "pos":  1, "afirm_est": 30, "contra_est": 0, "rice": 100, "coef": 1.0 },
+        "UP":  { "pos": -1, "afirm_est": 10, "contra_est": 65, "rice": 73, "coef": 0.73 },
+        "FIT": { "pos":  0, "afirm": 0, "contra": 0, "abs": 4, "rice": null, "coef": 1.0, "note": "Abstención unánime — Rice indefinido" }
+      }
+    },
+    {
+      "id": "B5",
+      "titulo": "Ficha limpia",
+      "tipo": "real",
+      "year": 2025,
+      "camara": "diputados",
+      "fecha": "12/02/2025",
+      "acta_hcdn": 5585,
+      "eje": "institucional_electoral",
+      "resultado_total": { "afirm": 144, "contra": 98, "abs": 2, "aus": 13 },
+      "senado_note": "Cayó en Senado 36-35. Datos Senado verificados: LLA[9,0], PRO[5,0], UCR[13,0], PJ[0,27], Otros[9,8].",
+      "coalition_note": "FIT votó en contra (banco tenía D — corrección post-datos). Argumentaron riesgo de proscripción.",
+      "bloc_positions": {
+        "LLA": { "pos":  1, "afirm_est": 49, "contra_est": 0, "rice": 100, "coef": 1.0 },
+        "PRO": { "pos":  1, "afirm_est": 27, "contra_est": 0, "rice": 100, "coef": 1.0 },
+        "UCR": { "pos":  1, "afirm_est": 18, "contra_est": 0, "rice": 100, "coef": 1.0 },
+        "UP":  { "pos": -1, "afirm_est": 0, "contra_est": 58, "rice": 100, "coef": 1.0 },
+        "FIT": { "pos": -1, "afirm_est": 0, "contra_est": 3,  "rice": 100, "coef": 1.0 }
+      }
+    },
+    {
+      "id": "B6",
+      "titulo": "El Banco Central en la Constitución",
+      "tipo": "ficticio",
+      "eje": "economico_monetario",
+      "confianza": "alta",
+      "coalition_note": "Ortodoxia monetarista. UCR moderadamente cohesiva — tensión desarrollismo vs. liberalismo clásico.",
+      "bloc_positions": {
+        "LLA": { "pos":  1, "rice": 90, "coef": 0.9 },
+        "PRO": { "pos":  1, "rice": 90, "coef": 0.9 },
+        "UCR": { "pos":  1, "rice": 70, "coef": 0.7 },
+        "UP":  { "pos": -1, "rice": 90, "coef": 0.9 },
+        "FIT": { "pos": -1, "rice": 90, "coef": 0.9 }
+      }
+    },
+    {
+      "id": "B7",
+      "titulo": "El acuerdo con Estados Unidos",
+      "tipo": "ficticio",
+      "eje": "exterior",
+      "confianza": "alta",
+      "coalition_note": "UCR dividida: desarrollismo (en contra) vs. liberalismo clásico (a favor). Fractura geopolítica limpia.",
+      "bloc_positions": {
+        "LLA": { "pos":  1, "rice": 90, "coef": 0.9 },
+        "PRO": { "pos":  1, "rice": 85, "coef": 0.85 },
+        "UCR": { "pos":  0, "rice": 50, "coef": 0.5, "note": "Dividida — algunos desarrollistas en contra" },
+        "UP":  { "pos": -1, "rice": 90, "coef": 0.9 },
+        "FIT": { "pos": -1, "rice": 100, "coef": 1.0 }
+      }
+    },
+    {
+      "id": "B8",
+      "titulo": "Menores imputables",
+      "tipo": "ficticio",
+      "eje": "seguridad_social",
+      "confianza": "alta",
+      "coalition_note": "UCR dividida entre punitivismo electoral y garantismo histórico. Tensión clásica de la UCR en seguridad.",
+      "bloc_positions": {
+        "LLA": { "pos":  1, "rice": 90, "coef": 0.9 },
+        "PRO": { "pos":  1, "rice": 90, "coef": 0.9 },
+        "UCR": { "pos":  0, "rice": 50, "coef": 0.5, "note": "Dividida — punitivismo vs. garantismo" },
+        "UP":  { "pos": -1, "rice": 85, "coef": 0.85 },
+        "FIT": { "pos": -1, "rice": 100, "coef": 1.0 }
+      }
+    },
+    {
+      "id": "T1",
+      "titulo": "El régimen de grandes inversiones",
+      "tipo": "real",
+      "year": 2026,
+      "camara": "diputados",
+      "fecha": "25/06/2026",
+      "acta_hcdn": null,
+      "acta_hcdn_note": "TBD — media sanción 25/06/2026. Pendiente sanción del Senado.",
+      "eje": "economico_exterior",
+      "resultado_total": { "afirm": 130, "contra": 106, "abs": 7, "aus": 13 },
+      "coalition_note": "CC y Encuentro Federal votaron en contra junto a UP y FIT. Confirma banco.",
+      "bloc_positions": {
+        "LLA": { "pos":  1, "rice": 95, "coef": 0.95 },
+        "PRO": { "pos":  1, "rice": 90, "coef": 0.9 },
+        "UCR": { "pos":  1, "rice": 85, "coef": 0.85 },
+        "UP":  { "pos": -1, "rice": 95, "coef": 0.95 },
+        "FIT": { "pos": -1, "rice": 100, "coef": 1.0 }
+      }
+    },
+    {
+      "id": "T2",
+      "titulo": "La universidad y el veto",
+      "tipo": "real",
+      "year": 2024,
+      "camara": "diputados",
+      "fecha": "09/10/2024",
+      "acta_hcdn": null,
+      "acta_hcdn_note": "TBD — sesión 09/10/2024. BUP fue #5383 (01/10/2024); este voto fue 8 días después.",
+      "eje": "social_cultural",
+      "resultado_total": { "afirm": 160, "contra": 85, "abs": 5 },
+      "frame_note": "A favor = insistir con la ley (rechazar el veto). En contra = acompañar el veto del Ejecutivo.",
+      "coalition_note": "PRO acompañó a LLA para sostener el veto (fractura interna del PRO). 3 UCR y tucumanos de Independencia con LLA. La oposición quedó a 12 votos de los 2/3.",
+      "bloc_positions": {
+        "LLA": { "pos": -1, "rice": 100, "coef": 1.0 },
+        "PRO": { "pos": -1, "rice": 60,  "coef": 0.6, "note": "Mayoría con LLA, con disidentes que insistieron con la ley" },
+        "UCR": { "pos":  1, "rice": 87,  "coef": 0.87, "note": "~42/45 insistieron. 3 votaron con LLA." },
+        "UP":  { "pos":  1, "rice": 100, "coef": 1.0 },
+        "FIT": { "pos":  1, "rice": 100, "coef": 1.0 }
+      }
+    },
+    {
+      "id": "T3",
+      "titulo": "La semana de cuatro días",
+      "tipo": "ficticio",
+      "eje": "economico_laboral",
+      "confianza": "alta",
+      "coalition_note": "Fractura laboral limpia. Sin ambigüedad entre los 5 bloques. LLA+PRO+UCR contra, UP+FIT a favor.",
+      "bloc_positions": {
+        "LLA": { "pos": -1, "rice": 100, "coef": 1.0 },
+        "PRO": { "pos": -1, "rice": 95,  "coef": 0.95 },
+        "UCR": { "pos": -1, "rice": 85,  "coef": 0.85 },
+        "UP":  { "pos":  1, "rice": 90,  "coef": 0.9 },
+        "FIT": { "pos":  1, "rice": 100, "coef": 1.0 }
+      }
+    },
+    {
+      "id": "T4",
+      "titulo": "Las 2 de la madrugada en el Congreso",
+      "tipo": "procedural",
+      "eje": "perfil_ejercicio",
+      "scoring_note": "Este escenario NO entra al scoring de afinidad por bloques. Alimenta el perfil de ejercicio legislativo.",
+      "bloc_positions": null,
+      "opciones": [
+        { "id": "levantar_mano",    "texto": "Levantás la mano — acompañás sin registro",                                                   "perfil_ejercicio": "pragmatico" },
+        { "id": "retirarse",        "texto": "Te retirás al pasillo — no estás cuando se vota",                                             "perfil_ejercicio": "negociador" },
+        { "id": "votacion_nominal", "texto": "Pedís la palabra y exigís votación nominal — tu nombre queda en el acta votando en contra",   "perfil_ejercicio": "confrontativo" }
+      ]
+    }
+  ]
+}

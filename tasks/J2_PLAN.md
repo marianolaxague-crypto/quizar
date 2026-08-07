@@ -1,8 +1,8 @@
 # Plan de trabajo — J2 El Legislador
 
 **Fecha de diseño:** 2026-08-06
-**Última actualización:** 2026-08-06
-**Estado:** Diseño v2.0 cerrado — Fase 1 y Fase 2 pueden arrancar en paralelo
+**Última actualización:** 2026-08-07
+**Estado:** Fase 1 CERRADA · Fase 2 CERRADA (07/08/2026) · Fase 3 pendiente
 
 **Documentación del proyecto:**
 | Documento | Rol |
@@ -70,12 +70,14 @@
 - [x] Instrucciones de voto (primer escenario)
 - [x] Transiciones entre escenarios (6 variantes aleatorias)
 
-### Pendientes de revisión editorial (Fase 1)
-- [ ] Revisión de tono en todos los textos — confirmar que ningún escenario revela la posición "correcta"
-- [ ] Revisar que los modales de WhatsApp no nombran a dirigentes reales
-- [ ] Definir los 7 modales que NO tienen presión (transición limpia) vs. los 5 con modal
-- [ ] Confirmar texto de T4 (Dietas) — las opciones especiales son distintas a las 4 estándar
-- [ ] Textos para arquetipos Opositor Sistemático — falta la oferta política de este perfil
+### Revisión editorial — CERRADA (07/08/2026)
+- [x] Modales sin nombres de dirigentes reales — confirmado
+- [x] Distribución de modales: B1/B2/B5/T1/T2 con modal · B3/B4/B6/B7/B8/T3/T4 sin modal
+- [x] B2 FMI — sesgo de encuadre hacia "a favor" es intencional (escenario herradura)
+- [x] T4 Dietas — 3 opciones especiales (sin 4ª estándar) aceptado como diseño
+- [x] Opositor Sistemático — oferta política agregada a J2_CONTENIDO_NARRATIVO.md
+
+**Ajustes de tono diferidos a post-implementación** (ningún escenario bloquea la implementación)
 
 ---
 

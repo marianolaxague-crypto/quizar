@@ -394,3 +394,9 @@ No importa quién proponga qué: tu posición en el hemiciclo es estructural. El
 ### Lobo Solitario (todos los bloques < 55%)
 
 "Cinco bloques evaluaron tu trayectoria. Ninguno puede decir que sos uno de los suyos — y vos tampoco lo decís de ninguno de ellos. Desde el fondo del recinto, llegó una sola propuesta: armá tu propio sello. Los recursos son los que hay. El margen de maniobra, considerablemente más."
+
+---
+
+### Opositor Sistemático (afinidad inversa — contra el bloque más grande del hemiciclo)
+
+"Votaste sistemáticamente en contra del bloque más poderoso. En el pasillo eso tiene dos nombres: 'convicción de hierro' o 'el que nunca negocia', dependiendo de quién lo diga. Esta semana llegaron tres llamados. Ninguno trajo oferta de lista todavía: antes quieren saber si alguna vez decís que sí a algo. Cuando tengas esa respuesta, las puertas siguen abiertas."

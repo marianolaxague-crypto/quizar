@@ -16,8 +16,8 @@
 | B1 | IVE — Aborto legal | Real 2020 (legado) | Social | − | D | D | + | + |
 | B2 | Acuerdo con el FMI | Real 2022 (legado) | Ext/Económico | − | + | + | D | − |
 | B3 | Eliminación de Ganancias 4ª | Real 2023 (legado) | Económico | + | − | − | + | + |
-| B4 | Boleta Única de Papel | Real 2024 | Electoral | + | + | + | − | + |
-| B5 | Ficha Limpia | Real 2025 | Inst/Electoral | + | + | + | − | D |
+| B4 | Boleta Única de Papel | Real 2024 | Electoral | + | + | + | − | 0 | FIT se abstuvo (Del Caño cuestionó ocultamiento de candidatos). Dato verificado HCDN #5383.
+| B5 | Ficha Limpia | Real 2025 | Inst/Electoral | + | + | + | − | − | FIT votó en contra (argumentaron riesgo de proscripción). Dato verificado HCDN #5585.
 | B6 | Autonomía constitucional del BCRA | Ficticio | Económico-monetario | + | + | + | − | − |
 | B7 | TLC bilateral con EE.UU. | Ficticio | Exterior | + | + | D | − | − |
 | B8 | Baja de imputabilidad (con garantías) | Ficticio | Seguridad/Social | + | + | D | − | − |
