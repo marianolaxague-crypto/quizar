@@ -258,7 +258,10 @@ async function init() {
   setTimeout(maybeShowDemographics, 1500);
 }
 
-// ── J1 — Brújula Ideológica ───────────────────────────────────────────
+// ── J1 — Story state ─────────────────────────────────────────────────
+let _sTotal = 5, _sCurrent = 0, _sData = {};
+
+// ── J1 — Brújula Ideológica (Wrapped-style slides) ────────────────────
 function renderJ1(wrapper, result, stats, nearbyStats) {
   if (result.undetermined || result.profile === "UNDETERMINED") {
     wrapper.innerHTML = `
@@ -275,108 +278,204 @@ function renderJ1(wrapper, result, stats, nearbyStats) {
     return;
   }
 
-  const { profile, profile_data, archetype_data, top_dimension_label, top_dimension_score, archetype: archId } = result;
+  const { profile, profile_data, archetype_data, archetype: archId } = result;
   const econ   = result.econ   ?? result.axes?.econ   ?? 0;
   const social = result.social ?? result.axes?.social ?? 0;
   const inst   = result.inst   ?? 0;
-
-  const arch = archetype_data || {};
-  const archColor    = arch.color || PROFILE_COLORS[profile] || "#888";
-  const archName     = arch.name  || profile_data?.name || profile;
+  const arch         = archetype_data || {};
+  const archColor    = arch.color    || PROFILE_COLORS[profile] || "#888";
+  const archName     = arch.name     || profile_data?.name || profile;
   const archSub      = arch.subtitle || profile_data?.short || "";
-  const archDesc     = arch.description || profile_data?.description || "";
-  const archTension  = arch.tension || "";
   const taglineShort = arch.tagline_short || "";
-  const symbol       = arch.symbol || "";
   const archImageUrl = arch.image_url || "";
 
-  const topDimPoles = DIM_POLES[result.top_dimension] || {};
-  const topPoleLabel = top_dimension_score > 5
-    ? (topDimPoles.pos || top_dimension_label)
-    : top_dimension_score < -5
-      ? (topDimPoles.neg || top_dimension_label)
-      : top_dimension_label;
-  const topInsight = topPoleLabel
-    ? `Tu rasgo más marcado: <strong>${topPoleLabel}</strong>`
-    : "";
+  _sData = { result, stats, nearbyStats, arch, archColor, archName, archSub,
+             taglineShort, archImageUrl, econ, social, inst, profile, archId };
 
-  const dimHTML        = buildDimensionGroups(result.dimensions || {}, result.top_dimension);
-  const compareHTML    = stats && stats.total > 1 ? buildComparison(profile, archId, stats, archName) : "";
-  const voteHTML       = buildNearbyVote(nearbyStats);
-  const socialProofHTML = buildSocialProofLine(stats, profile, archId);
-  const otherQuizzes = buildOtherQuizzes(QUIZ_TYPE);
+  // Hide existing page chrome
+  wrapper.style.display = "none";
+  document.querySelector("header")?.style.setProperty("display", "none");
 
+  // Mount story container
+  _sCurrent = 0;
+  const slides = [_sSlide1(), _sSlide2(), _sSlide3(), _sSlide4(), _sSlide5()];
+  _sTotal = slides.length;
 
-  wrapper.innerHTML = `
-    <!-- ─── CAPA 1: Hero ─── -->
-    <div class="result-hero" style="background:color-mix(in srgb,${archColor} 10%,var(--bg));border-radius:16px;padding:32px 24px 24px;margin-bottom:12px">
-      ${arch.image_url ? `<img src="${arch.image_url}" alt="${archName}" class="arch-hero-img" onerror="this.style.display='none'">` : ""}
-      <div class="arch-hero-name" style="color:${archColor}">${archName}</div>
-      <div class="arch-sub" style="margin:6px 0 12px">${archSub}</div>
-      ${taglineShort ? `<p class="arch-tagline-short">"${taglineShort}"</p>` : ""}
-      ${topInsight ? `<p class="top-insight">${topInsight}</p>` : ""}
+  const container = document.createElement("div");
+  container.id = "story-container";
+  container.innerHTML = `
+    <div id="story-progress">
+      ${slides.map((_, i) => `<div class="sp-bar" id="sp-${i}"><div class="sp-fill" id="spf-${i}"></div></div>`).join("")}
     </div>
-
-    <!-- ─── Compartir ─── -->
-    <div class="share-icons-row">
-      ${navigator.share ? `
-      <button class="share-icon-btn" onclick="nativeShare()" title="Compartir">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-        <span>Compartir</span>
-      </button>` : ""}
-      <button class="share-icon-btn" onclick="shareTweet()" title="X / Twitter">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.631 5.905-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        <span>X</span>
-      </button>
-      <button class="share-icon-btn" onclick="shareWhatsApp()" title="WhatsApp">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        <span>WhatsApp</span>
-      </button>
-      <button class="share-icon-btn" onclick="downloadSharePNG('portrait')" title="Imagen para Instagram">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-linecap="round" stroke-width="3"/></svg>
-        <span>IG</span>
-      </button>
-      <button class="share-icon-btn" onclick="copyShareLink()" title="Copiar link">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
-        <span>Copiar</span>
-      </button>
+    <button id="story-share" onclick="storyShare()">↑ Compartir</button>
+    <div id="story-slides">
+      ${slides.map((html, i) => `<div class="story-slide${i === 0 ? " active" : ""}" id="ss-${i}">${html}</div>`).join("")}
     </div>
-
-    ${socialProofHTML}
-
-    <!-- ─── CAPA 3: Qué dice esto de vos (fold) ─── -->
-    <div class="result-fold" id="fold-detail" style="display:none">
-      <div class="fold-header" onclick="toggleFold('fold-detail')">
-        <span>Qué dice esto de vos</span><span class="fold-chevron">▲</span>
-      </div>
-      <div class="arch-description">
-        <p>${archDesc}</p>
-        ${dimHTML}
-        ${archTension ? `<p class="arch-tension">"${archTension}"</p>` : ""}
-      </div>
-    </div>
-
-    <!-- ─── CAPA 4: Quiénes piensan como vos (fold) ─── -->
-    <div class="result-fold" id="fold-compare" style="display:none">
-      <div class="fold-header" onclick="toggleFold('fold-compare')">
-        <span>Quiénes piensan como vos</span><span class="fold-chevron">▲</span>
-      </div>
-      ${compareHTML}
-      ${voteHTML}
-    </div>
-
-    <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
-      <button class="btn btn-ghost fold-trigger" onclick="toggleFold('fold-detail')">Mi perfil ↓</button>
-      <button class="btn btn-ghost fold-trigger" onclick="toggleFold('fold-compare')">Comparación ↓</button>
-    </div>
-
-    ${otherQuizzes}
+    <div id="tap-prev" onclick="storyPrev()"></div>
+    <div id="tap-next" onclick="storyNext()"></div>
   `;
+  document.body.appendChild(container);
+  _sUpdateProgress();
 
-  setTimeout(() => toggleFold("fold-detail"), 400);
-
-  setupShare(archName, archSub, econ, social, archColor, top_dimension_label, top_dimension_score, stats, profile, taglineShort, archImageUrl, archId);
+  // Adjust share button for light slide (slide 5)
+  setupShare(archName, archSub, econ, social, archColor,
+    result.top_dimension_label, result.top_dimension_score,
+    stats, profile, taglineShort, archImageUrl, archId);
 }
+
+function _sSlide1() {
+  const { archColor, archName, archSub, taglineShort, archImageUrl } = _sData;
+  const bgStyle = archImageUrl
+    ? `background-image:url(${archImageUrl});background-color:${archColor}`
+    : `background-color:${archColor}`;
+  return `
+    <div class="slide-hero">
+      <div class="slide-hero-bg" style="${bgStyle}"></div>
+      <div class="slide-hero-overlay"></div>
+      <div class="slide-hero-content">
+        <div class="slide-hero-branding">Brújula Política AR</div>
+        <div class="slide-hero-name">${archName}</div>
+        ${taglineShort ? `<div class="slide-hero-tagline">"${taglineShort}"</div>` : ""}
+        <div class="slide-hero-sub">${archSub}</div>
+      </div>
+    </div>`;
+}
+
+function _sSlide2() {
+  const { econ, social, inst, archColor } = _sData;
+  const axes = [
+    { name: "ECONÓMICO",     score: econ,   neg: "Estatista",        pos: "Privatista" },
+    { name: "SOCIOCULTURAL", score: social, neg: "Progresista",       pos: "Conservador" },
+    { name: "INSTITUCIONAL", score: inst,   neg: "Institucionalista", pos: "Anti-est." }
+  ];
+  const axisHTML = axes.map(ax => {
+    const side  = ax.score < -15 ? ax.neg : ax.score > 15 ? ax.pos : "Centro";
+    const pct   = Math.min(Math.abs(ax.score), 100) / 2;
+    const style = ax.score <= 0
+      ? `right:50%;width:${pct}%;background:${archColor}`
+      : `left:50%;width:${pct}%;background:${archColor}`;
+    return `
+      <div class="axis-story-item">
+        <div class="axis-story-header">
+          <span class="axis-story-name">${ax.name}</span>
+          <span class="axis-story-value">${side}</span>
+        </div>
+        <div class="axis-story-track">
+          <div class="axis-story-fill" style="${style}"></div>
+        </div>
+      </div>`;
+  }).join("");
+  return `
+    <div class="slide-dark">
+      <div class="slide-label">Tu resultado</div>
+      <div class="slide-title">Tu mapa ideológico</div>
+      <div class="axis-story-row">${axisHTML}</div>
+    </div>`;
+}
+
+function _sSlide3() {
+  const { result, archColor } = _sData;
+  const dims = result.dimensions || {};
+  const topDim = result.top_dimension;
+  const visible = Object.entries(dims)
+    .filter(([, v]) => Math.abs(v) > 15)
+    .sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))
+    .slice(0, 4);
+  if (!visible.length) return _sSlide4();
+  const dimHTML = visible.map(([dim, score]) => {
+    const poles = DIM_POLES[dim] || {};
+    const label = score > 0 ? (poles.pos || DIM_LABELS[dim] || dim) : (poles.neg || DIM_LABELS[dim] || dim);
+    const isTop = dim === topDim;
+    return `
+      <div class="dim-story-item">
+        <div class="dim-story-label" style="${isTop ? `color:${archColor}` : ""}">${label}</div>
+        <div class="dim-story-track">
+          <div class="dim-story-fill" style="width:${Math.abs(score)}%;background:${isTop ? archColor : "rgba(255,255,255,0.35)"}"></div>
+        </div>
+      </div>`;
+  }).join("");
+  return `
+    <div class="slide-dark">
+      <div class="slide-label">Tu perfil</div>
+      <div class="slide-title">Lo que más te define</div>
+      <div class="dim-story-list">${dimHTML}</div>
+    </div>`;
+}
+
+function _sSlide4() {
+  const { stats, nearbyStats, profile, archId, archColor } = _sData;
+  const total   = stats?.total || 0;
+  const archPct = stats?.archetypes_pct?.[archId] ?? stats?.profiles_pct?.[profile] ?? null;
+  let bigNum = archPct !== null
+    ? `<div class="community-big" style="color:${archColor}">${archPct}%</div>
+       <div class="community-desc">comparte tu arquetipo<br>
+         <span style="font-size:0.78rem;color:rgba(255,255,255,0.35)">de ${total.toLocaleString("es-AR")} jugadores</span>
+       </div>`
+    : `<div class="community-desc" style="padding-top:8px">Todavía no hay datos suficientes.<br>Volvé cuando haya más jugadores.</div>`;
+  let voteHTML = "";
+  if (nearbyStats && !nearbyStats.insufficient_data && nearbyStats.distribution?.length) {
+    const rows = nearbyStats.distribution.slice(0, 4).map(d => `
+      <div class="community-vote-row">
+        <div class="community-vote-party">${PARTY_LABELS[d.party] || d.party}</div>
+        <div class="community-vote-track"><div class="community-vote-fill" style="width:${d.pct}%;background:${archColor}"></div></div>
+        <div class="community-vote-pct">${d.pct}%</div>
+      </div>`).join("");
+    voteHTML = `<div class="community-vote-section">
+      <div class="community-vote-label-head">Intención de voto en tu arquetipo</div>
+      ${rows}
+    </div>`;
+  }
+  return `
+    <div class="slide-dark">
+      <div class="slide-label">Tu comunidad</div>
+      <div class="slide-title">Quiénes piensan como vos</div>
+      ${bigNum}${voteHTML}
+    </div>`;
+}
+
+function _sSlide5() {
+  const { archName, archSub, taglineShort, archImageUrl, archColor } = _sData;
+  return `
+    <div class="slide-cta">
+      <div class="slide-cta-eyebrow">Brújula Política AR</div>
+      ${archImageUrl ? `<img src="${archImageUrl}" alt="${archName}" class="slide-cta-img" onerror="this.style.display='none'">` : ""}
+      <div class="slide-cta-name" style="color:${archColor}">${archName}</div>
+      ${taglineShort ? `<div class="slide-cta-tagline">"${taglineShort}"</div>` : ""}
+      <div class="slide-cta-url">${location.hostname}</div>
+      <div class="slide-cta-btns">
+        <button class="slide-cta-btn-primary" onclick="storyShare()">Compartir mi resultado</button>
+        <a href="/" class="slide-cta-btn-ghost">Volver al inicio</a>
+      </div>
+    </div>`;
+}
+
+// ── Story navigation ──────────────────────────────────────────────────
+function storyNext() { if (_sCurrent < _sTotal - 1) _sGoTo(_sCurrent + 1); }
+function storyPrev() { if (_sCurrent > 0) _sGoTo(_sCurrent - 1); }
+
+function _sGoTo(n) {
+  document.querySelectorAll(".story-slide").forEach((s, i) => {
+    s.classList.remove("active", "prev");
+    if (i < n)      s.classList.add("prev");
+    else if (i === n) s.classList.add("active");
+  });
+  _sCurrent = n;
+  _sUpdateProgress();
+  // Light share button on last slide (light background)
+  const btn = document.getElementById("story-share");
+  if (btn) btn.className = n === _sTotal - 1 ? "light" : "";
+}
+
+function _sUpdateProgress() {
+  for (let i = 0; i < _sTotal; i++) {
+    const bar = document.getElementById(`sp-${i}`);
+    if (!bar) continue;
+    bar.classList.toggle("done",   i < _sCurrent);
+    bar.classList.toggle("active", i === _sCurrent);
+  }
+}
+
+function storyShare() { nativeShare(); }
 
 // ── F5: Animación del punto del compass ───────────────────────────────
 function animateCompassDot(econ, social) {

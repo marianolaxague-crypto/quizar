@@ -816,3 +816,357 @@ header .inner {
   .axis-cards { grid-template-columns: 1fr 1fr 1fr; }
   .dim-row    { grid-template-columns: 86px 1fr 52px; font-size: 0.8rem; }
 }
+
+/* ══════════════════════════════════════════
+   Story Result System (Wrapped-style)
+   ══════════════════════════════════════════ */
+
+#story-container {
+  position: fixed;
+  inset: 0;
+  background: #111;
+  overflow: hidden;
+  z-index: 100;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* ── Progress bars ── */
+#story-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 5px;
+  z-index: 30;
+  padding: 14px 14px 0;
+  pointer-events: none;
+}
+.sp-bar {
+  flex: 1;
+  height: 2.5px;
+  background: rgba(255,255,255,0.28);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.sp-fill {
+  height: 100%;
+  background: rgba(255,255,255,0.9);
+  width: 0%;
+  border-radius: 2px;
+  transition: width 0.15s ease;
+}
+.sp-bar.done .sp-fill { width: 100%; }
+.sp-bar.active .sp-fill { width: 100%; }
+
+/* ── Share button ── */
+#story-share {
+  position: absolute;
+  top: 44px;
+  right: 16px;
+  z-index: 30;
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.28);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 7px 14px;
+  border-radius: 99px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-family: inherit;
+  transition: background 0.15s;
+}
+#story-share:hover { background: rgba(255,255,255,0.24); }
+#story-share.light {
+  background: rgba(0,0,0,0.07);
+  border-color: rgba(0,0,0,0.15);
+  color: #1C1916;
+}
+
+/* ── Tap zones ── */
+#tap-prev, #tap-next {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 32%;
+  z-index: 20;
+  cursor: pointer;
+}
+#tap-prev { left: 0; }
+#tap-next { right: 0; }
+
+/* ── Slides ── */
+#story-slides { position: absolute; inset: 0; }
+.story-slide {
+  position: absolute;
+  inset: 0;
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  overflow: hidden;
+}
+.story-slide.active { transform: translateX(0); }
+.story-slide.prev   { transform: translateX(-100%); }
+
+/* ── Slide 1: Hero ── */
+.slide-hero { position: relative; color: #fff; }
+.slide-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center top;
+}
+.slide-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.08) 0%,
+    rgba(0,0,0,0)    35%,
+    rgba(0,0,0,0.55) 65%,
+    rgba(0,0,0,0.9)  100%
+  );
+}
+.slide-hero-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px 28px 52px;
+}
+.slide-hero-branding {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 10px;
+}
+.slide-hero-name {
+  font-size: clamp(2.1rem, 9vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+  color: #fff;
+}
+.slide-hero-tagline {
+  font-size: 1.05rem;
+  font-style: italic;
+  color: rgba(255,255,255,0.82);
+  line-height: 1.45;
+  margin-bottom: 8px;
+}
+.slide-hero-sub {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+/* ── Slides 2-4: Dark content ── */
+.slide-dark {
+  background: #111;
+  color: #fff;
+  padding: 80px 28px 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.slide-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+  margin-bottom: 10px;
+}
+.slide-title {
+  font-size: clamp(1.7rem, 7vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 36px;
+  letter-spacing: -0.5px;
+}
+
+/* ── Slide 2: Axes ── */
+.axis-story-row { display: flex; flex-direction: column; gap: 24px; }
+.axis-story-item {}
+.axis-story-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+.axis-story-name {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+}
+.axis-story-value {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.85);
+}
+.axis-story-track {
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 99px;
+  position: relative;
+  overflow: hidden;
+}
+.axis-story-fill {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.6s ease;
+}
+
+/* ── Slide 3: Dimensions ── */
+.dim-story-list { display: flex; flex-direction: column; gap: 18px; }
+.dim-story-item { display: flex; align-items: center; gap: 14px; }
+.dim-story-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  width: 170px;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+.dim-story-track {
+  flex: 1;
+  height: 5px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.dim-story-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.5s ease;
+}
+
+/* ── Slide 4: Comunidad ── */
+.community-big {
+  font-size: clamp(4.5rem, 18vw, 7rem);
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.community-desc {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 32px;
+  line-height: 1.5;
+}
+.community-vote-section { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+.community-vote-label-head {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 14px;
+}
+.community-vote-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.community-vote-party { color: rgba(255,255,255,0.5); font-size: 0.85rem; width: 130px; flex-shrink: 0; }
+.community-vote-track { flex: 1; height: 4px; background: rgba(255,255,255,0.1); border-radius: 99px; overflow: hidden; }
+.community-vote-fill  { height: 100%; border-radius: 99px; }
+.community-vote-pct   { width: 36px; text-align: right; font-weight: 700; font-size: 0.78rem; color: rgba(255,255,255,0.7); }
+
+/* ── Slide 5: CTA ── */
+.slide-cta {
+  background: #F4F1EB;
+  color: #1C1916;
+  padding: 80px 28px 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.slide-cta-eyebrow {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #9A9187;
+  margin-bottom: 24px;
+}
+.slide-cta-img {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 18px;
+}
+.slide-cta-name {
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+.slide-cta-tagline {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: #9A9187;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.slide-cta-url {
+  font-size: 0.7rem;
+  color: #C0BAB2;
+  margin-bottom: 32px;
+  letter-spacing: 0.5px;
+}
+.slide-cta-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 300px;
+}
+.slide-cta-btn-primary {
+  padding: 16px;
+  background: #1C1916;
+  color: #F4F1EB;
+  border: none;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.slide-cta-btn-primary:hover { background: #2D2A26; }
+.slide-cta-btn-ghost {
+  padding: 14px;
+  background: none;
+  color: #9A9187;
+  border: 1.5px solid #E2DDD5;
+  border-radius: 14px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: none;
+  display: block;
+}
+
+@media (max-width: 480px) {
+  .slide-dark  { padding: 72px 22px 44px; }
+  .slide-cta   { padding: 72px 22px 44px; }
+  .slide-hero-content { padding: 20px 22px 44px; }
+  .dim-story-label { width: 140px; font-size: 0.9rem; }
+}

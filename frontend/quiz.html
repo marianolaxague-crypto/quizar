@@ -17,11 +17,13 @@
   <!-- Área de pregunta (fade in/out) -->
   <div class="qp-question-area" id="question-area"></div>
 
-  <!-- Progress ring -->
-  <div class="qp-ring-wrap">
+  <!-- Nav row: volver + progress ring (centrado) -->
+  <div class="qp-ring-row" id="ring-row" style="visibility:hidden">
+    <button class="qp-back-btn" id="back-btn" style="visibility:hidden" onclick="prevQuestion()">&#8592; Volver</button>
     <svg class="qp-ring-svg" id="fingerprint" viewBox="0 0 100 100">
       <!-- generado por JS -->
     </svg>
+    <div class="qp-ring-spacer"></div>
   </div>
 
 </div>

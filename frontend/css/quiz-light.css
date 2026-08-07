@@ -647,6 +647,31 @@ body.quiz-page {
 
 .qp-intermediate-btn:hover { background: #2D2A26; }
 
+/* ── Ring row (ring + back button) ── */
+.qp-ring-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 760px;
+}
+.qp-ring-spacer { width: 70px; flex-shrink: 0; }
+.qp-back-btn {
+  width: 70px;
+  background: none;
+  border: none;
+  color: #9A9187;
+  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 4px 0;
+  font-family: inherit;
+  transition: color 0.15s;
+  text-align: left;
+  flex-shrink: 0;
+}
+.qp-back-btn:hover { color: #1C1916; }
+
 /* ── Loading / error states ── */
 .qp-loading {
   padding-top: 80px;
