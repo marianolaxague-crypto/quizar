@@ -1,6 +1,21 @@
 const params = new URLSearchParams(location.search);
 const QUIZ_TYPE = params.get("type") || "j1";
 
+// ── Intro config por tipo de juego ────────────────────────────────────
+const INTRO_CONFIG = {
+  j1: {
+    icon: "🧭",
+    title: "Brújula Ideológica",
+    steps: [
+      "Vas a ver <strong>19 situaciones cotidianas</strong>, una por vez.",
+      "En cada una aparecen <strong>dos posturas posibles</strong>. Elegí cuál te representa más — y con qué intensidad.",
+      "Si ninguna aplica, podés indicar que no tenés postura."
+    ],
+    reward: "Tu posición en el mapa político argentino + tu arquetipo ideológico",
+    cta: "Empezar · 4 min"
+  }
+};
+
 let quizData  = null;
 let questions = [];
 let current   = 0;
@@ -39,6 +54,42 @@ function selectStratified(pool, n) {
 
   // Mezclar el orden final
   return selected.sort(() => Math.random() - 0.5);
+}
+
+// ── Intro screen ─────────────────────────────────────────────────────
+function showIntro() {
+  const cfg = INTRO_CONFIG[QUIZ_TYPE] || INTRO_CONFIG.j1;
+  const area = document.getElementById("question-area");
+
+  const wrap = document.createElement("div");
+  wrap.className = "qp-intro";
+  wrap.innerHTML = `
+    <div class="qp-intro-icon">${cfg.icon}</div>
+    <h1 class="qp-intro-title">${cfg.title}</h1>
+    <div class="qp-intro-steps">
+      ${cfg.steps.map(s => `<div class="qp-intro-step">${s}</div>`).join("")}
+    </div>
+    <div class="qp-intro-reward">
+      <span class="qp-intro-reward-label">Al final recibís</span>
+      <span class="qp-intro-reward-text">${cfg.reward}</span>
+    </div>
+    <button class="qp-intro-btn" id="intro-start-btn">${cfg.cta}</button>
+  `;
+  area.appendChild(wrap);
+
+  document.getElementById("intro-start-btn").addEventListener("click", () => {
+    const ringRow = document.getElementById("ring-row");
+    if (ringRow) ringRow.style.visibility = "visible";
+    area.classList.add("fading");
+    setTimeout(() => { area.classList.remove("fading"); init(); }, 220);
+  });
+}
+
+// ── Back button ───────────────────────────────────────────────────────
+function updateBackBtn() {
+  const btn = document.getElementById("back-btn");
+  if (!btn) return;
+  btn.style.visibility = current > 0 ? "visible" : "hidden";
 }
 
 // ── Progress ring ─────────────────────────────────────────────────────
@@ -152,17 +203,16 @@ function showIntermediate(screenIdx) {
 
 // ── Render ────────────────────────────────────────────────────────────
 function renderQuestion() {
-  const q   = questions[current];
-  const tot = questions.length;
+  const q = questions[current];
 
   updateFingerprint(Object.keys(responses).length);
+  updateBackBtn();
 
-  // Build content
   const wrap = document.createElement("div");
   wrap.style.width = "100%";
 
   if (q.text_a !== undefined) {
-    wrap.appendChild(buildDragSlider(q));
+    wrap.appendChild(buildFiveButtons(q));
   } else if (q.options !== undefined) {
     wrap.appendChild(buildOptions(q));
   } else {
@@ -180,21 +230,8 @@ function renderQuestion() {
   }, 220);
 }
 
-// ── Drag Slider — snap a 5 posiciones, responsive ────────────────────
-function buildDragSlider(q) {
-  const BREAKPOINT = 640;
-  const HALF_D = 160; // desktop: px desde centro al extremo
-  const HALF_M = 80;  // mobile
-
-  // 5 posiciones de snap (norm: -1 a +1)
-  const SNAPS = [
-    { norm: -1,   value: 1,    label: "Totalmente", dir: "first",  dot: "snap-t1" },
-    { norm: -0.5, value: 2,    label: "Bastante",   dir: "first",  dot: "snap-b1" },
-    { norm:  0,   value: null, label: null,          dir: null,     dot: "snap-c"  },
-    { norm:  0.5, value: 3,    label: "Bastante",   dir: "second", dot: "snap-b2" },
-    { norm:  1,   value: 4,    label: "Totalmente", dir: "second", dot: "snap-t2" },
-  ];
-
+// ── 5-Button layout — Muy / Algo / No tengo postura / Algo / Muy ──────
+function buildFiveButtons(q) {
   const aIsFirst = q.id in efgPositions
     ? efgPositions[q.id]
     : (efgPositions[q.id] = Math.random() < 0.5);
@@ -203,125 +240,41 @@ function buildDragSlider(q) {
   const secondText = aIsFirst ? q.text_b : q.text_a;
 
   const el = document.createElement("div");
-  el.className = "qp-drag-question";
-  el.innerHTML = `
-    <p class="qp-scenario">${q.scenario || ""}</p>
-    <div class="qp-drag-layout">
-      <div class="qp-cards-area">
-        <div class="qp-drag-card qp-card-first">${firstText}</div>
-        <div class="qp-drag-card qp-card-second">${secondText}</div>
-      </div>
-      <div class="qp-track-wrap">
-        <div class="qp-track-line">
-          <div class="qp-snap-dot snap-t1"></div>
-          <div class="qp-snap-dot snap-b1"></div>
-          <div class="qp-snap-dot snap-c"></div>
-          <div class="qp-snap-dot snap-b2"></div>
-          <div class="qp-snap-dot snap-t2"></div>
-        </div>
-        <div class="qp-puck">
-          <span class="qp-puck-arrow">↔</span>
-          <span class="qp-puck-label"></span>
-        </div>
-      </div>
-    </div>
-    <button class="qp-escape">No tengo postura sobre este dilema</button>
+  el.className = "qp-5btn-question";
+
+  if (q.scenario) {
+    const sc = document.createElement("p");
+    sc.className = "qp-scenario";
+    sc.textContent = q.scenario;
+    el.appendChild(sc);
+  }
+
+  const sep = document.createElement("div");
+  sep.className = "qp-5btn-separator";
+  sep.textContent = "¿Con cuál te identificás más?";
+  el.appendChild(sep);
+
+  const layout = document.createElement("div");
+  layout.className = "qp-5btn-layout";
+  layout.innerHTML = `
+    <div class="qp-5btn-card">${firstText}</div>
+    <button class="qp-5btn qp-5btn-strong" data-v="1">Muy identificado</button>
+    <button class="qp-5btn qp-5btn-soft"   data-v="2">Algo identificado</button>
+    <button class="qp-5btn qp-5btn-neutral" data-v="0">· No tengo postura ·</button>
+    <button class="qp-5btn qp-5btn-soft"   data-v="3">Algo identificado</button>
+    <button class="qp-5btn qp-5btn-strong" data-v="4">Muy identificado</button>
+    <div class="qp-5btn-card">${secondText}</div>
   `;
+  el.appendChild(layout);
 
-  const puck       = el.querySelector(".qp-puck");
-  const puckArrow  = el.querySelector(".qp-puck-arrow");
-  const puckLabel  = el.querySelector(".qp-puck-label");
-  const cardFirst  = el.querySelector(".qp-card-first");
-  const cardSecond = el.querySelector(".qp-card-second");
-  const dots       = el.querySelectorAll(".qp-snap-dot");
-
-  let isDragging = false;
-  let startX = 0, startY = 0;
-  let currentSnap = SNAPS[2]; // centro
-
-  function isDesktop() { return window.innerWidth >= BREAKPOINT; }
-  function half()      { return isDesktop() ? HALF_D : HALF_M; }
-
-  function nearestSnap(rawOffset) {
-    const norm = Math.max(-1, Math.min(1, rawOffset / half()));
-    return SNAPS.reduce((best, s) =>
-      Math.abs(s.norm - norm) < Math.abs(best.norm - norm) ? s : best
-    );
-  }
-
-  function applySnap(snap, animate) {
-    currentSnap = snap;
-    const px = snap.norm * half();
-    puck.style.transition = animate ? "transform 0.12s ease" : "none";
-    if (isDesktop()) {
-      puck.style.transform = `translate(calc(-50% + ${px}px), -50%)`;
-    } else {
-      puck.style.transform = `translate(-50%, calc(-50% + ${px}px))`;
-    }
-
-    dots.forEach((d, i) => d.classList.toggle("active", SNAPS[i] === snap));
-
-    cardFirst.classList.toggle("active", snap.dir === "first");
-    cardFirst.classList.toggle("dim",    snap.dir === "second");
-    cardSecond.classList.toggle("active", snap.dir === "second");
-    cardSecond.classList.toggle("dim",    snap.dir === "first");
-    puck.classList.toggle("toward-first",  snap.dir === "first");
-    puck.classList.toggle("toward-second", snap.dir === "second");
-    puck.classList.toggle("strong", snap.label === "Totalmente");
-
-    if (snap.label) {
-      puckLabel.textContent = snap.label;
-      puckArrow.style.display = "none";
-    } else {
-      puckLabel.textContent = "";
-      puckArrow.style.display = "";
-      puckArrow.textContent = isDesktop() ? "↔" : "↕";
-    }
-  }
-
-  function onMove(e) {
-    if (!isDragging) return;
-    e.preventDefault();
-    const rawOffset = isDesktop()
-      ? (e.touches ? e.touches[0].clientX : e.clientX) - startX
-      : (e.touches ? e.touches[0].clientY : e.clientY) - startY;
-    const snap = nearestSnap(rawOffset);
-    if (snap !== currentSnap) applySnap(snap, true);
-  }
-
-  function onEnd() {
-    if (!isDragging) return;
-    isDragging = false;
-    document.removeEventListener("mousemove", onMove);
-    document.removeEventListener("mouseup",   onEnd);
-    document.removeEventListener("touchmove", onMove);
-    document.removeEventListener("touchend",  onEnd);
-
-    if (!currentSnap.value) {
-      applySnap(SNAPS[2], true); // snap back to center
-      return;
-    }
-    setTimeout(() => selectAndAdvance(q, currentSnap.value, aIsFirst, el), 220);
-  }
-
-  function onStart(e) {
-    if (advancing) return;
-    isDragging = true;
-    startX = e.touches ? e.touches[0].clientX : e.clientX;
-    startY = e.touches ? e.touches[0].clientY : e.clientY;
-    puck.style.transition = "none";
-    document.addEventListener("mousemove", onMove);
-    document.addEventListener("mouseup",   onEnd);
-    document.addEventListener("touchmove", onMove, { passive: false });
-    document.addEventListener("touchend",  onEnd);
-  }
-
-  puck.addEventListener("mousedown",  onStart);
-  puck.addEventListener("touchstart", onStart, { passive: true });
-
-  el.querySelector(".qp-escape").addEventListener("click", () => {
-    if (advancing) return;
-    selectAndAdvance(q, 0, aIsFirst, el);
+  layout.querySelectorAll(".qp-5btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (advancing) return;
+      const v = parseInt(btn.dataset.v);
+      layout.querySelectorAll(".qp-5btn").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      setTimeout(() => selectAndAdvance(q, v, aIsFirst, el), 300);
+    });
   });
 
   return el;
@@ -461,6 +414,8 @@ const PARTIES = [
 ];
 
 function showVotingIntention() {
+  const backBtn = document.getElementById("back-btn");
+  if (backBtn) backBtn.style.visibility = "hidden";
 
   const area = document.getElementById("question-area");
   const wrap = document.createElement("div");
@@ -507,4 +462,4 @@ async function goToResult(party) {
   location.href = `/result?type=${QUIZ_TYPE}`;
 }
 
-init();
+showIntro();

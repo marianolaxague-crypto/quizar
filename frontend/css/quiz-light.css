@@ -689,6 +689,167 @@ body.quiz-page {
   margin-top: 16px;
 }
 
+/* ── Intro screen ── */
+.qp-intro {
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+.qp-intro-icon {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 14px;
+}
+.qp-intro-title {
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: #1C1916;
+  text-align: center;
+  margin-bottom: 24px;
+  line-height: 1.2;
+}
+.qp-intro-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.qp-intro-step {
+  font-size: 0.95rem;
+  color: #4A4540;
+  line-height: 1.6;
+  padding: 14px 16px;
+  background: #FFFFFF;
+  border: 1.5px solid #E2DDD5;
+  border-radius: 12px;
+}
+.qp-intro-step strong { color: #1C1916; }
+.qp-intro-reward {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  background: var(--coral-light);
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+.qp-intro-reward-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--coral);
+}
+.qp-intro-reward-text {
+  font-size: 0.95rem;
+  color: #1C1916;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.qp-intro-btn {
+  width: 100%;
+  padding: 18px 24px;
+  background: #1C1916;
+  color: #F4F1EB;
+  border: none;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+.qp-intro-btn:hover { background: #2D2A26; }
+
+/* ── 5-Button layout ── */
+.qp-5btn-question {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.qp-5btn-separator {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #B0AAA2;
+  text-align: center;
+  padding: 18px 0 14px;
+}
+.qp-5btn-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.qp-5btn-card {
+  padding: 16px 18px;
+  border-radius: 12px;
+  border: 2px solid #E2DDD5;
+  background: #FFFFFF;
+  font-size: 0.97rem;
+  line-height: 1.5;
+  text-align: center;
+  color: #1C1916;
+}
+.qp-5btn {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 0.93rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+  outline: none;
+}
+.qp-5btn-strong {
+  background: #FFFFFF;
+  border: 1.5px solid #D6D1C9;
+  color: #1C1916;
+  font-weight: 600;
+}
+.qp-5btn-strong:hover {
+  border-color: var(--coral);
+  background: var(--coral-light);
+}
+.qp-5btn-strong.selected {
+  border-color: var(--coral);
+  background: var(--coral);
+  color: #fff;
+}
+.qp-5btn-soft {
+  background: #FAF8F4;
+  border: 1.5px solid #EDEAE4;
+  color: #5C5750;
+  font-weight: 500;
+}
+.qp-5btn-soft:hover {
+  border-color: #B8B3AB;
+  background: #F0EDE7;
+  color: #1C1916;
+}
+.qp-5btn-soft.selected {
+  border-color: var(--coral);
+  background: var(--coral-light);
+  color: var(--coral-dark);
+  font-weight: 600;
+}
+.qp-5btn-neutral {
+  background: none;
+  border: none;
+  color: #C0BAB2;
+  font-size: 0.78rem;
+  padding: 8px 18px;
+  margin: 2px 0;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.15s;
+}
+.qp-5btn-neutral:hover { color: #7A756E; }
+.qp-5btn-neutral.selected { color: #7A756E; font-style: italic; }
+
 /* ── Responsive ── */
 @media (max-width: 520px) {
   .qp-stmt { font-size: 0.95rem; padding: 16px 18px; }
