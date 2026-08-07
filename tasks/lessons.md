@@ -1,6 +1,6 @@
 # Lecciones aprendidas — quiz-ar
 
-## ESTADO DE PRODUCCIÓN (06/08/2026)
+## ESTADO DE PRODUCCIÓN (07/08/2026)
 - URL: https://brujula-politica.up.railway.app
 - Railway project: `brujula-politica` (workspace `marianolaxague-crypto`)
 - Litestream → R2 bucket `quizar-db` activo y verificado
@@ -659,6 +659,67 @@ Cambios estructurales:
 
 ---
 
-## Pendientes — J2 Visión AR y J3 MaxDiff Candidatos
+## Pendientes — J2 El Legislador y J3 MaxDiff Candidatos
 - J2 y J3: sin desarrollo iniciado
 - Deploy: Railway (Fly.io abandonado — eliminó free tier en 2026). README ya tiene instrucciones Railway.
+
+---
+
+## 2026-08-07 — Persona gramatical: todo en vos, escenarios y opciones
+
+**DECISIÓN:** El instrumento usa segunda persona (vos) en todos los elementos — escenario y opciones. No hay cambio de persona entre el disparador ("te sumás a la comisión") y la respuesta ("preferís ir de a poco").
+
+**REGLA:** Al escribir o editar ítems, verificar que escenario Y opciones usen vos. Las opciones en impersonal ("Las reglas ganan legitimidad cuando son justas") son válidas con cualquier persona — no requieren ajuste.
+
+**PORQUÉ:** El cambio de persona (vos en escenario → yo en opciones) genera una pequeña fricción cognitiva. En el contexto de un quiz de engagement, la consistencia de persona mejora la fluidez.
+
+---
+
+## 2026-08-07 — Drag slider reemplazado por 5 botones explícitos
+
+**DECISIÓN:** El drag slider fue eliminado y reemplazado por 5 botones verticales: Muy identificado / Algo identificado / No tengo postura / Algo identificado / Muy identificado.
+
+**REGLA:** El layout es: [Card A] → [Muy A] → [Algo A] → [No tengo postura] → [Algo B] → [Muy B] → [Card B]. Las cards anclan visualmente cada grupo de botones.
+
+**PORQUÉ:** El drag slider no tenía affordance obvio en mobile, los usuarios no sabían que había que arrastrar. El layout de 5 botones es universalmente comprensible, preserva la escala 5-point y el neutro en el centro.
+
+---
+
+## 2026-08-07 — Resultado en formato Wrapped (5 slides swipeables)
+
+**DECISIÓN:** La pantalla de resultado fue rediseñada como 5 slides navegables por tap, reemplazando el scroll único.
+
+**REGLA:** Slides: (1) Hero arquetipo, (2) Mapa 3 ejes, (3) Dimensiones top, (4) Comunidad, (5) CTA. Navegación por tap zones 30% izquierda/derecha. Barra de progreso tipo stories.
+
+**PORQUÉ:** Cada slide es un screenshot compartible. El formato stories es familiar en mobile y maximiza shareabilidad sin necesidad de generar imágenes canvas.
+
+---
+
+## 2026-08-07 — Evaluación psicométrica externa: protocolo
+
+**DECISIÓN:** Antes de cambios estructurales al instrumento, consultar al menos 2 LLMs con un prompt exhaustivo y neutral que incluya los 19 ítems completos, la metodología de scoring y las preguntas específicas a resolver.
+
+**REGLA:** El prompt debe ser descriptivo, no prescriptivo. No mencionar hipótesis previas. Dejar que el evaluador identifique problemas libremente. Comparar las dos evaluaciones buscando convergencias.
+
+**PORQUÉ:** Un solo evaluador (incluso el LLM que construyó el instrumento) tiene sesgos de confirmación. Dos evaluaciones independientes identifican problemas que uno solo pasaría por alto. En esta sesión: Codex detectó pesos cruzados técnicos que Gemini no mencionó; Gemini detectó TRA_02 polaridad invertida que Codex no señaló.
+
+---
+
+## 2026-08-07 — Pesos cruzados MER/LOC: decisión de diseño documentada
+
+**DECISIÓN:** MER tiene peso (econ:+2, social:+1) y LOC tiene peso (social:+2, econ:-1). Estos pesos cruzados son intencionales y se documentan en el JSON.
+
+**REGLA:** No eliminar los pesos cruzados sin evidencia empírica del piloto que muestre que dañan la validez. Documentar en `format_note` del JSON.
+
+**PORQUÉ:** La meritocracia tiene dimensión tanto económica como social. El localismo tiene componente cosmopolita que toca lo económico. Los pesos cruzados reflejan la teoría, no son errores. Los ejes no son completamente ortogonales entre sí (solo el eje inst es estrictamente independiente).
+
+---
+
+## 2026-08-07 — Pendientes post-sesión
+
+- Smoke test completo en browser (landing + intro + quiz + resultado + demográficos)
+- Evaluar timing del overlay demográfico en nuevo flujo Wrapped
+- Ajustes visuales landing y J1 según feedback del testeo
+- Post-piloto: revisar solapamiento MER_02/MER_03 con datos reales
+- Post-piloto: evaluar si eje económico necesita ítems de política concreta (impuestos, regulaciones)
+- Evaluar idea del "horóscopo político" — 10 arquetipos → 10 signos zodiacales
