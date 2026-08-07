@@ -19,8 +19,9 @@
 <main>
   <div class="container">
     <section class="hero">
+      <div class="hero-tag">3 juegos &middot; pol&iacute;tica argentina</div>
       <h1>&iquest;D&oacute;nde est&aacute;s en el<br><em>mapa pol&iacute;tico argentino?</em></h1>
-      <p>Respond&eacute; la Br&uacute;jula Ideol&oacute;gica y descubr&iacute; tu perfil en 19 dilemas. Los otros juegos quedan como pr&oacute;ximas etapas del proyecto.</p>
+      <p>Tres experiencias para explorar tus ideas, tus afinidades y tus preferencias pol&iacute;ticas. El primero ya est&aacute; disponible.</p>
     </section>
 
     <div class="quiz-grid" id="quiz-grid">
@@ -34,31 +35,31 @@ const QUIZZES = [
   {
     id:       "j1",
     title:    "Br\u00fajula Ideol\u00f3gica",
-    subtitle: "Descubr\u00ed d\u00f3nde est\u00e1s en el espectro pol\u00edtico",
+    subtitle: "19 dilemas reales. Dos posturas por cada uno. Sin respuestas correctas.",
     icon:     "\uD83E\uDDED",
     questions: 19,
     minutes:  4,
-    reward:   "Tu posici\u00f3n en el mapa + comparaci\u00f3n con otros jugadores",
+    reward:   "Tu posici\u00f3n en el mapa pol\u00edtico + comparaci\u00f3n con otros jugadores",
     ready:    true
   },
   {
     id:       "j2",
-    title:    "Visi\u00f3n AR",
-    subtitle: "\u00bfCon qu\u00e9 visi\u00f3n de Argentina coincid\u00eds?",
+    title:    "El Legislador",
+    subtitle: "Vot\u00e1 12 proyectos reales o ficticios y descubr\u00ed a qu\u00e9 bloque pol\u00edtico te parec\u00e9s.",
     icon:     "\uD83D\uDDF3\uFE0F",
-    questions: null,
-    minutes:  null,
-    reward:   "Afinidad con las grandes tradiciones pol\u00edticas argentinas",
+    questions: 12,
+    minutes:  5,
+    reward:   "Tu bloque af\u00edn + perfil de lealtad partidaria",
     ready:    false
   },
   {
     id:       "j3",
     title:    "\u00bfMi candidato?",
-    subtitle: "Ranking de figuras pol\u00edticas por preferencia",
+    subtitle: "Eleg\u00ed entre pares de figuras pol\u00edticas. El sistema calcula a qui\u00e9n prefer\u00eds m\u00e1s.",
     icon:     "\uD83C\uDFAF",
     questions: 20,
     minutes:  4,
-    reward:   "Tu ranking personal de 20 figuras pol\u00edticas",
+    reward:   "Tu ranking personal de figuras pol\u00edticas argentinas",
     ready:    false
   }
 ];
@@ -66,27 +67,25 @@ const QUIZZES = [
 const grid = document.getElementById("quiz-grid");
 
 QUIZZES.forEach(q => {
-  const meta = q.ready
-    ? `<span>${q.minutes} min</span><span class="meta-questions">${q.questions} preguntas</span>`
-    : `<span>Pr\u00f3ximamente</span>`;
-
-  const reward = `\uD83C\uDF81 ${q.reward}`;
-
   if (q.ready) {
+    const meta = `<span>${q.minutes} min</span><span class="meta-questions">${q.questions} preguntas</span>`;
     grid.innerHTML += `
       <a class="quiz-card" href="/quiz?type=${q.id}">
         <div class="icon">${q.icon}</div>
         <h2>${q.title}</h2>
-        <p>${q.subtitle}<br><br>${reward}</p>
+        <p class="card-subtitle">${q.subtitle}</p>
+        <p class="card-reward">\uD83C\uDF81 ${q.reward}</p>
         <div class="meta">${meta}</div>
+        <div class="card-cta">Empezar \u2192</div>
       </a>`;
   } else {
     grid.innerHTML += `
       <div class="quiz-card disabled">
+        <div class="quiz-coming-badge">Pr\u00f3ximamente</div>
         <div class="icon">${q.icon}</div>
         <h2>${q.title}</h2>
-        <p>${q.subtitle}<br><br>${reward}</p>
-        <div class="meta">${meta}</div>
+        <p class="card-subtitle">${q.subtitle}</p>
+        <p class="card-reward">\uD83C\uDF81 ${q.reward}</p>
       </div>`;
   }
 });
