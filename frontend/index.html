@@ -3,89 +3,344 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Br&uacute;jula Pol&iacute;tica Argentina</title>
-  <link rel="stylesheet" href="/static/css/style.css">
+  <title>Brújula Política AR — ¿Dónde estás en el mapa político argentino?</title>
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Tokens ── */
+    :root {
+      --dark:       #0F0F23;
+      --dark-card:  #161630;
+      --dark-card2: #1C1C3A;
+      --yellow:     #FFE600;
+      --yellow-dim: rgba(255,230,0,0.12);
+      --yellow-bdr: rgba(255,230,0,0.30);
+      --orange:     #FF5C00;
+      --white:      #FFFFFF;
+      --white-70:   rgba(255,255,255,0.70);
+      --white-40:   rgba(255,255,255,0.40);
+      --white-15:   rgba(255,255,255,0.15);
+      --white-08:   rgba(255,255,255,0.08);
+      --white-05:   rgba(255,255,255,0.05);
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; }
+
+    /* ── Header ── */
+    .lnd-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--white-08);
+    }
+    .lnd-logo {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.3px;
+    }
+    .lnd-logo span { color: var(--yellow); }
+
+    /* ── Hero ── */
+    .lnd-hero {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 56px 24px 64px;
+    }
+
+    .lnd-hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--yellow);
+      background: var(--yellow-dim);
+      border: 1px solid var(--yellow-bdr);
+      padding: 5px 12px;
+      border-radius: 99px;
+      margin-bottom: 28px;
+    }
+
+    .lnd-hero-h1 {
+      font-size: clamp(2.8rem, 9vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+      color: var(--white);
+    }
+    .lnd-hero-h1 em {
+      color: var(--yellow);
+      font-style: normal;
+    }
+
+    .lnd-hero-sub {
+      font-size: clamp(1rem, 2vw, 1.1rem);
+      color: var(--white-70);
+      max-width: 480px;
+      line-height: 1.65;
+      margin-bottom: 40px;
+    }
+
+    .lnd-hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--yellow);
+      color: var(--dark);
+      font-size: 1rem;
+      font-weight: 800;
+      padding: 16px 32px;
+      border-radius: 12px;
+      letter-spacing: -0.2px;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .lnd-hero-cta:hover {
+      background: #FFD000;
+      transform: translateY(-2px);
+    }
+
+    /* ── Games section ── */
+    .lnd-games {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px 100px;
+    }
+
+    .lnd-section-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--white-40);
+      margin-bottom: 16px;
+    }
+
+    .lnd-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* ── J1 — card activa ── */
+    .lnd-card-j1 {
+      grid-column: 1 / -1;
+      background: var(--dark-card);
+      border: 1.5px solid var(--yellow);
+      border-radius: 20px;
+      padding: 28px 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      color: var(--white);
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .lnd-card-j1:hover {
+      border-color: #FFD000;
+      transform: translateY(-2px);
+      color: var(--white);
+    }
+
+    .lnd-card-icon { font-size: 2rem; line-height: 1; }
+
+    .lnd-card-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    .lnd-card-desc {
+      font-size: 0.875rem;
+      color: var(--white-70);
+      line-height: 1.55;
+    }
+
+    .lnd-card-reward {
+      font-size: 0.8rem;
+      color: var(--yellow);
+      line-height: 1.4;
+    }
+
+    .lnd-card-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: var(--white-40);
+      border-top: 1px solid var(--white-08);
+      padding-top: 12px;
+    }
+
+    .lnd-card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--yellow);
+      color: var(--dark);
+      font-size: 0.88rem;
+      font-weight: 800;
+      padding: 11px 20px;
+      border-radius: 10px;
+      align-self: flex-start;
+      transition: background 0.15s;
+    }
+    .lnd-card-j1:hover .lnd-card-btn { background: #FFD000; }
+
+    /* ── J2/J3 — cards próximamente ── */
+    .lnd-card-soon {
+      background: var(--white-05);
+      border: 1px solid var(--white-08);
+      border-radius: 20px;
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .lnd-soon-badge {
+      display: inline-block;
+      font-size: 0.52rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--white-40);
+      background: var(--white-08);
+      padding: 3px 8px;
+      border-radius: 99px;
+      margin-bottom: 2px;
+    }
+
+    .lnd-card-soon .lnd-card-icon { font-size: 1.5rem; opacity: 0.45; }
+    .lnd-card-soon .lnd-card-title { font-size: 0.95rem; color: var(--white-40); }
+    .lnd-card-soon .lnd-card-desc  { font-size: 0.78rem; color: var(--white-40); }
+
+    /* ── Desktop ── */
+    @media (min-width: 700px) {
+      .lnd-header { padding: 22px 40px; }
+      .lnd-hero   { padding: 80px 40px 72px; }
+      .lnd-games  { padding: 0 40px 100px; }
+
+      .lnd-grid {
+        grid-template-columns: 1.6fr 1fr 1fr;
+        grid-template-rows: auto;
+        align-items: start;
+      }
+      .lnd-card-j1 {
+        grid-column: 1;
+        grid-row: 1 / 3;
+        height: 100%;
+      }
+      /* J2 y J3 se ubican en col 2 y 3, fila 1 / col 2 y 3 fila 2 no aplica */
+    }
+
+    @media (min-width: 900px) {
+      .lnd-hero-h1 { letter-spacing: -3px; }
+    }
+
+    /* Divider decorativo hero → games */
+    .lnd-divider {
+      width: 40px;
+      height: 3px;
+      background: var(--yellow);
+      border-radius: 99px;
+      margin: 0 auto 32px;
+      opacity: 0.5;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <div class="container">
-    <div class="inner">
-      <div class="logo">Br&uacute;jula <span>Pol&iacute;tica AR</span></div>
-    </div>
-  </div>
+<header class="lnd-header">
+  <div class="lnd-logo">Brújula <span>Política AR</span></div>
 </header>
 
 <main>
-  <div class="container">
-    <section class="hero">
-      <div class="hero-tag">3 juegos &middot; pol&iacute;tica argentina</div>
-      <h1>&iquest;D&oacute;nde est&aacute;s en el<br><em>mapa pol&iacute;tico argentino?</em></h1>
-      <p>Tres experiencias para explorar tus ideas, tus afinidades y tus preferencias pol&iacute;ticas. El primero ya est&aacute; disponible.</p>
-    </section>
 
-    <div class="quiz-grid" id="quiz-grid">
+  <section class="lnd-hero">
+    <div class="lnd-hero-tag">3 juegos &middot; pol&iacute;tica argentina</div>
+    <h1 class="lnd-hero-h1">
+      &iquest;D&oacute;nde est&aacute;s<br>en el <em>mapa<br>pol&iacute;tico?</em>
+    </h1>
+    <p class="lnd-hero-sub">
+      Tres experiencias para descubrir tu ideolog&iacute;a, tu afinidad con los bloques y tus candidatos. Sin respuestas correctas.
+    </p>
+    <a href="/quiz?type=j1" class="lnd-hero-cta">Empezar ahora &rarr;</a>
+  </section>
+
+  <section class="lnd-games">
+    <div class="lnd-section-label">Los juegos</div>
+    <div class="lnd-grid" id="lnd-grid">
       <!-- populated by JS -->
     </div>
-  </div>
+  </section>
+
 </main>
 
 <script>
 const QUIZZES = [
   {
     id:       "j1",
-    title:    "Br\u00fajula Ideol\u00f3gica",
-    subtitle: "19 dilemas reales. Dos posturas por cada uno. Sin respuestas correctas.",
-    icon:     "\uD83E\uDDED",
+    title:    "Brújula Ideológica",
+    desc:     "19 dilemas reales. Dos posturas por cada uno. Sin respuestas correctas.",
+    icon:     "🧭",
     questions: 19,
     minutes:  4,
-    reward:   "Tu posici\u00f3n en el mapa pol\u00edtico + comparaci\u00f3n con otros jugadores",
+    reward:   "Tu posición en el mapa político + tu arquetipo ideológico",
     ready:    true
   },
   {
-    id:       "j2",
-    title:    "El Legislador",
-    subtitle: "Vot\u00e1 12 proyectos reales o ficticios y descubr\u00ed a qu\u00e9 bloque pol\u00edtico te parec\u00e9s.",
-    icon:     "\uD83D\uDDF3\uFE0F",
-    questions: 12,
-    minutes:  5,
-    reward:   "Tu bloque af\u00edn + perfil de lealtad partidaria",
-    ready:    false
+    id:    "j2",
+    title: "El Legislador",
+    desc:  "Votá 12 proyectos reales o ficticios y descubrí a qué bloque político te parecés.",
+    icon:  "🗳️",
+    reward: "Tu bloque afín + perfil de lealtad partidaria",
+    ready: false
   },
   {
-    id:       "j3",
-    title:    "\u00bfMi candidato?",
-    subtitle: "Eleg\u00ed entre pares de figuras pol\u00edticas. El sistema calcula a qui\u00e9n prefer\u00eds m\u00e1s.",
-    icon:     "\uD83C\uDFAF",
-    questions: 20,
-    minutes:  4,
-    reward:   "Tu ranking personal de figuras pol\u00edticas argentinas",
-    ready:    false
+    id:    "j3",
+    title: "¿Mi candidato?",
+    desc:  "Elegí entre pares de figuras políticas. El sistema calcula a quién preferís más.",
+    icon:  "🎯",
+    reward: "Tu ranking de figuras políticas argentinas",
+    ready: false
   }
 ];
 
-const grid = document.getElementById("quiz-grid");
+const grid = document.getElementById("lnd-grid");
 
 QUIZZES.forEach(q => {
   if (q.ready) {
-    const meta = `<span>${q.minutes} min</span><span class="meta-questions">${q.questions} preguntas</span>`;
     grid.innerHTML += `
-      <a class="quiz-card" href="/quiz?type=${q.id}">
-        <div class="icon">${q.icon}</div>
-        <h2>${q.title}</h2>
-        <p class="card-subtitle">${q.subtitle}</p>
-        <p class="card-reward">\uD83C\uDF81 ${q.reward}</p>
-        <div class="meta">${meta}</div>
-        <div class="card-cta">Empezar \u2192</div>
+      <a class="lnd-card-j1" href="/quiz?type=${q.id}">
+        <div class="lnd-card-icon">${q.icon}</div>
+        <div class="lnd-card-title">${q.title}</div>
+        <div class="lnd-card-desc">${q.desc}</div>
+        <div class="lnd-card-reward">🎁 ${q.reward}</div>
+        <div class="lnd-card-meta">
+          <span>${q.minutes} min</span>
+          <span>${q.questions} preguntas</span>
+        </div>
+        <div class="lnd-card-btn">Empezar →</div>
       </a>`;
   } else {
     grid.innerHTML += `
-      <div class="quiz-card disabled">
-        <div class="quiz-coming-badge">Pr\u00f3ximamente</div>
-        <div class="icon">${q.icon}</div>
-        <h2>${q.title}</h2>
-        <p class="card-subtitle">${q.subtitle}</p>
-        <p class="card-reward">\uD83C\uDF81 ${q.reward}</p>
+      <div class="lnd-card-soon">
+        <div class="lnd-soon-badge">Próximamente</div>
+        <div class="lnd-card-icon">${q.icon}</div>
+        <div class="lnd-card-title">${q.title}</div>
+        <div class="lnd-card-desc">${q.desc}</div>
       </div>`;
   }
 });
